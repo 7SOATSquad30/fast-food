@@ -1,6 +1,5 @@
 package br.com.fiap.grupo30.fastfood.resources.exceptions;
 
-import br.com.fiap.grupo30.fastfood.resources.StandardError;
 import br.com.fiap.grupo30.fastfood.services.exceptions.DatabaseException;
 import br.com.fiap.grupo30.fastfood.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;

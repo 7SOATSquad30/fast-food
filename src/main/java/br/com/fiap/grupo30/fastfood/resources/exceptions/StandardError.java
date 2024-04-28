@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.resources;
+package br.com.fiap.grupo30.fastfood.resources.exceptions;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
