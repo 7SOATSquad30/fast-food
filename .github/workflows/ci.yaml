@@ -35,6 +35,11 @@ jobs:
       - name: Code linting
         run: ./gradlew spotlessCheck
 
+      - name: Static analysis
+        run: |
+          ./gradlew pmdMain
+          ./gradlew pmdTest
+
       - name: Build
         run: ./gradlew clean build
 
