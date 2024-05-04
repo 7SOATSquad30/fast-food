@@ -1,9 +1,8 @@
 package br.com.fiap.grupo30.fastfood.resources.exceptions;
 
+import java.time.Instant;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.Instant;
 
 @Data
 @NoArgsConstructor

@@ -1,11 +1,10 @@
 package br.com.fiap.grupo30.fastfood.entities;
 
 import jakarta.persistence.*;
+import java.time.Instant;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.Instant;
 
 @Getter
 @NoArgsConstructor
@@ -17,10 +16,12 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
     private Double price;
     private String imgUrl;
 

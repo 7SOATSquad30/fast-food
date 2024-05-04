@@ -8,23 +8,20 @@ import br.com.fiap.grupo30.fastfood.repositories.ProductRepository;
 import br.com.fiap.grupo30.fastfood.services.exceptions.DatabaseException;
 import br.com.fiap.grupo30.fastfood.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
 public class ProductService {
 
-    @Autowired
-    private ProductRepository repository;
+    @Autowired private ProductRepository repository;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    @Autowired private CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
     public List<ProductDTO> findAll(Long categoryId) {
@@ -55,7 +52,7 @@ public class ProductService {
             entity = repository.save(entity);
             return new ProductDTO(entity);
         } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException("Id not found " + id);
+            throw new ResourceNotFoundException("Id not found " + id, e);
         }
     }
 
@@ -63,9 +60,9 @@ public class ProductService {
         try {
             repository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException("Id not found " + id);
+            throw new ResourceNotFoundException("Id not found " + id, e);
         } catch (DataIntegrityViolationException e) {
-            throw new DatabaseException("Integrity violation");
+            throw new DatabaseException("Integrity violation", e);
         }
     }
 
@@ -77,5 +74,4 @@ public class ProductService {
         Category category = categoryRepository.getReferenceById(dto.getCategory().getId());
         entity.setCategory(category);
     }
-
 }
