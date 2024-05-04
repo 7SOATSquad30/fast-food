@@ -1,6 +1,5 @@
 package br.com.fiap.grupo30.fastfood.dto;
 
-import br.com.fiap.grupo30.fastfood.entities.Category;
 import br.com.fiap.grupo30.fastfood.entities.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;

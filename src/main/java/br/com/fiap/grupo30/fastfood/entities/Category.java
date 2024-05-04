@@ -1,12 +1,11 @@
 package br.com.fiap.grupo30.fastfood.entities;
 
 import jakarta.persistence.*;
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.Instant;
 
 @Getter
 @NoArgsConstructor
@@ -19,6 +18,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
@@ -41,7 +41,6 @@ public class Category {
     @PrePersist
     public void prePersist() {
         createdAt = Instant.now();
-
     }
 
     @PreUpdate
@@ -53,5 +52,4 @@ public class Category {
     public void preRemove() {
         deletedAt = Instant.now();
     }
-
 }
