@@ -13,6 +13,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequestMapping(value = "/products")
 public class ProductResource {
 
+    private static final String PATH_VARIABLE_ID = "/{id}";
+
     @Autowired private ProductService service;
 
     @GetMapping
@@ -22,7 +24,7 @@ public class ProductResource {
         return ResponseEntity.ok().body(list);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = PATH_VARIABLE_ID)
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
         ProductDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
@@ -30,22 +32,22 @@ public class ProductResource {
 
     @PostMapping
     public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto) {
-        dto = service.insert(dto);
+        ProductDTO dtoCreated = service.insert(dto);
         URI uri =
                 ServletUriComponentsBuilder.fromCurrentRequest()
-                        .path("/{id}")
+                        .path(PATH_VARIABLE_ID)
                         .buildAndExpand(dto.getId())
                         .toUri();
-        return ResponseEntity.created(uri).body(dto);
+        return ResponseEntity.created(uri).body(dtoCreated);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = PATH_VARIABLE_ID)
     public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
-        dto = service.update(id, dto);
-        return ResponseEntity.ok().body(dto);
+        ProductDTO dtoUpdated = service.update(id, dto);
+        return ResponseEntity.ok().body(dtoUpdated);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = PATH_VARIABLE_ID)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
