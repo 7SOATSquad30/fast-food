@@ -52,7 +52,7 @@ public class ProductService {
             entity = repository.save(entity);
             return new ProductDTO(entity);
         } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException("Error: " + e.getMessage());
+            throw new ResourceNotFoundException("Id not found " + id, e);
         }
     }
 
@@ -60,9 +60,9 @@ public class ProductService {
         try {
             repository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException("Error: " + e.getMessage());
+            throw new ResourceNotFoundException("Id not found " + id, e);
         } catch (DataIntegrityViolationException e) {
-            throw new DatabaseException("Error: " + e.getMessage());
+            throw new DatabaseException("Integrity violation", e);
         }
     }
 
