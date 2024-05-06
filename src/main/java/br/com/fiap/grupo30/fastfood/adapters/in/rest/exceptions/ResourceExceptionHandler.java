@@ -1,7 +1,7 @@
-package br.com.fiap.grupo30.fastfood.resources.exceptions;
+package br.com.fiap.grupo30.fastfood.adapters.in.rest.exceptions;
 
-import br.com.fiap.grupo30.fastfood.services.exceptions.DatabaseException;
-import br.com.fiap.grupo30.fastfood.services.exceptions.ResourceNotFoundException;
+import br.com.fiap.grupo30.fastfood.application.services.exceptions.DatabaseException;
+import br.com.fiap.grupo30.fastfood.application.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import org.springframework.http.HttpStatus;

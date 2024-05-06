@@ -1,33 +1,26 @@
-package br.com.fiap.grupo30.fastfood.entities;
+package br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities;
 
 import jakarta.persistence.*;
 import java.time.Instant;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table(name = "product")
-public class Product {
+@Table(name = "tb_category")
+public class CategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String name;
-
-    @Column(columnDefinition = "TEXT")
-    private String description;
-
-    private Double price;
-    private String imgUrl;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
@@ -44,22 +37,6 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 
     @PrePersist

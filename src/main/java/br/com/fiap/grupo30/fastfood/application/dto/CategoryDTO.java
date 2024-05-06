@@ -1,6 +1,6 @@
-package br.com.fiap.grupo30.fastfood.dto;
+package br.com.fiap.grupo30.fastfood.application.dto;
 
-import br.com.fiap.grupo30.fastfood.entities.Category;
+import br.com.fiap.grupo30.fastfood.domain.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
