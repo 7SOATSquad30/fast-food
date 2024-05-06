@@ -1,7 +1,7 @@
-package br.com.fiap.grupo30.fastfood.resources;
+package br.com.fiap.grupo30.fastfood.adapters.in.rest;
 
-import br.com.fiap.grupo30.fastfood.dto.CategoryDTO;
-import br.com.fiap.grupo30.fastfood.services.CategoryService;
+import br.com.fiap.grupo30.fastfood.application.dto.CategoryDTO;
+import br.com.fiap.grupo30.fastfood.application.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -16,14 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Categories Resource", description = "RESTful API for managing categories.")
 public class CategoryResource {
 
-    @Autowired private CategoryService service;
+    private final CategoryService categoryService;
+
+    @Autowired
+    public CategoryResource(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @GetMapping
     @Operation(
             summary = "Get all categories",
             description = "Retrieve a list of all registered categories")
     public ResponseEntity<List<CategoryDTO>> findAll() {
-        List<CategoryDTO> list = service.findAll();
+        List<CategoryDTO> list = categoryService.findAll();
         return ResponseEntity.ok().body(list);
     }
 }

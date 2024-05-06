@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.services.exceptions;
+package br.com.fiap.grupo30.fastfood.application.services.exceptions;
 
 import java.io.Serial;
 

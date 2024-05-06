@@ -1,7 +1,7 @@
-package br.com.fiap.grupo30.fastfood.resources;
+package br.com.fiap.grupo30.fastfood.adapters.in.rest;
 
-import br.com.fiap.grupo30.fastfood.dto.ProductDTO;
-import br.com.fiap.grupo30.fastfood.services.ProductService;
+import br.com.fiap.grupo30.fastfood.application.dto.ProductDTO;
+import br.com.fiap.grupo30.fastfood.application.services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
@@ -18,7 +18,12 @@ public class ProductResource {
 
     private static final String PATH_VARIABLE_ID = "/{id}";
 
-    @Autowired private ProductService service;
+    private final ProductService productService;
+
+    @Autowired
+    public ProductResource(ProductService productService) {
+        this.productService = productService;
+    }
 
     @GetMapping
     @Operation(
@@ -28,7 +33,7 @@ public class ProductResource {
                             + "via RequestParam. i.e., ?categoryId=1")
     public ResponseEntity<List<ProductDTO>> findAll(
             @RequestParam(value = "categoryId", defaultValue = "0") Long categoryId) {
-        List<ProductDTO> list = service.findAll(categoryId);
+        List<ProductDTO> list = productService.findProductsByCategoryId(categoryId);
         return ResponseEntity.ok().body(list);
     }
 
@@ -37,7 +42,7 @@ public class ProductResource {
             summary = "Get a product by ID",
             description = "Retrieve a specific product based on its ID")
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
-        ProductDTO dto = service.findById(id);
+        ProductDTO dto = productService.findById(id);
         return ResponseEntity.ok().body(dto);
     }
 
@@ -46,7 +51,7 @@ public class ProductResource {
             summary = "Create a new product",
             description = "Create a new product and return the created product's data")
     public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto) {
-        ProductDTO dtoCreated = service.insert(dto);
+        ProductDTO dtoCreated = productService.insert(dto);
         URI uri =
                 ServletUriComponentsBuilder.fromCurrentRequest()
                         .path(PATH_VARIABLE_ID)
@@ -60,7 +65,7 @@ public class ProductResource {
             summary = "Update a product",
             description = "Update the data of an existing product based on its ID")
     public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
-        ProductDTO dtoUpdated = service.update(id, dto);
+        ProductDTO dtoUpdated = productService.update(id, dto);
         return ResponseEntity.ok().body(dtoUpdated);
     }
 
@@ -69,7 +74,7 @@ public class ProductResource {
             summary = "Delete a product",
             description = "Delete an existing product based on its ID")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
+        productService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
