@@ -1,12 +1,11 @@
 package br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities;
 
 import jakarta.persistence.*;
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.Instant;
 
 @Getter
 @NoArgsConstructor
