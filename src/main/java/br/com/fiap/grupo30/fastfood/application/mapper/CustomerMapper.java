@@ -12,7 +12,7 @@ public final class CustomerMapper {
         CustomerEntity entity = new CustomerEntity();
         entity.setId(customer.getId());
         entity.setName(customer.getName());
-        entity.setCpf(String.valueOf(customer.getCpf()));
+        entity.setCpf(String.valueOf(customer.getCpf().value()));
         entity.setEmail(customer.getEmail());
         return entity;
     }

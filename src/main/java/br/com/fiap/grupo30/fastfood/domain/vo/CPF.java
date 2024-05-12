@@ -12,6 +12,11 @@ public record CPF(@NonNull String value) {
         }
     }
 
+    @Override
+    public String value() {
+        return value;
+    }
+
     private static boolean isValidLength(String cpf) {
         return cpf.length() != 11;
     }

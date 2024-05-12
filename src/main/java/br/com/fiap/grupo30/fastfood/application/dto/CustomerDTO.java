@@ -18,7 +18,7 @@ public class CustomerDTO {
     public CustomerDTO(Customer entity) {
         this.id = entity.getId();
         this.name = entity.getName();
-        this.cpf = String.valueOf(entity.getCpf());
+        this.cpf = String.valueOf(entity.getCpf().value());
         this.email = entity.getEmail();
     }
 }
