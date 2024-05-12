@@ -4,12 +4,11 @@ import br.com.fiap.grupo30.fastfood.application.dto.CustomerDTO;
 import br.com.fiap.grupo30.fastfood.application.services.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/customers")
@@ -31,5 +30,19 @@ public class CustomerResource {
             @RequestParam(value = "cpf", defaultValue = "0") String cpf) {
         CustomerDTO dto = customerService.findCustomerByCpf(cpf);
         return ResponseEntity.ok().body(dto);
+    }
+
+    @PostMapping
+    @Operation(
+            summary = "Create a new customer",
+            description = "Create a new customer and return the created customer's data")
+    public ResponseEntity<CustomerDTO> insert(@RequestBody CustomerDTO dto) {
+        CustomerDTO dtoCreated = customerService.insert(dto);
+        URI uri =
+                ServletUriComponentsBuilder.fromCurrentRequest()
+                        .path(PATH_VARIABLE_ID)
+                        .buildAndExpand(dto.getId())
+                        .toUri();
+        return ResponseEntity.created(uri).body(dtoCreated);
     }
 }

@@ -17,20 +17,20 @@ public record CPF(@NonNull String value) {
         return value;
     }
 
-    private static boolean isValidLength(String cpf) {
+    public static boolean isValidLength(String cpf) {
         return cpf.length() != 11;
     }
 
-    private static boolean allDigitsAreTheSame(String cpf) {
+    public static boolean allDigitsAreTheSame(String cpf) {
         char firstDigit = cpf.charAt(0);
         return cpf.chars().allMatch(c -> c == firstDigit);
     }
 
-    private static String removeNonDigits(String cpf) {
+    public static String removeNonDigits(String cpf) {
         return cpf.replaceAll("\\D", "");
     }
 
-    private static int calculateDigit(String cpf, int factor) {
+    public static int calculateDigit(String cpf, int factor) {
         int num = factor;
         int total = 0;
         for (int i = 0; i < cpf.length(); i++) {
@@ -48,7 +48,7 @@ public record CPF(@NonNull String value) {
         return rest < 2 ? 0 : 11 - rest;
     }
 
-    private static boolean validate(String cpf) {
+    public static boolean validate(String cpf) {
         var cpfNonDigits = removeNonDigits(cpf);
         if (isValidLength(cpfNonDigits) || allDigitsAreTheSame(cpfNonDigits)) return false;
         int dg1 = calculateDigit(cpfNonDigits, 10);
