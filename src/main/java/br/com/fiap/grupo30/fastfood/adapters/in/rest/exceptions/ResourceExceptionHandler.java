@@ -43,7 +43,7 @@ public class ResourceExceptionHandler {
     @ExceptionHandler(ResourceConflictException.class)
     public ResponseEntity<StandardError> entityBadRequest(
             ResourceConflictException e, HttpServletRequest request) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+        HttpStatus status = HttpStatus.CONFLICT;
         StandardError err = new StandardError();
         err.setTimestamp(Instant.now());
         err.setStatus(status.value());
