@@ -76,22 +76,22 @@ public class OrderEntity {
     }
 
     @PostLoad
-    private void postLoad() {
+    protected void postLoad() {
         recalculateTotalPrice();
     }
 
     @PrePersist
-    private void prePersist() {
+    protected void prePersist() {
         createdAt = Instant.now();
     }
 
     @PreUpdate
-    private void preUpdate() {
+    protected void preUpdate() {
         updatedAt = Instant.now();
     }
 
     @PreRemove
-    private void preRemove() {
+    protected void preRemove() {
         deletedAt = Instant.now();
     }
 
