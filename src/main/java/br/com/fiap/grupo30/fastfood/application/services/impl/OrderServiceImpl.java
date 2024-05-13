@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderServiceImpl implements OrderService {
 
+    private final String ORDER_NOT_FOUND_MESSAGE = "Order not found";
+
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
 
@@ -42,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity order =
                 this.orderRepository
                         .findById(command.getOrderId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+                        .orElseThrow(() -> new ResourceNotFoundException(ORDER_NOT_FOUND_MESSAGE));
 
         if (!order.isDraft()) {
             throw new UserCantChangeOrderAfterSubmitException(
@@ -64,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity order =
                 this.orderRepository
                         .findById(command.getOrderId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+                        .orElseThrow(() -> new ResourceNotFoundException(ORDER_NOT_FOUND_MESSAGE));
 
         if (!order.isDraft()) {
             throw new UserCantChangeOrderAfterSubmitException(
@@ -86,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity order =
                 this.orderRepository
                         .findById(command.getOrderId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+                        .orElseThrow(() -> new ResourceNotFoundException(ORDER_NOT_FOUND_MESSAGE));
 
         order.setStatus(OrderStatus.SUBMITTED);
         return this.orderRepository.save(order).toDTO();
@@ -97,7 +99,7 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity order =
                 this.orderRepository
                         .findById(orderId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+                        .orElseThrow(() -> new ResourceNotFoundException(ORDER_NOT_FOUND_MESSAGE));
 
         return order.toDTO();
     }
