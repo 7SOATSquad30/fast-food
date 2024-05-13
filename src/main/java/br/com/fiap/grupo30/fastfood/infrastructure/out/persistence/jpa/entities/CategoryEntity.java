@@ -1,5 +1,6 @@
 package br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities;
 
+import br.com.fiap.grupo30.fastfood.application.dto.CategoryDTO;
 import jakarta.persistence.*;
 import java.time.Instant;
 import lombok.AllArgsConstructor;
@@ -52,5 +53,10 @@ public class CategoryEntity {
     @PreRemove
     public void preRemove() {
         deletedAt = Instant.now();
+    }
+
+    public CategoryDTO toDTO() {
+        CategoryDTO categoryDto = new CategoryDTO(this.id, this.name);
+        return categoryDto;
     }
 }

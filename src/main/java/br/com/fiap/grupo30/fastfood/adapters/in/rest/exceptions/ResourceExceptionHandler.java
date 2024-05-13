@@ -4,6 +4,7 @@ import br.com.fiap.grupo30.fastfood.application.services.exceptions.DatabaseExce
 import br.com.fiap.grupo30.fastfood.application.services.exceptions.ResourceBadRequestException;
 import br.com.fiap.grupo30.fastfood.application.services.exceptions.ResourceConflictException;
 import br.com.fiap.grupo30.fastfood.application.services.exceptions.ResourceNotFoundException;
+import br.com.fiap.grupo30.fastfood.application.services.exceptions.UserCantChangeOrderAfterSubmitException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import org.springframework.http.HttpStatus;
@@ -60,6 +61,19 @@ public class ResourceExceptionHandler {
         err.setTimestamp(Instant.now());
         err.setStatus(status.value());
         err.setError("Database exception");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(UserCantChangeOrderAfterSubmitException.class)
+    public ResponseEntity<StandardError> userCantChangeOrderAfterSubmit(
+            UserCantChangeOrderAfterSubmitException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(status.value());
+        err.setError("UserCantChangeOrderAfterSubmit exception");
         err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(err);
