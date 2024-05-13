@@ -30,3 +30,8 @@ INSERT INTO tb_product (name, price, category_id, description, img_url, created_
 INSERT INTO tb_product (name, price, category_id, description, img_url, created_at) VALUES ('Mayonnaise', 1.9, 4, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vulputate rutrum ullamcorper.', 'https://', NOW());
 INSERT INTO tb_product (name, price, category_id, description, img_url, created_at) VALUES ('Barbeque Sauce', 1.9, 4, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vulputate rutrum ullamcorper.', 'https://', NOW());
 INSERT INTO tb_product (name, price, category_id, description, img_url, created_at) VALUES ('Chicken Nuggets', 10.9, 4, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vulputate rutrum ullamcorper.', 'https://', NOW());
+
+INSERT INTO tb_customer (name, cpf, email, created_at) VALUES ('John', '20195054016', 'john@email.com', NOW());
+INSERT INTO tb_customer (name, cpf, email, created_at) VALUES ('Mary', '81018255095', 'mary@email.com', NOW());
+INSERT INTO tb_customer (name, cpf, email, created_at) VALUES ('Jack', '50260304085', 'jack@email.com', NOW());
+INSERT INTO tb_customer (name, cpf, email, created_at) VALUES ('Lysa', '38877348070', 'lysa@email.com', NOW());
