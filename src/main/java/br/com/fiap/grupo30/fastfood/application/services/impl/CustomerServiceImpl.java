@@ -34,7 +34,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO findCustomerByCpf(String cpf) {
-        Optional<CustomerEntity> obj = customerRepository.findCustomerByCpf(cpf);
+        String cpfStr = CPF.removeNonDigits(cpf);
+        Optional<CustomerEntity> obj = customerRepository.findCustomerByCpf(cpfStr);
         CustomerEntity entity =
                 obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         return new CustomerDTO(customerMapper.mapFrom(entity));
