@@ -1,9 +1,8 @@
 package br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities;
 
+import br.com.fiap.grupo30.fastfood.application.dto.ProductDTO;
 import jakarta.persistence.*;
 import java.time.Instant;
-
-import br.com.fiap.grupo30.fastfood.application.dto.ProductDTO;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -86,14 +85,14 @@ public class ProductEntity {
     }
 
     public ProductDTO toDTO() {
-        ProductDTO productDto = new ProductDTO(
-            this.id,
-            this.name,
-            this.description,
-            this.price,
-            this.imgUrl,
-            this.category.toDTO()
-        );
+        ProductDTO productDto =
+                new ProductDTO(
+                        this.id,
+                        this.name,
+                        this.description,
+                        this.price,
+                        this.imgUrl,
+                        this.category.toDTO());
         return productDto;
     }
 }

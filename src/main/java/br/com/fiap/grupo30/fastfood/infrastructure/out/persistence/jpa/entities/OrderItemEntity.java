@@ -17,21 +17,21 @@ public class OrderItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false, insertable = false, updatable = false)
+    @ManyToOne()
+    @JoinColumn(name = "order_id", nullable = false, updatable = false)
     private OrderEntity order;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id", nullable = false, updatable = false)
     private ProductEntity product;
 
     @Column(nullable = false)
-    @Min(0)
-    private Long quantity;
+    @Min(1L)
+    private Long quantity = 1L;
 
     @Column(nullable = false)
     @Min(0)
-    private Double totalPrice;
+    private Double totalPrice = 0.0;
 
     public Long getQuantity() {
         return this.quantity;
@@ -54,19 +54,17 @@ public class OrderItemEntity {
         this.totalPrice = this.product.getPrice() * this.quantity;
     }
 
-    public static OrderItemEntity create(ProductEntity product, Long quantity) {
+    public static OrderItemEntity create(OrderEntity order, ProductEntity product, Long quantity) {
         OrderItemEntity orderItem = new OrderItemEntity();
+        orderItem.order = order;
         orderItem.product = product;
         orderItem.setQuantity(quantity);
         return orderItem;
     }
 
     public OrderItemDTO toDTO() {
-        OrderItemDTO orderItemDto = new OrderItemDTO(
-            this.quantity,
-            this.totalPrice,
-            this.product.toDTO()
-        );
+        OrderItemDTO orderItemDto =
+                new OrderItemDTO(this.quantity, this.totalPrice, this.product.toDTO());
         return orderItemDto;
     }
 }

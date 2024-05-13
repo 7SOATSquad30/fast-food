@@ -6,3 +6,6 @@ build:
 
 run:
 	./gradlew bootRun
+
+debug:
+	./gradlew bootRun --debug-jvm

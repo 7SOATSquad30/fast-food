@@ -7,10 +7,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class OrderDTO {
-
-    private Long id;
+    private Long orderId;
     private OrderStatus status;
     private OrderItemDTO[] items;
     private Double totalPrice;
-
 }

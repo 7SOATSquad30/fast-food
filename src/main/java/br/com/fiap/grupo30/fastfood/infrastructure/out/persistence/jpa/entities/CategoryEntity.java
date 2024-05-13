@@ -1,9 +1,8 @@
 package br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities;
 
+import br.com.fiap.grupo30.fastfood.application.dto.CategoryDTO;
 import jakarta.persistence.*;
 import java.time.Instant;
-
-import br.com.fiap.grupo30.fastfood.application.dto.CategoryDTO;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

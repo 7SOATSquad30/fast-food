@@ -1,11 +1,11 @@
 package br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities;
 
-import jakarta.persistence.*;
-import java.time.Instant;
-import java.util.List;
-
 import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
 import br.com.fiap.grupo30.fastfood.application.dto.OrderItemDTO;
+import jakarta.persistence.*;
+import java.time.Instant;
+import java.util.Collection;
+import java.util.LinkedList;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -23,10 +23,14 @@ public class OrderEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<OrderItemEntity> items;
+    @OneToMany(
+            mappedBy = "order",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private Collection<OrderItemEntity> items = new LinkedList<OrderItemEntity>();
 
-    @Transient private Double totalPrice;
+    @Transient private Double totalPrice = 0.0;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
@@ -39,19 +43,18 @@ public class OrderEntity {
 
     public void addProduct(ProductEntity product, Long quantity) {
         this.items.stream()
-            .filter(orderItem -> orderItem.getProduct().equals(product))
-            .findFirst()
-            .ifPresentOrElse(
-                existingItem -> existingItem.setQuantity(existingItem.getQuantity() + quantity),
-                () -> this.items.add(OrderItemEntity.create(product, quantity)));
+                .filter(orderItem -> orderItem.getProduct().equals(product))
+                .findFirst()
+                .ifPresentOrElse(
+                        existingItem ->
+                                existingItem.setQuantity(existingItem.getQuantity() + quantity),
+                        () -> this.items.add(OrderItemEntity.create(this, product, quantity)));
 
         this.recalculateTotalPrice();
     }
 
     public void removeProduct(ProductEntity product) {
-        this.items.stream()
-            .filter(orderItem -> orderItem.getProduct().equals(product))
-            .forEach(existingItem -> this.items.remove(existingItem));
+        this.items.removeIf(orderItem -> orderItem.getProduct().equals(product));
 
         this.recalculateTotalPrice();
     }
@@ -99,12 +102,12 @@ public class OrderEntity {
     }
 
     public OrderDTO toDTO() {
-        OrderDTO orderDto = new OrderDTO(
-            this.id,
-            this.status,
-            this.items.stream().map(item -> item.toDTO()).toArray(OrderItemDTO[]::new),
-            this.getTotalPrice()
-        );
+        OrderDTO orderDto =
+                new OrderDTO(
+                        this.id,
+                        this.status,
+                        this.items.stream().map(item -> item.toDTO()).toArray(OrderItemDTO[]::new),
+                        this.getTotalPrice());
         return orderDto;
     }
 }
