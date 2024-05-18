@@ -59,3 +59,9 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'br.com.fiap.grupo30.fastfood.FastfoodApplication'
+    }
+}
