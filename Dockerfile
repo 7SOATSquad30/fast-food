@@ -1,9 +1,17 @@
+# Use a base image with Java 21
 FROM eclipse-temurin:21
 
-RUN mkdir /opt/app
+# Create a directory in the container
+WORKDIR /app
 
-ADD gradle/wrapper/gradle-wrapper.jar /opt/app/gradle-wrapper.jar
+# Copy the rest of the application to the container
+COPY . .
 
+# Copy the built JAR file to the root directory
+RUN cp build/libs/fastfood-application.jar app.jar
+
+# Expose the port the application runs on
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/opt/app/gradle-wrapper.jar"]
+# Start the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
