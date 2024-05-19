@@ -6,6 +6,14 @@ plugins {
     id 'pmd'
 }
 
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'br.com.fiap.grupo30.fastfood.FastfoodApplication'
+        )
+    }
+}
+
 group = 'br.com.fiap.grupo30'
 version = '0.0.1-SNAPSHOT'
 
@@ -58,12 +66,4 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
-}
-
-jar {
-    manifest {
-        attributes(
-                'Main-Class': 'FastfoodApplication'
-        )
-    }
 }
