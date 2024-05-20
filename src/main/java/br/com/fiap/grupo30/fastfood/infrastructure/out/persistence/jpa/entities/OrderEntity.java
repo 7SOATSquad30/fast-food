@@ -71,6 +71,10 @@ public class OrderEntity {
         return OrderStatus.DRAFT.equals(this.status);
     }
 
+    public Boolean hasProducts() {
+        return !this.items.isEmpty();
+    }
+
     public void setStatus(OrderStatus status) {
         this.status = status;
     }

@@ -2,14 +2,14 @@ package br.com.fiap.grupo30.fastfood.application.services.exceptions;
 
 import java.io.Serial;
 
-public abstract class ResourceBadRequestException extends RuntimeException {
+public abstract class DomainValidationException extends ResourceBadRequestException {
     @Serial private static final long serialVersionUID = 1L;
 
-    public ResourceBadRequestException(String msg) {
+    public DomainValidationException(String msg) {
         super(msg);
     }
 
-    public ResourceBadRequestException(String msg, Throwable exception) {
+    public DomainValidationException(String msg, Throwable exception) {
         super(msg, exception);
     }
 }

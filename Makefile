@@ -1,3 +1,5 @@
+.PHONY: test build run debug lint/fix
+
 test:
 	./gradlew test
 
@@ -9,3 +11,6 @@ run:
 
 debug:
 	./gradlew bootRun --debug-jvm
+
+lint/fix:
+	./gradlew spotlessApply
