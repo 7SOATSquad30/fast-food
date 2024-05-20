@@ -1,7 +1,6 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.order;
 
 import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
-import br.com.fiap.grupo30.fastfood.application.services.exceptions.CantChangeOrderProductsAfterSubmitException;
 import br.com.fiap.grupo30.fastfood.application.services.exceptions.ResourceNotFoundException;
 import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.ProductEntity;
@@ -30,10 +29,6 @@ public class AddProductToOrderUseCase {
                 this.orderRepository
                         .findById(orderId)
                         .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
-
-        if (!order.isDraft()) {
-            throw new CantChangeOrderProductsAfterSubmitException();
-        }
 
         ProductEntity product =
                 this.productRepository

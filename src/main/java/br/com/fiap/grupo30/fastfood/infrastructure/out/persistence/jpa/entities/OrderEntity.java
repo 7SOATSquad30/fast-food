@@ -2,6 +2,8 @@ package br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities
 
 import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
 import br.com.fiap.grupo30.fastfood.application.dto.OrderItemDTO;
+import br.com.fiap.grupo30.fastfood.application.services.exceptions.CantChangeOrderProductsAfterSubmitException;
+import br.com.fiap.grupo30.fastfood.application.services.exceptions.CompositeDomainValidationException;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.Collection;
@@ -42,6 +44,10 @@ public class OrderEntity {
     private Instant deletedAt;
 
     public void addProduct(ProductEntity product, Long quantity) {
+        if (!this.isDraft()) {
+            throw new CantChangeOrderProductsAfterSubmitException();
+        }
+
         this.items.stream()
                 .filter(orderItem -> orderItem.getProduct().equals(product))
                 .findFirst()
@@ -54,6 +60,10 @@ public class OrderEntity {
     }
 
     public void removeProduct(ProductEntity product) {
+        if (!this.isDraft()) {
+            throw new CantChangeOrderProductsAfterSubmitException();
+        }
+
         this.items.removeIf(orderItem -> orderItem.getProduct().equals(product));
 
         this.recalculateTotalPrice();
@@ -67,16 +77,28 @@ public class OrderEntity {
         this.totalPrice = this.items.stream().mapToDouble(item -> item.getTotalPrice()).sum();
     }
 
-    public Boolean isDraft() {
+    private Boolean isDraft() {
         return OrderStatus.DRAFT.equals(this.status);
     }
 
-    public Boolean hasProducts() {
+    private Boolean hasProducts() {
         return !this.items.isEmpty();
     }
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public void validate() {
+        var errors = new LinkedList<String>();
+
+        if (this.status == OrderStatus.SUBMITTED && !this.hasProducts()) {
+            errors.add("Can not submit order without products");
+        }
+
+        if (!errors.isEmpty()) {
+            throw new CompositeDomainValidationException(errors);
+        }
     }
 
     @PostLoad
@@ -87,11 +109,13 @@ public class OrderEntity {
     @PrePersist
     protected void prePersist() {
         createdAt = Instant.now();
+        this.validate();
     }
 
     @PreUpdate
     protected void preUpdate() {
         updatedAt = Instant.now();
+        this.validate();
     }
 
     @PreRemove
