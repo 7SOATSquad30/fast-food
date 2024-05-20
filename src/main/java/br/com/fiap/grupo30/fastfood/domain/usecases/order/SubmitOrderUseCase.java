@@ -1,7 +1,6 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.order;
 
 import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
-import br.com.fiap.grupo30.fastfood.application.services.exceptions.CantSubmitOrderWithoutProductsException;
 import br.com.fiap.grupo30.fastfood.application.services.exceptions.ResourceNotFoundException;
 import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderStatus;
@@ -24,10 +23,6 @@ public class SubmitOrderUseCase {
                 this.orderRepository
                         .findById(orderId)
                         .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
-
-        if (!order.hasProducts()) {
-            throw new CantSubmitOrderWithoutProductsException();
-        }
 
         order.setStatus(OrderStatus.SUBMITTED);
         return this.orderRepository.save(order).toDTO();
