@@ -4,7 +4,7 @@ import br.com.fiap.grupo30.fastfood.application.dto.CustomerDTO;
 import br.com.fiap.grupo30.fastfood.application.mapper.impl.CustomerDTOMapper;
 import br.com.fiap.grupo30.fastfood.application.mapper.impl.CustomerMapper;
 import br.com.fiap.grupo30.fastfood.application.services.CustomerService;
-import br.com.fiap.grupo30.fastfood.application.services.exceptions.ResourceBadRequestException;
+import br.com.fiap.grupo30.fastfood.application.services.exceptions.InvalidCpfException;
 import br.com.fiap.grupo30.fastfood.application.services.exceptions.ResourceConflictException;
 import br.com.fiap.grupo30.fastfood.application.services.exceptions.ResourceNotFoundException;
 import br.com.fiap.grupo30.fastfood.domain.vo.CPF;
@@ -45,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDTO insert(CustomerDTO dto) {
         String cpfDTO = dto.getCpf();
         if (!CPF.isValid(cpfDTO)) {
-            throw new ResourceBadRequestException("Invalid CPF: " + cpfDTO);
+            throw new InvalidCpfException(cpfDTO);
         }
         try {
             dto.setCpf(CPF.removeNonDigits(cpfDTO));

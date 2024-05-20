@@ -2,10 +2,11 @@ package br.com.fiap.grupo30.fastfood.adapters.in.rest;
 
 import br.com.fiap.grupo30.fastfood.application.dto.AddOrderProductRequest;
 import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
-import br.com.fiap.grupo30.fastfood.application.services.OrderService;
-import br.com.fiap.grupo30.fastfood.domain.commands.AddProductToOrderCommand;
-import br.com.fiap.grupo30.fastfood.domain.commands.RemoveProductFromOrderCommand;
-import br.com.fiap.grupo30.fastfood.domain.commands.SubmitOrderCommand;
+import br.com.fiap.grupo30.fastfood.domain.usecases.order.AddProductToOrderUseCase;
+import br.com.fiap.grupo30.fastfood.domain.usecases.order.GetOrderUseCase;
+import br.com.fiap.grupo30.fastfood.domain.usecases.order.RemoveProductFromOrderUseCase;
+import br.com.fiap.grupo30.fastfood.domain.usecases.order.StartNewOrderUseCase;
+import br.com.fiap.grupo30.fastfood.domain.usecases.order.SubmitOrderUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
@@ -19,11 +20,24 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @Tag(name = "Orders Resource", description = "RESTful API for managing orders.")
 public class OrderResource {
 
-    private final OrderService orderService;
+    private final StartNewOrderUseCase startNewOrderUseCase;
+    private final AddProductToOrderUseCase addProductToOrderUseCase;
+    private final RemoveProductFromOrderUseCase removeProductFromOrderUseCase;
+    private final GetOrderUseCase getOrderUseCase;
+    private final SubmitOrderUseCase submitOrderUseCase;
 
     @Autowired
-    public OrderResource(OrderService orderService) {
-        this.orderService = orderService;
+    public OrderResource(
+            StartNewOrderUseCase startNewOrderUseCase,
+            AddProductToOrderUseCase addProductToOrderUseCase,
+            RemoveProductFromOrderUseCase removeProductFromOrderUseCase,
+            GetOrderUseCase getOrderUseCase,
+            SubmitOrderUseCase submitOrderUseCase) {
+        this.startNewOrderUseCase = startNewOrderUseCase;
+        this.addProductToOrderUseCase = addProductToOrderUseCase;
+        this.removeProductFromOrderUseCase = removeProductFromOrderUseCase;
+        this.getOrderUseCase = getOrderUseCase;
+        this.submitOrderUseCase = submitOrderUseCase;
     }
 
     @GetMapping(value = "/{orderId}")
@@ -31,7 +45,7 @@ public class OrderResource {
             summary = "Get an order by ID",
             description = "Retrieve a specific order based on its ID")
     public ResponseEntity<OrderDTO> findById(@PathVariable Long orderId) {
-        OrderDTO order = orderService.getOrder(orderId);
+        OrderDTO order = this.getOrderUseCase.execute(orderId);
         return ResponseEntity.ok().body(order);
     }
 
@@ -40,7 +54,7 @@ public class OrderResource {
             summary = "Create a new order",
             description = "Create a new order and return the new order's data")
     public ResponseEntity<OrderDTO> startNewOrder() {
-        OrderDTO order = orderService.startNewOrder();
+        OrderDTO order = this.startNewOrderUseCase.execute();
         URI uri =
                 ServletUriComponentsBuilder.fromCurrentRequest()
                         .path("/{orderId}")
@@ -53,12 +67,9 @@ public class OrderResource {
     @Operation(summary = "Add a product to an order", description = "Adds a product to an order")
     public ResponseEntity<OrderDTO> addProduct(
             @PathVariable Long orderId, @RequestBody AddOrderProductRequest request) {
-        var command = new AddProductToOrderCommand();
-        command.setOrderId(orderId);
-        command.setProductId(request.getProductId());
-        command.setProductQuantity(request.getQuantity());
-
-        OrderDTO order = orderService.addProductToOrder(command);
+        OrderDTO order =
+                this.addProductToOrderUseCase.execute(
+                        orderId, request.getProductId(), request.getQuantity());
         return ResponseEntity.ok().body(order);
     }
 
@@ -68,11 +79,7 @@ public class OrderResource {
             description = "Removes a product from an order")
     public ResponseEntity<OrderDTO> removeProduct(
             @PathVariable Long orderId, @PathVariable Long productId) {
-        var command = new RemoveProductFromOrderCommand();
-        command.setOrderId(orderId);
-        command.setProductId(productId);
-
-        OrderDTO order = orderService.removeProductFromOrder(command);
+        OrderDTO order = this.removeProductFromOrderUseCase.execute(orderId, productId);
         return ResponseEntity.ok().body(order);
     }
 
@@ -81,10 +88,7 @@ public class OrderResource {
             summary = "Submit an order for preparation",
             description = "Submits an order for preparation and return the order's data")
     public ResponseEntity<OrderDTO> submitOrder(@PathVariable Long orderId) {
-        var command = new SubmitOrderCommand();
-        command.setOrderId(orderId);
-
-        OrderDTO order = orderService.submitOrder(command);
+        OrderDTO order = this.submitOrderUseCase.execute(orderId);
         return ResponseEntity.ok().body(order);
     }
 }
