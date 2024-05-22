@@ -64,19 +64,6 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
-    @ExceptionHandler(UserCantChangeOrderAfterSubmitException.class)
-    public ResponseEntity<StandardError> userCantChangeOrderAfterSubmit(
-            UserCantChangeOrderAfterSubmitException e, HttpServletRequest request) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        StandardError err = new StandardError();
-        err.setTimestamp(Instant.now());
-        err.setStatus(status.value());
-        err.setError("UserCantChangeOrderAfterSubmit exception");
-        err.setMessage(e.getMessage());
-        err.setPath(request.getRequestURI());
-        return ResponseEntity.status(status).body(err);
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationError> validation(
             MethodArgumentNotValidException e, HttpServletRequest request) {
