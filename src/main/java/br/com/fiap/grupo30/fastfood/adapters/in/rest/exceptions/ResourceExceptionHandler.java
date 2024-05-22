@@ -1,10 +1,6 @@
 package br.com.fiap.grupo30.fastfood.adapters.in.rest.exceptions;
 
-import br.com.fiap.grupo30.fastfood.application.services.exceptions.DatabaseException;
-import br.com.fiap.grupo30.fastfood.application.services.exceptions.ResourceBadRequestException;
-import br.com.fiap.grupo30.fastfood.application.services.exceptions.ResourceConflictException;
-import br.com.fiap.grupo30.fastfood.application.services.exceptions.ResourceNotFoundException;
-import br.com.fiap.grupo30.fastfood.application.services.exceptions.UserCantChangeOrderAfterSubmitException;
+import br.com.fiap.grupo30.fastfood.application.services.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import org.springframework.http.HttpStatus;

@@ -4,6 +4,7 @@ import br.com.fiap.grupo30.fastfood.application.dto.CustomerDTO;
 import br.com.fiap.grupo30.fastfood.application.useCases.CustomerUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class CustomerResource {
     @Operation(
             summary = "Create a new customer",
             description = "Create a new customer and return the created customer's data")
-    public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO dto) {
+    public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid CustomerDTO dto) {
         CustomerDTO dtoCreated = customerUseCase.createCustomer(dto);
         URI uri =
                 ServletUriComponentsBuilder.fromCurrentRequest()
