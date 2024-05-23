@@ -5,6 +5,7 @@ services:
     image: postgres
     environment:
       POSTGRES_URL: "jdbc:postgresql://localhost:5432/fastfood"
+      POSTGRES_DB: "fastfood"
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "123456"
     ports:
@@ -15,8 +16,16 @@ services:
     command: ["postgres", "-c", "log_statement=all"]
     networks:
       - postgres-compose-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   api:
     build: .
+    environment:
+      SPRING_PROFILES_ACTIVE: "dev"
     ports:
       - "8080:8080"
     depends_on:
