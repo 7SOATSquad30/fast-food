@@ -1,5 +1,5 @@
 # Use a base image with Java 21
-FROM eclipse-temurin:21
+FROM amazoncorretto:21.0.3-al2023-headless
 
 # Create a directory in the container
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Copy the built JAR file to the root directory
-RUN cp build/libs/fastfood-application.jar app.jar
+RUN cp build/libs/fastfood-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose the port the application runs on
 EXPOSE 8080

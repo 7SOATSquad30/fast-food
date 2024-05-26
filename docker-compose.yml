@@ -1,10 +1,11 @@
 version: '3.9'
 
 services:
-  local-postgres-compose:
+  local-postgres:
     image: postgres
     environment:
       POSTGRES_URL: "jdbc:postgresql://localhost:5432/fastfood"
+      POSTGRES_DB: "fastfood"
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "123456"
     ports:
@@ -12,18 +13,20 @@ services:
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./postgres-data:/var/lib/postgresql/data
-    command: ["postgres", "-c", "log_statement=all"]
     networks:
-      - postgres-compose-network
+      - postgres-network
+
   api:
+    depends_on:
+      - local-postgres
     build: .
+    environment:
+      SPRING_PROFILES_ACTIVE: "dev"
     ports:
       - "8080:8080"
-    depends_on:
-      - local-postgres-compose
     networks:
-      - postgres-compose-network
+      - postgres-network
 
 networks:
-  postgres-compose-network:
+  postgres-network:
     driver: bridge
