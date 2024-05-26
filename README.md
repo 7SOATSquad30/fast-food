@@ -41,5 +41,15 @@ A aplicação inclui um `Dockerfile` para construir uma imagem Docker da aplica�
 
 Para construir a imagem Docker da aplicação, execute o seguinte comando no diretório raiz do projeto:
 
-Para executar a aplicação e o banco de dados PostgreSQL em containers Docker, execute o seguinte comando no diretório raiz do projeto:
+Para executar a aplicação e o banco de dados PostgreSQL em containers Docker, execute o seguinte comando no diretório raiz do projeto, nesta sequência:
+
+
+./gradleW build
+
+docker compose build
+
 docker-compose up
+
+Caso queira parar a execução dos containers, execute o seguinte comando no diretório raiz do projeto:
+
+docker compose down --remove-orphans

@@ -1,5 +1,5 @@
 # Use a base image with Java 21
-FROM eclipse-temurin:21
+FROM amazoncorretto:21.0.3-al2023-headless
 
 # Create a directory in the container
 WORKDIR /app

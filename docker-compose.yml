@@ -13,7 +13,6 @@ services:
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./postgres-data:/var/lib/postgresql/data
-    command: postgres -c port=5432
     networks:
       - postgres-network
 
