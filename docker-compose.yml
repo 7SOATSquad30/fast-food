@@ -1,7 +1,7 @@
 version: '3.9'
 
 services:
-  local-postgres:
+  database:
     image: postgres
     environment:
       POSTGRES_URL: "jdbc:postgresql://localhost:5432/fastfood"
@@ -18,7 +18,7 @@ services:
 
   api:
     depends_on:
-      - local-postgres
+      - database
     build: .
     environment:
       SPRING_PROFILES_ACTIVE: "dev"
