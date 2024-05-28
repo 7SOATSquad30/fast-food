@@ -35,7 +35,7 @@ make run
 Para parar a aplicação, basta apertar CTRL+C no terminal (SIGINT)
 
 ### Derrubar a infraestrutura
-```
+```sh
 make down
 ```
 
