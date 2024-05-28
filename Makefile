@@ -4,7 +4,7 @@ infrastructure/up:
 	docker-compose up -d database
 
 down:
-	docker-compose down --remove-orphans database
+	docker-compose down --remove-orphans
 
 test:
 	./gradlew test
