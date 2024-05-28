@@ -9,10 +9,9 @@ import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.
 import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.repositories.CustomerRepository;
 import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.repositories.OrderRepository;
 import jakarta.transaction.Transactional;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class StartNewOrderUseCase {
@@ -22,20 +21,26 @@ public class StartNewOrderUseCase {
     public final CustomerMapper customerMapper;
 
     @Autowired
-    public StartNewOrderUseCase(OrderRepository orderRepository, CustomerRepository customerRepository, CustomerMapper customerMapper) {
+    public StartNewOrderUseCase(
+            OrderRepository orderRepository,
+            CustomerRepository customerRepository,
+            CustomerMapper customerMapper) {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
     }
 
     @Transactional
-    public OrderDTO execute(CustomerDTO customerDTO) {
+    public OrderDTO execute(CustomerDTO dto) {
+        CustomerDTO customerDTO = dto;
         if (customerDTO == null) {
             customerDTO = findOrCreateAnonymousCustomer();
         }
 
-        CustomerEntity customerEntity = customerRepository.findById(customerDTO.getId())
-            .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        CustomerEntity customerEntity =
+                customerRepository
+                        .findById(customerDTO.getId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
         OrderEntity newOrder = OrderEntity.create();
         newOrder.setCustomer(customerEntity);
@@ -46,7 +51,8 @@ public class StartNewOrderUseCase {
 
     private CustomerDTO findOrCreateAnonymousCustomer() {
         String anonymousCpf = "970.410.008-69";
-        Optional<CustomerEntity> anonymousCustomer = customerRepository.findCustomerByCpf(anonymousCpf);
+        Optional<CustomerEntity> anonymousCustomer =
+                customerRepository.findCustomerByCpf(anonymousCpf);
 
         if (anonymousCustomer.isPresent()) {
             return new CustomerDTO(customerMapper.mapFrom(anonymousCustomer.get()));

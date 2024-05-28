@@ -2,14 +2,13 @@ package br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities
 
 import br.com.fiap.grupo30.fastfood.application.dto.CustomerDTO;
 import jakarta.persistence.*;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -76,12 +75,7 @@ public class CustomerEntity {
     }
 
     public CustomerDTO toDTO() {
-        CustomerDTO customerDto =
-            new CustomerDTO(
-                this.id,
-                this.name,
-                this.cpf,
-                this.email);
+        CustomerDTO customerDto = new CustomerDTO(this.id, this.name, this.cpf, this.email);
         return customerDto;
     }
 }

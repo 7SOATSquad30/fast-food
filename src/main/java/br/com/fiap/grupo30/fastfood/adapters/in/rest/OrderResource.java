@@ -74,16 +74,18 @@ public class OrderResource {
     @Operation(
             summary = "Create a new order",
             description = "Create a new order and return the new order's data")
-    public ResponseEntity<OrderDTO> startNewOrder(@RequestBody(required = false) AddCustomerCpfRequest request) {
+    public ResponseEntity<OrderDTO> startNewOrder(
+            @RequestBody(required = false) AddCustomerCpfRequest request) {
         CustomerDTO customerDTO = null;
         if (request != null && request.getCpf() != null && !request.getCpf().isEmpty()) {
             customerDTO = findCustomerByCpfUseCase.execute(request.getCpf());
         }
         OrderDTO order = this.startNewOrderUseCase.execute(customerDTO);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-            .path("/{orderId}")
-            .buildAndExpand(order.getOrderId())
-            .toUri();
+        URI uri =
+                ServletUriComponentsBuilder.fromCurrentRequest()
+                        .path("/{orderId}")
+                        .buildAndExpand(order.getOrderId())
+                        .toUri();
         return ResponseEntity.created(uri).body(order);
     }
 

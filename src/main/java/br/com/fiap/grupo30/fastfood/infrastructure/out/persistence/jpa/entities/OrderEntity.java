@@ -5,14 +5,13 @@ import br.com.fiap.grupo30.fastfood.application.dto.OrderItemDTO;
 import br.com.fiap.grupo30.fastfood.application.exceptions.CantChangeOrderProductsAfterSubmitException;
 import br.com.fiap.grupo30.fastfood.application.exceptions.CompositeDomainValidationException;
 import jakarta.persistence.*;
+import java.time.Instant;
+import java.util.Collection;
+import java.util.LinkedList;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.Instant;
-import java.util.Collection;
-import java.util.LinkedList;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,14 +32,13 @@ public class OrderEntity {
     private CustomerEntity customer;
 
     @OneToMany(
-        mappedBy = "order",
-        fetch = FetchType.EAGER,
-        cascade = CascadeType.ALL,
-        orphanRemoval = true)
+            mappedBy = "order",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private Collection<OrderItemEntity> items = new LinkedList<OrderItemEntity>();
 
-    @Transient
-    private Double totalPrice = 0.0;
+    @Transient private Double totalPrice = 0.0;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
@@ -57,12 +55,12 @@ public class OrderEntity {
         }
 
         this.items.stream()
-            .filter(orderItem -> orderItem.getProduct().equals(product))
-            .findFirst()
-            .ifPresentOrElse(
-                existingItem ->
-                    existingItem.setQuantity(existingItem.getQuantity() + quantity),
-                () -> this.items.add(OrderItemEntity.create(this, product, quantity)));
+                .filter(orderItem -> orderItem.getProduct().equals(product))
+                .findFirst()
+                .ifPresentOrElse(
+                        existingItem ->
+                                existingItem.setQuantity(existingItem.getQuantity() + quantity),
+                        () -> this.items.add(OrderItemEntity.create(this, product, quantity)));
 
         this.recalculateTotalPrice();
     }
@@ -143,12 +141,12 @@ public class OrderEntity {
 
     public OrderDTO toDTO() {
         OrderDTO orderDto =
-            new OrderDTO(
-                this.id,
-                this.status,
-                this.items.stream().map(item -> item.toDTO()).toArray(OrderItemDTO[]::new),
-                this.getTotalPrice(),
-                this.customer.toDTO());
+                new OrderDTO(
+                        this.id,
+                        this.status,
+                        this.items.stream().map(item -> item.toDTO()).toArray(OrderItemDTO[]::new),
+                        this.getTotalPrice(),
+                        this.customer.toDTO());
         return orderDto;
     }
 }
