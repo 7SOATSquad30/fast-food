@@ -1,7 +1,10 @@
 package br.com.fiap.grupo30.fastfood.adapters.in.rest;
 
+import br.com.fiap.grupo30.fastfood.application.dto.AddCustomerCpfRequest;
 import br.com.fiap.grupo30.fastfood.application.dto.AddOrderProductRequest;
+import br.com.fiap.grupo30.fastfood.application.dto.CustomerDTO;
 import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
+import br.com.fiap.grupo30.fastfood.domain.usecases.customer.FindCustomerByCpfUseCase;
 import br.com.fiap.grupo30.fastfood.domain.usecases.order.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,6 +28,7 @@ public class OrderResource {
     private final StartPreparingOrderUseCase startPreparingOrderUseCase;
     private final FinishPreparingOrderUseCase finishPreparingOrderUseCase;
     private final DeliverOrderUseCase deliverOrderUseCase;
+    private final FindCustomerByCpfUseCase findCustomerByCpfUseCase;
 
     @Autowired
     public OrderResource(
@@ -36,7 +40,8 @@ public class OrderResource {
             ListOrdersUseCase listAllOrdersUseCase,
             StartPreparingOrderUseCase startPreparingOrderUseCase,
             FinishPreparingOrderUseCase finishPreparingOrderUseCase,
-            DeliverOrderUseCase deliverOrderUseCase) {
+            DeliverOrderUseCase deliverOrderUseCase,
+            FindCustomerByCpfUseCase findCustomerByCpfUseCase) {
         this.startNewOrderUseCase = startNewOrderUseCase;
         this.addProductToOrderUseCase = addProductToOrderUseCase;
         this.removeProductFromOrderUseCase = removeProductFromOrderUseCase;
@@ -46,6 +51,7 @@ public class OrderResource {
         this.startPreparingOrderUseCase = startPreparingOrderUseCase;
         this.finishPreparingOrderUseCase = finishPreparingOrderUseCase;
         this.deliverOrderUseCase = deliverOrderUseCase;
+        this.findCustomerByCpfUseCase = findCustomerByCpfUseCase;
     }
 
     @GetMapping(value = "/")
@@ -68,13 +74,16 @@ public class OrderResource {
     @Operation(
             summary = "Create a new order",
             description = "Create a new order and return the new order's data")
-    public ResponseEntity<OrderDTO> startNewOrder() {
-        OrderDTO order = this.startNewOrderUseCase.execute();
-        URI uri =
-                ServletUriComponentsBuilder.fromCurrentRequest()
-                        .path("/{orderId}")
-                        .buildAndExpand(order.getOrderId())
-                        .toUri();
+    public ResponseEntity<OrderDTO> startNewOrder(@RequestBody(required = false) AddCustomerCpfRequest request) {
+        CustomerDTO customerDTO = null;
+        if (request != null && request.getCpf() != null && !request.getCpf().isEmpty()) {
+            customerDTO = findCustomerByCpfUseCase.execute(request.getCpf());
+        }
+        OrderDTO order = this.startNewOrderUseCase.execute(customerDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{orderId}")
+            .buildAndExpand(order.getOrderId())
+            .toUri();
         return ResponseEntity.created(uri).body(order);
     }
 

@@ -1,5 +1,7 @@
 package br.com.fiap.grupo30.fastfood.application.dto;
 
+import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderEntity;
+import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderItemEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,4 +13,5 @@ public class OrderDTO {
     private OrderStatus status;
     private OrderItemDTO[] items;
     private Double totalPrice;
+    private CustomerDTO customer;
 }

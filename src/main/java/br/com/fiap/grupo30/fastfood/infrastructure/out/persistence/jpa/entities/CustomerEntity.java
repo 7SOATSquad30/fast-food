@@ -1,11 +1,15 @@
 package br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities;
 
+import br.com.fiap.grupo30.fastfood.application.dto.CustomerDTO;
 import jakarta.persistence.*;
-import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -27,6 +31,9 @@ public class CustomerEntity {
 
     @Column(nullable = false)
     private String email;
+
+    @OneToMany(mappedBy = "customer")
+    private List<OrderEntity> orders = new ArrayList<>();
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
@@ -66,5 +73,15 @@ public class CustomerEntity {
     @PreRemove
     public void preRemove() {
         deletedAt = Instant.now();
+    }
+
+    public CustomerDTO toDTO() {
+        CustomerDTO customerDto =
+            new CustomerDTO(
+                this.id,
+                this.name,
+                this.cpf,
+                this.email);
+        return customerDto;
     }
 }
