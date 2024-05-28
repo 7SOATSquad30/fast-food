@@ -10,8 +10,10 @@ import java.util.Collection;
 import java.util.LinkedList;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
 @Entity
@@ -24,6 +26,10 @@ public class OrderEntity {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "customer_id")
+    private CustomerEntity customer;
 
     @OneToMany(
             mappedBy = "order",
@@ -129,13 +135,18 @@ public class OrderEntity {
         return order;
     }
 
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
+    }
+
     public OrderDTO toDTO() {
         OrderDTO orderDto =
                 new OrderDTO(
                         this.id,
                         this.status,
                         this.items.stream().map(item -> item.toDTO()).toArray(OrderItemDTO[]::new),
-                        this.getTotalPrice());
+                        this.getTotalPrice(),
+                        this.customer.toDTO());
         return orderDto;
     }
 }

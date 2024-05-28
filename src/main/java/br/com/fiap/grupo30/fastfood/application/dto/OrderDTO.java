@@ -11,4 +11,5 @@ public class OrderDTO {
     private OrderStatus status;
     private OrderItemDTO[] items;
     private Double totalPrice;
+    private CustomerDTO customer;
 }
