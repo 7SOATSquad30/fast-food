@@ -45,9 +45,7 @@ public class OrderResource {
     }
 
     @GetMapping(value = "/")
-    @Operation(
-            summary = "List all orders",
-            description = "Return all orders")
+    @Operation(summary = "List all orders", description = "Return all orders")
     public ResponseEntity<OrderDTO[]> listAllOrders() {
         OrderDTO[] orders = this.listAllOrdersUseCase.execute();
         return ResponseEntity.ok().body(orders);
