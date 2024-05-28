@@ -9,6 +9,7 @@ import br.com.fiap.grupo30.fastfood.domain.usecases.order.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,11 +55,16 @@ public class OrderResource {
         this.findCustomerByCpfUseCase = findCustomerByCpfUseCase;
     }
 
-    @GetMapping(value = "/")
-    @Operation(summary = "List all orders", description = "Return all orders")
-    public ResponseEntity<OrderDTO[]> listAllOrders() {
-        OrderDTO[] orders = this.listAllOrdersUseCase.execute();
-        return ResponseEntity.ok().body(orders);
+    @GetMapping
+    @Operation(
+            summary = "Get all orders",
+            description =
+                    "Get a list of all registered orders sorted by date and status or by status"
+                            + " sorted by date via RequestParam. i.e., ?status=")
+    public ResponseEntity<List<OrderDTO>> findOrdersByStatus(
+            @RequestParam(value = "status", required = false) String status) {
+        List<OrderDTO> list = listAllOrdersUseCase.execute(status);
+        return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{orderId}")
