@@ -14,5 +14,4 @@ public class GetProductUseCase {
     public ProductDTO findProductById(Long id) {
         return productService.findById(id);
     }
-
 }

@@ -1,9 +1,8 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.customer;
 
-import org.springframework.stereotype.Component;
-
 import br.com.fiap.grupo30.fastfood.application.dto.CustomerDTO;
 import br.com.fiap.grupo30.fastfood.application.services.CustomerService;
+import org.springframework.stereotype.Component;
 
 @Component
 public class RegisterNewCustomerUseCase {
@@ -17,5 +16,4 @@ public class RegisterNewCustomerUseCase {
     public CustomerDTO execute(CustomerDTO dto) {
         return customerService.insert(dto);
     }
-
 }

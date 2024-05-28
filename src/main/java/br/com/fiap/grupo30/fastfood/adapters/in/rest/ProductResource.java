@@ -25,8 +25,8 @@ public class ProductResource {
 
     @Autowired
     public ProductResource(
-        ListProductsByCategoryUseCase listProductsByCategoryUseCase,
-        GetProductUseCase getProductUseCase) {
+            ListProductsByCategoryUseCase listProductsByCategoryUseCase,
+            GetProductUseCase getProductUseCase) {
 
         this.listProductsByCategoryUseCase = listProductsByCategoryUseCase;
         this.getProductUseCase = getProductUseCase;

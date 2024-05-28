@@ -23,7 +23,9 @@ public class CustomerResource {
     private final RegisterNewCustomerUseCase registerNewCustomerUseCase;
 
     @Autowired
-    public CustomerResource(FindCustomerByCpfUseCase findCustomerByCpfUseCase, RegisterNewCustomerUseCase registerNewCustomerUseCase) {
+    public CustomerResource(
+            FindCustomerByCpfUseCase findCustomerByCpfUseCase,
+            RegisterNewCustomerUseCase registerNewCustomerUseCase) {
         this.findCustomerByCpfUseCase = findCustomerByCpfUseCase;
         this.registerNewCustomerUseCase = registerNewCustomerUseCase;
     }

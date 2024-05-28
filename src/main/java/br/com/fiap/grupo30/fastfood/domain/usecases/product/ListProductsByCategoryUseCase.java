@@ -1,9 +1,8 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.product;
 
-import java.util.List;
-
 import br.com.fiap.grupo30.fastfood.application.dto.ProductDTO;
 import br.com.fiap.grupo30.fastfood.application.services.ProductService;
+import java.util.List;
 
 public class ListProductsByCategoryUseCase {
 

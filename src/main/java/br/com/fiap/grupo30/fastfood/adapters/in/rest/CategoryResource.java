@@ -1,7 +1,6 @@
 package br.com.fiap.grupo30.fastfood.adapters.in.rest;
 
 import br.com.fiap.grupo30.fastfood.application.dto.CategoryDTO;
-import br.com.fiap.grupo30.fastfood.application.useCases.CategoryUseCase;
 import br.com.fiap.grupo30.fastfood.domain.usecases.product.ListAllCategoriesInMenuUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
