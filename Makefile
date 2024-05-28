@@ -1,4 +1,10 @@
-.PHONY: test build run debug lint/fix
+.PHONY: test build run debug lint/fix infrastructure/up
+
+infrastructure/up:
+	docker-compose up -d database
+
+down:
+	docker-compose down --remove-orphans database
 
 test:
 	./gradlew test
@@ -7,7 +13,7 @@ build:
 	./gradlew build
 
 run:
-	./gradlew bootRun
+	docker-compose up api
 
 debug:
 	./gradlew bootRun --debug-jvm

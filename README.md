@@ -2,21 +2,42 @@
 
 FastFood é uma aplicação de gerenciamento de pedidos de fast food. A aplicação foi desenvolvida usando Java, Spring Boot, Gradle e SQL.
 
+## Documentação
+
+### Modelo do Domínio - Event Storm
+
+O modelo do domínio é mantido e atualizado aqui:
+https://miro.com/app/board/uXjVKWnjhHY=/?share_link_id=867288089876
+
 ## Requisitos
 
 - Java JDK 21
 - Gradle
-- PostgreSQL
+- Docker & Docker Compose
+- Make
 
 ## Como executar a aplicação
 
-### Construir a aplicação
+### Subindo a infraestrutura
+```sh
+make infrastucture/up
+```
 
-Para construir a aplicação, execute o seguinte comando no diretório raiz do projeto:
+### Build
+```sh
+make build
+```
 
-### Executar a aplicação
+### Executando a aplicação
+```sh
+make run
+```
+Para parar a aplicação, basta apertar CTRL+C no terminal (SIGINT)
 
-Para executar a aplicação, execute o seguinte comando no diretório raiz do projeto:
+### Derrubar a infraestrutura
+```
+make down
+```
 
 ## Estrutura do banco de dados
 
@@ -38,18 +59,3 @@ A aplicação inclui um script SQL para importar dados de exemplo para o banco d
 ## Docker
 
 A aplicação inclui um `Dockerfile` para construir uma imagem Docker da aplicação, e um arquivo `docker-compose.yml` para executar a aplicação e o banco de dados PostgreSQL em containers Docker.
-
-Para construir a imagem Docker da aplicação, execute o seguinte comando no diretório raiz do projeto:
-
-Para executar a aplicação e o banco de dados PostgreSQL em containers Docker, execute o seguinte comando no diretório raiz do projeto, nesta sequência:
-
-
-./gradleW build
-
-docker compose build
-
-docker-compose up
-
-Caso queira parar a execução dos containers, execute o seguinte comando no diretório raiz do projeto:
-
-docker compose down --remove-orphans
