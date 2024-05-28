@@ -1,6 +1,6 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.product;
 
-import br.com.fiap.grupo30.fastfood.application.services.ProductService;
+import br.com.fiap.grupo30.fastfood.domain.services.ProductService;
 import org.springframework.stereotype.Component;
 
 @Component

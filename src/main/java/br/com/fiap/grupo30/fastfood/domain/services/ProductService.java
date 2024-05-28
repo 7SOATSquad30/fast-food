@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.application.services;
+package br.com.fiap.grupo30.fastfood.domain.services;
 
 import br.com.fiap.grupo30.fastfood.application.dto.ProductDTO;
 import java.util.List;

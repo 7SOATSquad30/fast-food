@@ -1,6 +1,6 @@
 package br.com.fiap.grupo30.fastfood.adapters.in.rest.exceptions;
 
-import br.com.fiap.grupo30.fastfood.application.services.exceptions.*;
+import br.com.fiap.grupo30.fastfood.application.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import org.springframework.http.HttpStatus;
