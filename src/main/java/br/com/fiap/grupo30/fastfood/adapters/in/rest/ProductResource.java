@@ -1,7 +1,11 @@
 package br.com.fiap.grupo30.fastfood.adapters.in.rest;
 
 import br.com.fiap.grupo30.fastfood.application.dto.ProductDTO;
-import br.com.fiap.grupo30.fastfood.application.useCases.ProductUseCase;
+import br.com.fiap.grupo30.fastfood.domain.usecases.product.CreateProductUseCase;
+import br.com.fiap.grupo30.fastfood.domain.usecases.product.DeleteProductUseCase;
+import br.com.fiap.grupo30.fastfood.domain.usecases.product.GetProductUseCase;
+import br.com.fiap.grupo30.fastfood.domain.usecases.product.ListProductsByCategoryUseCase;
+import br.com.fiap.grupo30.fastfood.domain.usecases.product.UpdateProductUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -19,11 +23,25 @@ public class ProductResource {
 
     private static final String PATH_VARIABLE_ID = "/{id}";
 
-    private final ProductUseCase productUseCase;
+    private final ListProductsByCategoryUseCase listProductsByCategoryUseCase;
+    private final GetProductUseCase getProductUseCase;
+    private final CreateProductUseCase createProductUseCase;
+    private final UpdateProductUseCase updateProductUseCase;
+    private final DeleteProductUseCase deleteProductUseCase;
 
     @Autowired
-    public ProductResource(ProductUseCase productUseCase) {
-        this.productUseCase = productUseCase;
+    public ProductResource(
+            ListProductsByCategoryUseCase listProductsByCategoryUseCase,
+            GetProductUseCase getProductUseCase,
+            CreateProductUseCase createProductUseCase,
+            UpdateProductUseCase updateProductUseCase,
+            DeleteProductUseCase deleteProductUseCase) {
+
+        this.listProductsByCategoryUseCase = listProductsByCategoryUseCase;
+        this.getProductUseCase = getProductUseCase;
+        this.createProductUseCase = createProductUseCase;
+        this.updateProductUseCase = updateProductUseCase;
+        this.deleteProductUseCase = deleteProductUseCase;
     }
 
     @GetMapping
@@ -34,7 +52,7 @@ public class ProductResource {
                             + "via RequestParam. i.e., ?categoryId=1")
     public ResponseEntity<List<ProductDTO>> findProductsByCategoryId(
             @RequestParam(value = "categoryId", defaultValue = "0") Long categoryId) {
-        List<ProductDTO> list = productUseCase.findProductsByCategoryId(categoryId);
+        List<ProductDTO> list = this.listProductsByCategoryUseCase.execute(categoryId);
         return ResponseEntity.ok().body(list);
     }
 
@@ -43,7 +61,7 @@ public class ProductResource {
             summary = "Get a product by ID",
             description = "Retrieve a specific product based on its ID")
     public ResponseEntity<ProductDTO> findProductById(@PathVariable Long id) {
-        ProductDTO dto = productUseCase.findProductById(id);
+        ProductDTO dto = this.getProductUseCase.execute(id);
         return ResponseEntity.ok().body(dto);
     }
 
@@ -52,7 +70,7 @@ public class ProductResource {
             summary = "Create a new product",
             description = "Create a new product and return the created product's data")
     public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid ProductDTO dto) {
-        ProductDTO dtoCreated = productUseCase.createProduct(dto);
+        ProductDTO dtoCreated = this.createProductUseCase.execute(dto);
         URI uri =
                 ServletUriComponentsBuilder.fromCurrentRequest()
                         .path(PATH_VARIABLE_ID)
@@ -67,7 +85,7 @@ public class ProductResource {
             description = "Update the data of an existing product based on its ID")
     public ResponseEntity<ProductDTO> updateProduct(
             @PathVariable Long id, @RequestBody @Valid ProductDTO dto) {
-        ProductDTO dtoUpdated = productUseCase.updateProduct(id, dto);
+        ProductDTO dtoUpdated = this.updateProductUseCase.execute(id, dto);
         return ResponseEntity.ok().body(dtoUpdated);
     }
 
@@ -76,7 +94,7 @@ public class ProductResource {
             summary = "Delete a product",
             description = "Delete an existing product based on its ID")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        productUseCase.deleteProduct(id);
+        this.deleteProductUseCase.execute(id);
         return ResponseEntity.noContent().build();
     }
 }
