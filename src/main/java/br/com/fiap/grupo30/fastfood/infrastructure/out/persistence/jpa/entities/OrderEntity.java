@@ -2,8 +2,8 @@ package br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities
 
 import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
 import br.com.fiap.grupo30.fastfood.application.dto.OrderItemDTO;
-import br.com.fiap.grupo30.fastfood.application.services.exceptions.CantChangeOrderProductsAfterSubmitException;
-import br.com.fiap.grupo30.fastfood.application.services.exceptions.CompositeDomainValidationException;
+import br.com.fiap.grupo30.fastfood.application.exceptions.CantChangeOrderProductsAfterSubmitException;
+import br.com.fiap.grupo30.fastfood.application.exceptions.CompositeDomainValidationException;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.Collection;

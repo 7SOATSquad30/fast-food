@@ -1,11 +1,11 @@
-package br.com.fiap.grupo30.fastfood.application.services.impl;
+package br.com.fiap.grupo30.fastfood.domain.services.impl;
 
 import br.com.fiap.grupo30.fastfood.application.dto.ProductDTO;
+import br.com.fiap.grupo30.fastfood.application.exceptions.DatabaseException;
+import br.com.fiap.grupo30.fastfood.application.exceptions.ResourceNotFoundException;
 import br.com.fiap.grupo30.fastfood.application.mapper.impl.ProductDTOMapper;
 import br.com.fiap.grupo30.fastfood.application.mapper.impl.ProductMapper;
-import br.com.fiap.grupo30.fastfood.application.services.ProductService;
-import br.com.fiap.grupo30.fastfood.application.services.exceptions.DatabaseException;
-import br.com.fiap.grupo30.fastfood.application.services.exceptions.ResourceNotFoundException;
+import br.com.fiap.grupo30.fastfood.domain.services.ProductService;
 import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.ProductEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.repositories.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;

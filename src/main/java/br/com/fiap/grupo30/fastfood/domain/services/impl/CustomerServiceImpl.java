@@ -1,12 +1,12 @@
-package br.com.fiap.grupo30.fastfood.application.services.impl;
+package br.com.fiap.grupo30.fastfood.domain.services.impl;
 
 import br.com.fiap.grupo30.fastfood.application.dto.CustomerDTO;
+import br.com.fiap.grupo30.fastfood.application.exceptions.InvalidCpfException;
+import br.com.fiap.grupo30.fastfood.application.exceptions.ResourceConflictException;
+import br.com.fiap.grupo30.fastfood.application.exceptions.ResourceNotFoundException;
 import br.com.fiap.grupo30.fastfood.application.mapper.impl.CustomerDTOMapper;
 import br.com.fiap.grupo30.fastfood.application.mapper.impl.CustomerMapper;
-import br.com.fiap.grupo30.fastfood.application.services.CustomerService;
-import br.com.fiap.grupo30.fastfood.application.services.exceptions.InvalidCpfException;
-import br.com.fiap.grupo30.fastfood.application.services.exceptions.ResourceConflictException;
-import br.com.fiap.grupo30.fastfood.application.services.exceptions.ResourceNotFoundException;
+import br.com.fiap.grupo30.fastfood.domain.services.CustomerService;
 import br.com.fiap.grupo30.fastfood.domain.vo.CPF;
 import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.CustomerEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.repositories.CustomerRepository;
