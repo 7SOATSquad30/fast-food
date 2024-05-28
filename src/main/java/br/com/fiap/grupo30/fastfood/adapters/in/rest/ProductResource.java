@@ -1,7 +1,8 @@
 package br.com.fiap.grupo30.fastfood.adapters.in.rest;
 
 import br.com.fiap.grupo30.fastfood.application.dto.ProductDTO;
-import br.com.fiap.grupo30.fastfood.application.useCases.ProductUseCase;
+import br.com.fiap.grupo30.fastfood.domain.usecases.product.GetProductUseCase;
+import br.com.fiap.grupo30.fastfood.domain.usecases.product.ListProductsByCategoryUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -19,11 +20,16 @@ public class ProductResource {
 
     private static final String PATH_VARIABLE_ID = "/{id}";
 
-    private final ProductUseCase productUseCase;
+    private final ListProductsByCategoryUseCase listProductsByCategoryUseCase;
+    private final GetProductUseCase getProductUseCase;
 
     @Autowired
-    public ProductResource(ProductUseCase productUseCase) {
-        this.productUseCase = productUseCase;
+    public ProductResource(
+        ListProductsByCategoryUseCase listProductsByCategoryUseCase,
+        GetProductUseCase getProductUseCase) {
+
+        this.listProductsByCategoryUseCase = listProductsByCategoryUseCase;
+        this.getProductUseCase = getProductUseCase;
     }
 
     @GetMapping
@@ -34,7 +40,7 @@ public class ProductResource {
                             + "via RequestParam. i.e., ?categoryId=1")
     public ResponseEntity<List<ProductDTO>> findProductsByCategoryId(
             @RequestParam(value = "categoryId", defaultValue = "0") Long categoryId) {
-        List<ProductDTO> list = productUseCase.findProductsByCategoryId(categoryId);
+        List<ProductDTO> list = this.listProductsByCategoryUseCase.execute(categoryId);
         return ResponseEntity.ok().body(list);
     }
 
@@ -43,7 +49,7 @@ public class ProductResource {
             summary = "Get a product by ID",
             description = "Retrieve a specific product based on its ID")
     public ResponseEntity<ProductDTO> findProductById(@PathVariable Long id) {
-        ProductDTO dto = productUseCase.findProductById(id);
+        ProductDTO dto = this.getProductUseCase.findProductById(id);
         return ResponseEntity.ok().body(dto);
     }
 
