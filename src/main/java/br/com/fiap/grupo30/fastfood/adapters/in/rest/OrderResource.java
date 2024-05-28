@@ -4,6 +4,7 @@ import br.com.fiap.grupo30.fastfood.application.dto.AddOrderProductRequest;
 import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
 import br.com.fiap.grupo30.fastfood.domain.usecases.order.AddProductToOrderUseCase;
 import br.com.fiap.grupo30.fastfood.domain.usecases.order.GetOrderUseCase;
+import br.com.fiap.grupo30.fastfood.domain.usecases.order.ListOrdersUseCase;
 import br.com.fiap.grupo30.fastfood.domain.usecases.order.RemoveProductFromOrderUseCase;
 import br.com.fiap.grupo30.fastfood.domain.usecases.order.StartNewOrderUseCase;
 import br.com.fiap.grupo30.fastfood.domain.usecases.order.SubmitOrderUseCase;
@@ -25,6 +26,7 @@ public class OrderResource {
     private final RemoveProductFromOrderUseCase removeProductFromOrderUseCase;
     private final GetOrderUseCase getOrderUseCase;
     private final SubmitOrderUseCase submitOrderUseCase;
+    private final ListOrdersUseCase listAllOrdersUseCase;
 
     @Autowired
     public OrderResource(
@@ -32,12 +34,23 @@ public class OrderResource {
             AddProductToOrderUseCase addProductToOrderUseCase,
             RemoveProductFromOrderUseCase removeProductFromOrderUseCase,
             GetOrderUseCase getOrderUseCase,
-            SubmitOrderUseCase submitOrderUseCase) {
+            SubmitOrderUseCase submitOrderUseCase,
+            ListOrdersUseCase listAllOrdersUseCase) {
         this.startNewOrderUseCase = startNewOrderUseCase;
         this.addProductToOrderUseCase = addProductToOrderUseCase;
         this.removeProductFromOrderUseCase = removeProductFromOrderUseCase;
         this.getOrderUseCase = getOrderUseCase;
         this.submitOrderUseCase = submitOrderUseCase;
+        this.listAllOrdersUseCase = listAllOrdersUseCase;
+    }
+
+    @GetMapping(value = "/")
+    @Operation(
+            summary = "List all orders",
+            description = "Return all orders")
+    public ResponseEntity<OrderDTO[]> listAllOrders() {
+        OrderDTO[] orders = this.listAllOrdersUseCase.execute();
+        return ResponseEntity.ok().body(orders);
     }
 
     @GetMapping(value = "/{orderId}")
