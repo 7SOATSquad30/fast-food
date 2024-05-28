@@ -3,15 +3,15 @@ package br.com.fiap.grupo30.fastfood.domain.usecases.product;
 import br.com.fiap.grupo30.fastfood.application.dto.ProductDTO;
 import br.com.fiap.grupo30.fastfood.application.services.ProductService;
 
-public class GetProductUseCase {
+public class CreateProductUseCase {
 
     private final ProductService productService;
 
-    public GetProductUseCase(ProductService productService) {
+    public CreateProductUseCase(ProductService productService) {
         this.productService = productService;
     }
 
-    public ProductDTO execute(Long id) {
-        return productService.findById(id);
+    public ProductDTO execute(ProductDTO product) {
+        return productService.insert(product);
     }
 }
