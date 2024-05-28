@@ -2,12 +2,7 @@ package br.com.fiap.grupo30.fastfood.adapters.in.rest;
 
 import br.com.fiap.grupo30.fastfood.application.dto.AddOrderProductRequest;
 import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
-import br.com.fiap.grupo30.fastfood.domain.usecases.order.AddProductToOrderUseCase;
-import br.com.fiap.grupo30.fastfood.domain.usecases.order.GetOrderUseCase;
-import br.com.fiap.grupo30.fastfood.domain.usecases.order.ListOrdersUseCase;
-import br.com.fiap.grupo30.fastfood.domain.usecases.order.RemoveProductFromOrderUseCase;
-import br.com.fiap.grupo30.fastfood.domain.usecases.order.StartNewOrderUseCase;
-import br.com.fiap.grupo30.fastfood.domain.usecases.order.SubmitOrderUseCase;
+import br.com.fiap.grupo30.fastfood.domain.usecases.order.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
@@ -27,6 +22,9 @@ public class OrderResource {
     private final GetOrderUseCase getOrderUseCase;
     private final SubmitOrderUseCase submitOrderUseCase;
     private final ListOrdersUseCase listAllOrdersUseCase;
+    private final StartPreparingOrderUseCase startPreparingOrderUseCase;
+    private final FinishPreparingOrderUseCase finishPreparingOrderUseCase;
+    private final DeliverOrderUseCase deliverOrderUseCase;
 
     @Autowired
     public OrderResource(
@@ -35,13 +33,19 @@ public class OrderResource {
             RemoveProductFromOrderUseCase removeProductFromOrderUseCase,
             GetOrderUseCase getOrderUseCase,
             SubmitOrderUseCase submitOrderUseCase,
-            ListOrdersUseCase listAllOrdersUseCase) {
+            ListOrdersUseCase listAllOrdersUseCase,
+            StartPreparingOrderUseCase startPreparingOrderUseCase,
+            FinishPreparingOrderUseCase finishPreparingOrderUseCase,
+            DeliverOrderUseCase deliverOrderUseCase) {
         this.startNewOrderUseCase = startNewOrderUseCase;
         this.addProductToOrderUseCase = addProductToOrderUseCase;
         this.removeProductFromOrderUseCase = removeProductFromOrderUseCase;
         this.getOrderUseCase = getOrderUseCase;
         this.submitOrderUseCase = submitOrderUseCase;
         this.listAllOrdersUseCase = listAllOrdersUseCase;
+        this.startPreparingOrderUseCase = startPreparingOrderUseCase;
+        this.finishPreparingOrderUseCase = finishPreparingOrderUseCase;
+        this.deliverOrderUseCase = deliverOrderUseCase;
     }
 
     @GetMapping(value = "/")
@@ -100,6 +104,33 @@ public class OrderResource {
             description = "Submits an order for preparation and return the order's data")
     public ResponseEntity<OrderDTO> submitOrder(@PathVariable Long orderId) {
         OrderDTO order = this.submitOrderUseCase.execute(orderId);
+        return ResponseEntity.ok().body(order);
+    }
+
+    @PostMapping(value = "/{orderId}/prepare")
+    @Operation(
+            summary = "Start preparing an order",
+            description = "Start preparing an order and return the order's data")
+    public ResponseEntity<OrderDTO> startPreparingOrder(@PathVariable Long orderId) {
+        OrderDTO order = this.startPreparingOrderUseCase.execute(orderId);
+        return ResponseEntity.ok().body(order);
+    }
+
+    @PostMapping(value = "/{orderId}/ready")
+    @Operation(
+            summary = "Finish preparing an order",
+            description = "Finish preparing an order and return the order's data")
+    public ResponseEntity<OrderDTO> finishPreparingOrder(@PathVariable Long orderId) {
+        OrderDTO order = this.finishPreparingOrderUseCase.execute(orderId);
+        return ResponseEntity.ok().body(order);
+    }
+
+    @PostMapping(value = "/{orderId}/deliver")
+    @Operation(
+            summary = "Deliver an order",
+            description = "Deliver an order and return the order's data")
+    public ResponseEntity<OrderDTO> deliverOrder(@PathVariable Long orderId) {
+        OrderDTO order = this.deliverOrderUseCase.execute(orderId);
         return ResponseEntity.ok().body(order);
     }
 }
