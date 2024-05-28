@@ -34,6 +34,9 @@ make run
 ```
 Para parar a aplicação, basta apertar CTRL+C no terminal (SIGINT)
 
+A aplicação subirá na porta 8080, e a documentação das rotas pode ser acessada via swagger:
+http://localhost:8080/swagger-ui/index.html
+
 ### Derrubar a infraestrutura
 ```sh
 make down
