@@ -1,8 +1,9 @@
 create table tb_category (created_at TIMESTAMP WITHOUT TIME ZONE, deleted_at TIMESTAMP WITHOUT TIME ZONE, id bigserial not null, updated_at TIMESTAMP WITHOUT TIME ZONE, name varchar(255) not null unique, primary key (id));
 create table tb_customer (created_at TIMESTAMP WITHOUT TIME ZONE, deleted_at TIMESTAMP WITHOUT TIME ZONE, id bigserial not null, updated_at TIMESTAMP WITHOUT TIME ZONE, cpf varchar(255) not null unique, email varchar(255) not null, name varchar(255) not null, primary key (id));
-create table tb_order (created_at TIMESTAMP WITHOUT TIME ZONE, deleted_at TIMESTAMP WITHOUT TIME ZONE, id bigserial not null, updated_at TIMESTAMP WITHOUT TIME ZONE, status varchar(255) check (status in ('DRAFT','SUBMITTED','PREPARING','DELIVERED','CANCELED')), primary key (id));
+create table tb_order (created_at TIMESTAMP WITHOUT TIME ZONE, customer_id bigint, deleted_at TIMESTAMP WITHOUT TIME ZONE, id bigserial not null, updated_at TIMESTAMP WITHOUT TIME ZONE, status varchar(255) check (status in ('DRAFT','SUBMITTED','PREPARING','READY','DELIVERED','CANCELED')), primary key (id));
 create table tb_order_item (total_price float(53) not null check (total_price>=0), id bigserial not null, order_id bigint not null, product_id bigint not null, quantity bigint not null check (quantity>=1), primary key (id));
 create table tb_product (price float(53) not null, category_id bigint not null, created_at TIMESTAMP WITHOUT TIME ZONE, deleted_at TIMESTAMP WITHOUT TIME ZONE, id bigserial not null, updated_at TIMESTAMP WITHOUT TIME ZONE, description TEXT not null, img_url varchar(255) not null, name varchar(255) not null, primary key (id));
+alter table if exists tb_order add constraint FKqcp43jdylvf2riad5s1x1i2dn foreign key (customer_id) references tb_customer;
 alter table if exists tb_order_item add constraint FKgeobgl2xu916he8vhljktwxnx foreign key (order_id) references tb_order;
 alter table if exists tb_order_item add constraint FK4h5xid5qehset7qwe5l9c997x foreign key (product_id) references tb_product;
 alter table if exists tb_product add constraint FK8i0sq9mfbpsrabrm2pum9fspo foreign key (category_id) references tb_category;
@@ -63,3 +64,12 @@ INSERT INTO tb_order_item (order_id, product_id, quantity, total_price) VALUES (
 INSERT INTO tb_order_item (order_id, product_id, quantity, total_price) VALUES (9, 22, 2, 17.8);
 INSERT INTO tb_order_item (order_id, product_id, quantity, total_price) VALUES (10, 12, 1, 8.9);
 INSERT INTO tb_order_item (order_id, product_id, quantity, total_price) VALUES (10, 15, 1, 13.9);
+create table tb_category (created_at TIMESTAMP WITHOUT TIME ZONE, deleted_at TIMESTAMP WITHOUT TIME ZONE, id bigserial not null, updated_at TIMESTAMP WITHOUT TIME ZONE, name varchar(255) not null unique, primary key (id));
+create table tb_customer (created_at TIMESTAMP WITHOUT TIME ZONE, deleted_at TIMESTAMP WITHOUT TIME ZONE, id bigserial not null, updated_at TIMESTAMP WITHOUT TIME ZONE, cpf varchar(255) not null unique, email varchar(255) not null, name varchar(255) not null, primary key (id));
+create table tb_order (created_at TIMESTAMP WITHOUT TIME ZONE, customer_id bigint, deleted_at TIMESTAMP WITHOUT TIME ZONE, id bigserial not null, updated_at TIMESTAMP WITHOUT TIME ZONE, status varchar(255) check (status in ('DRAFT','SUBMITTED','PREPARING','READY','DELIVERED','CANCELED')), primary key (id));
+create table tb_order_item (total_price float(53) not null check (total_price>=0), id bigserial not null, order_id bigint not null, product_id bigint not null, quantity bigint not null check (quantity>=1), primary key (id));
+create table tb_product (price float(53) not null, category_id bigint not null, created_at TIMESTAMP WITHOUT TIME ZONE, deleted_at TIMESTAMP WITHOUT TIME ZONE, id bigserial not null, updated_at TIMESTAMP WITHOUT TIME ZONE, description TEXT not null, img_url varchar(255) not null, name varchar(255) not null, primary key (id));
+alter table if exists tb_order add constraint FKqcp43jdylvf2riad5s1x1i2dn foreign key (customer_id) references tb_customer;
+alter table if exists tb_order_item add constraint FKgeobgl2xu916he8vhljktwxnx foreign key (order_id) references tb_order;
+alter table if exists tb_order_item add constraint FK4h5xid5qehset7qwe5l9c997x foreign key (product_id) references tb_product;
+alter table if exists tb_product add constraint FK8i0sq9mfbpsrabrm2pum9fspo foreign key (category_id) references tb_category;
