@@ -5,7 +5,7 @@ metadata:
   labels:
     name: db-config
 data:
-  POSTGRES_URL: jdbc:postgresql://postgres-svc:5432/fastfood
-  POSTGRES_DB: fastfood
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: 123456
+  POSTGRES_URL: "jdbc:postgresql://postgres-svc:5432/fastfood"
+  POSTGRES_DB: "fastfood"
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASSWORD: "123456"

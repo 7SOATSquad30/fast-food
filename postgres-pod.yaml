@@ -27,10 +27,10 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: db-config
-              key: POSTGRES_DB
+              key: POSTGRES_USER
         - name: POSTGRES_PASSWORD
           valueFrom:
             configMapKeyRef:
               name: db-config
-              key: POSTGRES_DB
+              key: POSTGRES_PASSWORD
   restartPolicy: Always
