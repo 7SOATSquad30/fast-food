@@ -16,7 +16,6 @@ spec:
       env:
         - name: DATABASE_URL
           value: "jdbc:postgresql://postgres-svc:5432/fastfood"
-      env:
         - name: SPRING_PROFILES_ACTIVE
           value: "dev"
   restartPolicy: Always
