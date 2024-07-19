@@ -1,6 +1,6 @@
 package br.com.fiap.grupo30.fastfood.domain;
 
-import br.com.fiap.grupo30.fastfood.domain.vo.CPF;
+import br.com.fiap.grupo30.fastfood.domain.valueobjects.CPF;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

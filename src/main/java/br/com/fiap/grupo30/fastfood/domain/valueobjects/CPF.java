@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.domain.vo;
+package br.com.fiap.grupo30.fastfood.domain.valueobjects;
 
 import lombok.NonNull;
 

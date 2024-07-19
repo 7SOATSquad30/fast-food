@@ -1,7 +1,7 @@
 package br.com.fiap.grupo30.fastfood.domain.services.impl;
 
 import br.com.fiap.grupo30.fastfood.domain.services.CustomerService;
-import br.com.fiap.grupo30.fastfood.domain.vo.CPF;
+import br.com.fiap.grupo30.fastfood.domain.valueobjects.CPF;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.CustomerEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.CustomerRepository;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CustomerDTO;

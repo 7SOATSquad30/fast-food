@@ -1,7 +1,7 @@
 package br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl;
 
 import br.com.fiap.grupo30.fastfood.domain.Customer;
-import br.com.fiap.grupo30.fastfood.domain.vo.CPF;
+import br.com.fiap.grupo30.fastfood.domain.valueobjects.CPF;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.CustomerEntity;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.Mapper;
 import org.springframework.stereotype.Component;
