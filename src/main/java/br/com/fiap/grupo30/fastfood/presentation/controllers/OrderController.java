@@ -6,6 +6,7 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.AddCustomerCpfRe
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.AddOrderProductRequest;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CustomerDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl.CustomerDTOMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
@@ -30,6 +31,7 @@ public class OrderController {
     private final FinishPreparingOrderUseCase finishPreparingOrderUseCase;
     private final DeliverOrderUseCase deliverOrderUseCase;
     private final FindCustomerByCpfUseCase findCustomerByCpfUseCase;
+    private final CustomerDTOMapper customerDTOMapper;
 
     @Autowired
     public OrderController(
@@ -42,7 +44,8 @@ public class OrderController {
             StartPreparingOrderUseCase startPreparingOrderUseCase,
             FinishPreparingOrderUseCase finishPreparingOrderUseCase,
             DeliverOrderUseCase deliverOrderUseCase,
-            FindCustomerByCpfUseCase findCustomerByCpfUseCase) {
+            FindCustomerByCpfUseCase findCustomerByCpfUseCase,
+            CustomerDTOMapper customerDTOMapper) {
         this.startNewOrderUseCase = startNewOrderUseCase;
         this.addProductToOrderUseCase = addProductToOrderUseCase;
         this.removeProductFromOrderUseCase = removeProductFromOrderUseCase;
@@ -53,6 +56,7 @@ public class OrderController {
         this.finishPreparingOrderUseCase = finishPreparingOrderUseCase;
         this.deliverOrderUseCase = deliverOrderUseCase;
         this.findCustomerByCpfUseCase = findCustomerByCpfUseCase;
+        this.customerDTOMapper = customerDTOMapper;
     }
 
     @GetMapping
@@ -84,7 +88,9 @@ public class OrderController {
             @RequestBody(required = false) AddCustomerCpfRequest request) {
         CustomerDTO customerDTO = null;
         if (request != null && request.getCpf() != null && !request.getCpf().isEmpty()) {
-            customerDTO = findCustomerByCpfUseCase.execute(request.getCpf());
+            customerDTO =
+                    this.customerDTOMapper.mapTo(
+                            findCustomerByCpfUseCase.execute(request.getCpf()));
         }
         OrderDTO order = this.startNewOrderUseCase.execute(customerDTO);
         URI uri =

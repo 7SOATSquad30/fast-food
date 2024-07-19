@@ -1,15 +1,13 @@
 package br.com.fiap.grupo30.fastfood.infrastructure.gateways;
 
+import br.com.fiap.grupo30.fastfood.domain.entities.Customer;
 import br.com.fiap.grupo30.fastfood.domain.repositories.CustomerRepository;
 import br.com.fiap.grupo30.fastfood.domain.valueobjects.CPF;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.CustomerEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaCustomerRepository;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CustomerDTO;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.InvalidCpfException;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.ResourceConflictException;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.ResourceNotFoundException;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl.CustomerDTOMapper;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl.CustomerMapper;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl.CustomerEntityMapper;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,40 +17,34 @@ import org.springframework.stereotype.Service;
 public class CustomerGateway implements CustomerRepository {
 
     public final JpaCustomerRepository jpaCustomerRepository;
-    public final CustomerMapper customerMapper;
-    public final CustomerDTOMapper customerDTOMapper;
+    public final CustomerEntityMapper customerEntityMapper;
 
     @Autowired
     public CustomerGateway(
             JpaCustomerRepository jpaCustomerRepository,
-            CustomerMapper customerMapper,
-            CustomerDTOMapper customerDTOMapper) {
+            CustomerEntityMapper customerEntityMapper) {
         this.jpaCustomerRepository = jpaCustomerRepository;
-        this.customerMapper = customerMapper;
-        this.customerDTOMapper = customerDTOMapper;
+        this.customerEntityMapper = customerEntityMapper;
     }
 
     @Override
-    public CustomerDTO findCustomerByCpf(String cpf) {
+    public Customer findCustomerByCpf(String cpf) {
         String cpfStr = CPF.removeNonDigits(cpf);
         Optional<CustomerEntity> obj = jpaCustomerRepository.findCustomerByCpf(cpfStr);
         CustomerEntity entity =
                 obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new CustomerDTO(customerMapper.mapFrom(entity));
+        return this.customerEntityMapper.mapFrom(entity);
     }
 
     @Override
-    public CustomerDTO insert(CustomerDTO dto) {
-        String cpfDTO = dto.getCpf();
-        if (!CPF.isValid(cpfDTO)) {
-            throw new InvalidCpfException(cpfDTO);
-        }
+    public Customer insert(Customer customer) {
         try {
-            dto.setCpf(CPF.removeNonDigits(cpfDTO));
-            CustomerEntity entity = jpaCustomerRepository.save(customerDTOMapper.mapTo(dto));
-            return new CustomerDTO(customerMapper.mapFrom(entity));
+            CustomerEntity entity =
+                    jpaCustomerRepository.save(customerEntityMapper.mapTo(customer));
+            return this.customerEntityMapper.mapFrom(entity);
         } catch (DataIntegrityViolationException e) {
-            throw new ResourceConflictException("CPF already exists: " + dto.getCpf(), e);
+            throw new ResourceConflictException(
+                    "CPF already exists: " + customer.getCpf().value(), e);
         }
     }
 }
