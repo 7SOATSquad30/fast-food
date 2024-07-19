@@ -1,6 +1,6 @@
 package br.com.fiap.grupo30.fastfood.presentation.presenters.dto;
 
-import br.com.fiap.grupo30.fastfood.domain.Category;
+import br.com.fiap.grupo30.fastfood.domain.entities.Category;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;

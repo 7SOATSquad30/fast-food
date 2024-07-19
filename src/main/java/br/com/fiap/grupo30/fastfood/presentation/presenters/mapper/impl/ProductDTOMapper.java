@@ -1,6 +1,6 @@
 package br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl;
 
-import br.com.fiap.grupo30.fastfood.domain.Category;
+import br.com.fiap.grupo30.fastfood.domain.entities.Category;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.CategoryEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.ProductEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.CategoryRepository;

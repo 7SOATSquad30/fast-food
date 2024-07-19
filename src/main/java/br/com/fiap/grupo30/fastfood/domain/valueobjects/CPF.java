@@ -1,12 +1,13 @@
 package br.com.fiap.grupo30.fastfood.domain.valueobjects;
 
-import lombok.NonNull;
+import java.util.Objects;
 
-public record CPF(@NonNull String value) {
+public record CPF(String value) {
 
     private static final int MIN_FACTOR_VALUE = 1;
 
     public CPF {
+        Objects.requireNonNull(value, "CPF cannot be null");
         if (!isValid(value)) {
             throw new IllegalArgumentException("Invalid CPF");
         }

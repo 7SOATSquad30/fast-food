@@ -1,6 +1,6 @@
 package br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl;
 
-import br.com.fiap.grupo30.fastfood.domain.Product;
+import br.com.fiap.grupo30.fastfood.domain.entities.Product;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.ProductEntity;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
