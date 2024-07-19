@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 @Component
 public final class ProductMapper implements Mapper<Product, ProductEntity> {
 
-    private final CategoryMapper categoryMapper;
+    private final CategoryEntityMapper categoryEntityMapper;
 
     @Autowired
-    public ProductMapper(CategoryMapper categoryMapper) {
-        this.categoryMapper = categoryMapper;
+    public ProductMapper(CategoryEntityMapper categoryEntityMapper) {
+        this.categoryEntityMapper = categoryEntityMapper;
     }
 
     @Override
@@ -24,7 +24,7 @@ public final class ProductMapper implements Mapper<Product, ProductEntity> {
         entity.setDescription(product.getDescription());
         entity.setPrice(product.getPrice());
         entity.setImgUrl(product.getImgUrl());
-        entity.setCategory(categoryMapper.mapTo(product.getCategory()));
+        entity.setCategory(categoryEntityMapper.mapTo(product.getCategory()));
         return entity;
     }
 
@@ -36,7 +36,7 @@ public final class ProductMapper implements Mapper<Product, ProductEntity> {
         product.setDescription(entity.getDescription());
         product.setPrice(entity.getPrice());
         product.setImgUrl(entity.getImgUrl());
-        product.setCategory(categoryMapper.mapFrom(entity.getCategory()));
+        product.setCategory(categoryEntityMapper.mapFrom(entity.getCategory()));
         return product;
     }
 }

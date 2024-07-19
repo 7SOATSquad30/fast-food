@@ -6,7 +6,7 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.Mapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CategoryMapper implements Mapper<Category, CategoryEntity> {
+public class CategoryEntityMapper implements Mapper<Category, CategoryEntity> {
 
     @Override
     public CategoryEntity mapTo(Category category) {
