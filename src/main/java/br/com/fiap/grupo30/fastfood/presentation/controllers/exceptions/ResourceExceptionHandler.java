@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.adapters.in.rest.exceptions;
+package br.com.fiap.grupo30.fastfood.presentation.controllers.exceptions;
 
 import br.com.fiap.grupo30.fastfood.application.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,11 +1,7 @@
-package br.com.fiap.grupo30.fastfood.adapters.in.rest;
+package br.com.fiap.grupo30.fastfood.presentation.controllers;
 
 import br.com.fiap.grupo30.fastfood.application.dto.ProductDTO;
-import br.com.fiap.grupo30.fastfood.domain.usecases.product.CreateProductUseCase;
-import br.com.fiap.grupo30.fastfood.domain.usecases.product.DeleteProductUseCase;
-import br.com.fiap.grupo30.fastfood.domain.usecases.product.GetProductUseCase;
-import br.com.fiap.grupo30.fastfood.domain.usecases.product.ListProductsByCategoryUseCase;
-import br.com.fiap.grupo30.fastfood.domain.usecases.product.UpdateProductUseCase;
+import br.com.fiap.grupo30.fastfood.domain.usecases.product.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -18,8 +14,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/products")
-@Tag(name = "Products Resource", description = "RESTful API for managing products.")
-public class ProductResource {
+@Tag(name = "Products Controller", description = "RESTful API for managing products.")
+public class ProductController {
 
     private static final String PATH_VARIABLE_ID = "/{id}";
 
@@ -30,7 +26,7 @@ public class ProductResource {
     private final DeleteProductUseCase deleteProductUseCase;
 
     @Autowired
-    public ProductResource(
+    public ProductController(
             ListProductsByCategoryUseCase listProductsByCategoryUseCase,
             GetProductUseCase getProductUseCase,
             CreateProductUseCase createProductUseCase,

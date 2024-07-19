@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.adapters.in.rest;
+package br.com.fiap.grupo30.fastfood.presentation.controllers;
 
 import br.com.fiap.grupo30.fastfood.application.dto.CustomerDTO;
 import br.com.fiap.grupo30.fastfood.domain.usecases.customer.FindCustomerByCpfUseCase;
@@ -14,8 +14,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/customers")
-@Tag(name = "Customers Resource", description = "RESTful API for managing customers.")
-public class CustomerResource {
+@Tag(name = "Customers Controller", description = "RESTful API for managing customers.")
+public class CustomerController {
 
     private static final String PATH_VARIABLE_ID = "/{id}";
 
@@ -23,7 +23,7 @@ public class CustomerResource {
     private final RegisterNewCustomerUseCase registerNewCustomerUseCase;
 
     @Autowired
-    public CustomerResource(
+    public CustomerController(
             FindCustomerByCpfUseCase findCustomerByCpfUseCase,
             RegisterNewCustomerUseCase registerNewCustomerUseCase) {
         this.findCustomerByCpfUseCase = findCustomerByCpfUseCase;

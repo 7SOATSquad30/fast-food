@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.adapters.in.rest;
+package br.com.fiap.grupo30.fastfood.presentation.controllers;
 
 import br.com.fiap.grupo30.fastfood.application.dto.CategoryDTO;
 import br.com.fiap.grupo30.fastfood.domain.usecases.product.ListAllCategoriesInMenuUseCase;
@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/categories")
-@Tag(name = "Categories Resource", description = "RESTful API for managing categories.")
-public class CategoryResource {
+@Tag(name = "Categories Controller", description = "RESTful API for managing categories.")
+public class CategoryController {
 
     private final ListAllCategoriesInMenuUseCase listAllCategoriesInMenuUseCase;
 
     @Autowired
-    public CategoryResource(ListAllCategoriesInMenuUseCase listAllCategoriesInMenuUseCase) {
+    public CategoryController(ListAllCategoriesInMenuUseCase listAllCategoriesInMenuUseCase) {
         this.listAllCategoriesInMenuUseCase = listAllCategoriesInMenuUseCase;
     }
 

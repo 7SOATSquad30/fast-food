@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.adapters.in.rest;
+package br.com.fiap.grupo30.fastfood.presentation.controllers;
 
 import br.com.fiap.grupo30.fastfood.application.dto.AddCustomerCpfRequest;
 import br.com.fiap.grupo30.fastfood.application.dto.AddOrderProductRequest;
@@ -17,8 +17,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/orders")
-@Tag(name = "Orders Resource", description = "RESTful API for managing orders.")
-public class OrderResource {
+@Tag(name = "Orders Controller", description = "RESTful API for managing orders.")
+public class OrderController {
 
     private final StartNewOrderUseCase startNewOrderUseCase;
     private final AddProductToOrderUseCase addProductToOrderUseCase;
@@ -32,7 +32,7 @@ public class OrderResource {
     private final FindCustomerByCpfUseCase findCustomerByCpfUseCase;
 
     @Autowired
-    public OrderResource(
+    public OrderController(
             StartNewOrderUseCase startNewOrderUseCase,
             AddProductToOrderUseCase addProductToOrderUseCase,
             RemoveProductFromOrderUseCase removeProductFromOrderUseCase,

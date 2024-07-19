@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.adapters.in.rest.exceptions;
+package br.com.fiap.grupo30.fastfood.presentation.controllers.exceptions;
 
 import java.util.ArrayList;
 import java.util.List;
