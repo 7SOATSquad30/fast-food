@@ -1,13 +1,12 @@
 package br.com.fiap.grupo30.fastfood.infrastructure.gateways;
 
+import br.com.fiap.grupo30.fastfood.domain.entities.Product;
 import br.com.fiap.grupo30.fastfood.domain.repositories.ProductRepository;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.ProductEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaProductRepository;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.DatabaseException;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.ResourceNotFoundException;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl.ProductDTOMapper;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl.ProductMapper;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl.ProductEntityMapper;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -21,52 +20,48 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductGateway implements ProductRepository {
 
     private final JpaProductRepository jpaProductRepository;
-    private final ProductMapper productMapper;
-    private final ProductDTOMapper productDTOMapper;
+    private final ProductEntityMapper productEntityMapper;
 
     @Autowired
     public ProductGateway(
-            JpaProductRepository jpaProductRepository,
-            ProductMapper productMapper,
-            ProductDTOMapper productDTOMapper) {
+            JpaProductRepository jpaProductRepository, ProductEntityMapper productEntityMapper) {
         this.jpaProductRepository = jpaProductRepository;
-        this.productMapper = productMapper;
-        this.productDTOMapper = productDTOMapper;
+        this.productEntityMapper = productEntityMapper;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<ProductDTO> findProductsByCategoryId(Long categoryId) {
+    public List<Product> findProductsByCategoryId(Long categoryId) {
         Long category = categoryId == 0 ? null : categoryId;
         return jpaProductRepository.findProductsByCategoryId(category).stream()
-                .map(entity -> new ProductDTO(productMapper.mapFrom(entity)))
+                .map(this.productEntityMapper::mapFrom)
                 .toList();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ProductDTO findById(Long id) {
+    public Product findById(Long id) {
         Optional<ProductEntity> obj = jpaProductRepository.findById(id);
         ProductEntity entity =
                 obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new ProductDTO(productMapper.mapFrom(entity));
+        return this.productEntityMapper.mapFrom(entity);
     }
 
     @Override
     @Transactional
-    public ProductDTO insert(ProductDTO dto) {
-        ProductEntity entity = jpaProductRepository.save(productDTOMapper.mapTo(dto));
-        return new ProductDTO(productMapper.mapFrom(entity));
+    public Product insert(Product product) {
+        ProductEntity entity = jpaProductRepository.save(productEntityMapper.mapTo(product));
+        return this.productEntityMapper.mapFrom(entity);
     }
 
     @Override
     @Transactional
-    public ProductDTO update(Long id, ProductDTO dto) {
+    public Product update(Long id, Product product) {
         try {
             ProductEntity entity = jpaProductRepository.getReferenceById(id);
-            productDTOMapper.updateEntityFromDTO(entity, dto);
+            productEntityMapper.updateEntityFromProduct(entity, product);
             entity = jpaProductRepository.save(entity);
-            return new ProductDTO(productMapper.mapFrom(entity));
+            return this.productEntityMapper.mapFrom(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found " + id, e);
         }
