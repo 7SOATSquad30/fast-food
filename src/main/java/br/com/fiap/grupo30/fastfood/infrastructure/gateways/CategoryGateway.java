@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.domain.services.impl;
+package br.com.fiap.grupo30.fastfood.infrastructure.gateways;
 
 import br.com.fiap.grupo30.fastfood.domain.services.CategoryService;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaCategoryRepository;
@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class CategoryServiceImpl implements CategoryService {
+public class CategoryGateway implements CategoryService {
 
     public final JpaCategoryRepository jpaCategoryRepository;
     private final CategoryMapper categoryMapper;
 
     @Autowired
-    public CategoryServiceImpl(
+    public CategoryGateway(
             JpaCategoryRepository jpaCategoryRepository, CategoryMapper categoryMapper) {
         this.jpaCategoryRepository = jpaCategoryRepository;
         this.categoryMapper = categoryMapper;

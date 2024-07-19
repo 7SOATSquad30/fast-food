@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.domain.services.impl;
+package br.com.fiap.grupo30.fastfood.infrastructure.gateways;
 
 import br.com.fiap.grupo30.fastfood.domain.services.ProductService;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.ProductEntity;
@@ -18,14 +18,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ProductServiceImpl implements ProductService {
+public class ProductGateway implements ProductService {
 
     private final JpaProductRepository jpaProductRepository;
     private final ProductMapper productMapper;
     private final ProductDTOMapper productDTOMapper;
 
     @Autowired
-    public ProductServiceImpl(
+    public ProductGateway(
             JpaProductRepository jpaProductRepository,
             ProductMapper productMapper,
             ProductDTOMapper productDTOMapper) {

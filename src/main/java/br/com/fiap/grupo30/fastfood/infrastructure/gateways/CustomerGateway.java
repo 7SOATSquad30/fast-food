@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.domain.services.impl;
+package br.com.fiap.grupo30.fastfood.infrastructure.gateways;
 
 import br.com.fiap.grupo30.fastfood.domain.services.CustomerService;
 import br.com.fiap.grupo30.fastfood.domain.valueobjects.CPF;
@@ -16,14 +16,14 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomerServiceImpl implements CustomerService {
+public class CustomerGateway implements CustomerService {
 
     public final JpaCustomerRepository jpaCustomerRepository;
     public final CustomerMapper customerMapper;
     public final CustomerDTOMapper customerDTOMapper;
 
     @Autowired
-    public CustomerServiceImpl(
+    public CustomerGateway(
             JpaCustomerRepository jpaCustomerRepository,
             CustomerMapper customerMapper,
             CustomerDTOMapper customerDTOMapper) {
