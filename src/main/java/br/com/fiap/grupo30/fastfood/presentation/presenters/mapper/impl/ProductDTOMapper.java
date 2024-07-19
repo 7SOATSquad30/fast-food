@@ -1,12 +1,12 @@
-package br.com.fiap.grupo30.fastfood.application.mapper.impl;
+package br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl;
 
-import br.com.fiap.grupo30.fastfood.application.dto.CategoryDTO;
-import br.com.fiap.grupo30.fastfood.application.dto.ProductDTO;
-import br.com.fiap.grupo30.fastfood.application.mapper.Mapper;
 import br.com.fiap.grupo30.fastfood.domain.Category;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.CategoryEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.ProductEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.CategoryRepository;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CategoryDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

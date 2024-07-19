@@ -1,11 +1,11 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.order;
 
-import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
-import br.com.fiap.grupo30.fastfood.application.exceptions.ResourceNotFoundException;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.ProductEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.OrderRepository;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.ProductRepository;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

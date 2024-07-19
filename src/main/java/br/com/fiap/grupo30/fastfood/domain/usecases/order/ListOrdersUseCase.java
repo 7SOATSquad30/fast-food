@@ -1,10 +1,10 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.order;
 
-import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
-import br.com.fiap.grupo30.fastfood.application.exceptions.InvalidOrderStatusException;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderStatus;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.OrderRepository;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.InvalidOrderStatusException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;

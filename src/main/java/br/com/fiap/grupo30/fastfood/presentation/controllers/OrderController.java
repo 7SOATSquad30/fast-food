@@ -1,11 +1,11 @@
 package br.com.fiap.grupo30.fastfood.presentation.controllers;
 
-import br.com.fiap.grupo30.fastfood.application.dto.AddCustomerCpfRequest;
-import br.com.fiap.grupo30.fastfood.application.dto.AddOrderProductRequest;
-import br.com.fiap.grupo30.fastfood.application.dto.CustomerDTO;
-import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
 import br.com.fiap.grupo30.fastfood.domain.usecases.customer.FindCustomerByCpfUseCase;
 import br.com.fiap.grupo30.fastfood.domain.usecases.order.*;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.AddCustomerCpfRequest;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.AddOrderProductRequest;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CustomerDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;

@@ -1,9 +1,9 @@
 package br.com.fiap.grupo30.fastfood.domain.services.impl;
 
-import br.com.fiap.grupo30.fastfood.application.dto.CategoryDTO;
-import br.com.fiap.grupo30.fastfood.application.mapper.impl.CategoryMapper;
 import br.com.fiap.grupo30.fastfood.domain.services.CategoryService;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.CategoryRepository;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CategoryDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl.CategoryMapper;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

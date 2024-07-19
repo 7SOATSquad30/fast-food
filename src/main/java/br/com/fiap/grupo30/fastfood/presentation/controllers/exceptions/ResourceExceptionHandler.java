@@ -1,6 +1,9 @@
 package br.com.fiap.grupo30.fastfood.presentation.controllers.exceptions;
 
-import br.com.fiap.grupo30.fastfood.application.exceptions.*;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.DatabaseException;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.ResourceBadRequestException;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.ResourceConflictException;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import org.springframework.http.HttpStatus;

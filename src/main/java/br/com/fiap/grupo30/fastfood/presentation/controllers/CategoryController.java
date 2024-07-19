@@ -1,7 +1,7 @@
 package br.com.fiap.grupo30.fastfood.presentation.controllers;
 
-import br.com.fiap.grupo30.fastfood.application.dto.CategoryDTO;
 import br.com.fiap.grupo30.fastfood.domain.usecases.product.ListAllCategoriesInMenuUseCase;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CategoryDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;

@@ -1,6 +1,6 @@
 package br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities;
 
-import br.com.fiap.grupo30.fastfood.application.dto.CustomerDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CustomerDTO;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.ArrayList;

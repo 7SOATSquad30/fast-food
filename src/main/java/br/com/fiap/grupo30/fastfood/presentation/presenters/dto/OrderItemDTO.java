@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.application.dto;
+package br.com.fiap.grupo30.fastfood.presentation.presenters.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.product;
 
-import br.com.fiap.grupo30.fastfood.application.dto.ProductDTO;
 import br.com.fiap.grupo30.fastfood.domain.services.ProductService;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
 import java.util.List;
 import org.springframework.stereotype.Component;
 

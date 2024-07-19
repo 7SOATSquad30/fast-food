@@ -1,6 +1,6 @@
 package br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities;
 
-import br.com.fiap.grupo30.fastfood.application.dto.OrderItemDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderItemDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;

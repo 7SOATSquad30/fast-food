@@ -1,8 +1,8 @@
 package br.com.fiap.grupo30.fastfood.presentation.controllers;
 
-import br.com.fiap.grupo30.fastfood.application.dto.CustomerDTO;
 import br.com.fiap.grupo30.fastfood.domain.usecases.customer.FindCustomerByCpfUseCase;
 import br.com.fiap.grupo30.fastfood.domain.usecases.customer.RegisterNewCustomerUseCase;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CustomerDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
