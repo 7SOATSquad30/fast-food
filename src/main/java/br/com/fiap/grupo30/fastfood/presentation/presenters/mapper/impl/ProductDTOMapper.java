@@ -3,7 +3,7 @@ package br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl;
 import br.com.fiap.grupo30.fastfood.domain.entities.Category;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.CategoryEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.ProductEntity;
-import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.CategoryRepository;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaCategoryRepository;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CategoryDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.Mapper;
@@ -13,12 +13,13 @@ import org.springframework.stereotype.Component;
 @Component
 public final class ProductDTOMapper implements Mapper<ProductDTO, ProductEntity> {
 
-    private final CategoryRepository categoryRepository;
+    private final JpaCategoryRepository jpaCategoryRepository;
     private final CategoryMapper categoryMapper;
 
     @Autowired
-    public ProductDTOMapper(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
-        this.categoryRepository = categoryRepository;
+    public ProductDTOMapper(
+            JpaCategoryRepository jpaCategoryRepository, CategoryMapper categoryMapper) {
+        this.jpaCategoryRepository = jpaCategoryRepository;
         this.categoryMapper = categoryMapper;
     }
 
@@ -30,7 +31,7 @@ public final class ProductDTOMapper implements Mapper<ProductDTO, ProductEntity>
         entity.setDescription(dto.getDescription());
         entity.setPrice(dto.getPrice());
         entity.setImgUrl(dto.getImgUrl());
-        CategoryEntity category = categoryRepository.getReferenceById(dto.getCategory().getId());
+        CategoryEntity category = jpaCategoryRepository.getReferenceById(dto.getCategory().getId());
         entity.setCategory(category);
         return entity;
     }
@@ -53,7 +54,7 @@ public final class ProductDTOMapper implements Mapper<ProductDTO, ProductEntity>
         entity.setDescription(dto.getDescription());
         entity.setImgUrl(dto.getImgUrl());
         entity.setPrice(dto.getPrice());
-        CategoryEntity category = categoryRepository.getReferenceById(dto.getCategory().getId());
+        CategoryEntity category = jpaCategoryRepository.getReferenceById(dto.getCategory().getId());
         entity.setCategory(category);
     }
 }

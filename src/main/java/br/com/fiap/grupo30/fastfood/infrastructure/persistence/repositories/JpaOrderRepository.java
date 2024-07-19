@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
+public interface JpaOrderRepository extends JpaRepository<OrderEntity, Long> {
     @Query(
             "SELECT obj FROM OrderEntity obj "
                     + "WHERE (:status IS NULL OR obj.status = :status) "

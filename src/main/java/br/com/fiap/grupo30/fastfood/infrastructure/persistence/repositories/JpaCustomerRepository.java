@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> {
+public interface JpaCustomerRepository extends JpaRepository<CustomerEntity, Long> {
 
     @Query("SELECT obj FROM CustomerEntity obj " + "WHERE obj.cpf = :cpf")
     Optional<CustomerEntity> findCustomerByCpf(String cpf);

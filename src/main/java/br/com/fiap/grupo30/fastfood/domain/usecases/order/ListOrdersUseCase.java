@@ -2,7 +2,7 @@ package br.com.fiap.grupo30.fastfood.domain.usecases.order;
 
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderStatus;
-import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.OrderRepository;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaOrderRepository;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.InvalidOrderStatusException;
 import java.util.Comparator;
@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ListOrdersUseCase {
 
-    private final OrderRepository orderRepository;
+    private final JpaOrderRepository jpaOrderRepository;
 
     @Autowired
-    public ListOrdersUseCase(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
+    public ListOrdersUseCase(JpaOrderRepository jpaOrderRepository) {
+        this.jpaOrderRepository = jpaOrderRepository;
     }
 
     public List<OrderDTO> execute(String status) {
@@ -30,7 +30,7 @@ public class ListOrdersUseCase {
                 throw new InvalidOrderStatusException(status, e);
             }
         }
-        return orderRepository.findOrdersByStatus(orderStatus).stream()
+        return jpaOrderRepository.findOrdersByStatus(orderStatus).stream()
                 .sorted(Comparator.comparing(OrderEntity::getCreatedAt))
                 .map(OrderEntity::toDTO)
                 .toList();

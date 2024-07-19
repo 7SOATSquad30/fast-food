@@ -2,8 +2,8 @@ package br.com.fiap.grupo30.fastfood.domain.usecases.order;
 
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.CustomerEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderEntity;
-import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.CustomerRepository;
-import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.OrderRepository;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaCustomerRepository;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaOrderRepository;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CustomerDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.ResourceNotFoundException;
@@ -16,17 +16,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class StartNewOrderUseCase {
 
-    private final OrderRepository orderRepository;
-    private final CustomerRepository customerRepository;
+    private final JpaOrderRepository jpaOrderRepository;
+    private final JpaCustomerRepository jpaCustomerRepository;
     public final CustomerMapper customerMapper;
 
     @Autowired
     public StartNewOrderUseCase(
-            OrderRepository orderRepository,
-            CustomerRepository customerRepository,
+            JpaOrderRepository jpaOrderRepository,
+            JpaCustomerRepository jpaCustomerRepository,
             CustomerMapper customerMapper) {
-        this.orderRepository = orderRepository;
-        this.customerRepository = customerRepository;
+        this.jpaOrderRepository = jpaOrderRepository;
+        this.jpaCustomerRepository = jpaCustomerRepository;
         this.customerMapper = customerMapper;
     }
 
@@ -38,21 +38,21 @@ public class StartNewOrderUseCase {
         }
 
         CustomerEntity customerEntity =
-                customerRepository
+                jpaCustomerRepository
                         .findById(customerDTO.getId())
                         .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
         OrderEntity newOrder = OrderEntity.create();
         newOrder.setCustomer(customerEntity);
 
-        newOrder = this.orderRepository.save(newOrder);
+        newOrder = this.jpaOrderRepository.save(newOrder);
         return newOrder.toDTO();
     }
 
     private CustomerDTO findOrCreateAnonymousCustomer() {
         String anonymousCpf = "970.410.008-69";
         Optional<CustomerEntity> anonymousCustomer =
-                customerRepository.findCustomerByCpf(anonymousCpf);
+                jpaCustomerRepository.findCustomerByCpf(anonymousCpf);
 
         if (anonymousCustomer.isPresent()) {
             return new CustomerDTO(customerMapper.mapFrom(anonymousCustomer.get()));
@@ -61,7 +61,8 @@ public class StartNewOrderUseCase {
             newAnonymousCustomer.setCpf(anonymousCpf);
             newAnonymousCustomer.setName("Anonymous");
             newAnonymousCustomer.setEmail("anonymous@fastfood.com");
-            CustomerEntity savedAnonymousCustomer = customerRepository.save(newAnonymousCustomer);
+            CustomerEntity savedAnonymousCustomer =
+                    jpaCustomerRepository.save(newAnonymousCustomer);
             return new CustomerDTO(customerMapper.mapFrom(savedAnonymousCustomer));
         }
     }
