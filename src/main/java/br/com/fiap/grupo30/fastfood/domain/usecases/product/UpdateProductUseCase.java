@@ -1,19 +1,19 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.product;
 
-import br.com.fiap.grupo30.fastfood.domain.services.ProductService;
+import br.com.fiap.grupo30.fastfood.domain.repositories.ProductRepository;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UpdateProductUseCase {
 
-    private final ProductService productService;
+    private final ProductRepository productRepository;
 
-    public UpdateProductUseCase(ProductService productService) {
-        this.productService = productService;
+    public UpdateProductUseCase(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
     public ProductDTO execute(Long id, ProductDTO product) {
-        return productService.update(id, product);
+        return productRepository.update(id, product);
     }
 }

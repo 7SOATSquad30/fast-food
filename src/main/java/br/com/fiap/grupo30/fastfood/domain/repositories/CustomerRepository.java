@@ -1,8 +1,8 @@
-package br.com.fiap.grupo30.fastfood.domain.services;
+package br.com.fiap.grupo30.fastfood.domain.repositories;
 
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CustomerDTO;
 
-public interface CustomerService {
+public interface CustomerRepository {
 
     CustomerDTO findCustomerByCpf(String cpf);
 

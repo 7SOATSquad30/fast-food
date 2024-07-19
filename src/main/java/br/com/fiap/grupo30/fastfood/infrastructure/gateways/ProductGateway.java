@@ -1,6 +1,6 @@
 package br.com.fiap.grupo30.fastfood.infrastructure.gateways;
 
-import br.com.fiap.grupo30.fastfood.domain.services.ProductService;
+import br.com.fiap.grupo30.fastfood.domain.repositories.ProductRepository;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.ProductEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaProductRepository;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ProductGateway implements ProductService {
+public class ProductGateway implements ProductRepository {
 
     private final JpaProductRepository jpaProductRepository;
     private final ProductMapper productMapper;

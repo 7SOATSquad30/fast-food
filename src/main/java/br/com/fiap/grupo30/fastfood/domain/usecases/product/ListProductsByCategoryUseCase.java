@@ -1,6 +1,6 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.product;
 
-import br.com.fiap.grupo30.fastfood.domain.services.ProductService;
+import br.com.fiap.grupo30.fastfood.domain.repositories.ProductRepository;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class ListProductsByCategoryUseCase {
 
-    private final ProductService productService;
+    private final ProductRepository productRepository;
 
-    public ListProductsByCategoryUseCase(ProductService productService) {
-        this.productService = productService;
+    public ListProductsByCategoryUseCase(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
     public List<ProductDTO> execute(Long categoryId) {
-        return productService.findProductsByCategoryId(categoryId);
+        return productRepository.findProductsByCategoryId(categoryId);
     }
 }

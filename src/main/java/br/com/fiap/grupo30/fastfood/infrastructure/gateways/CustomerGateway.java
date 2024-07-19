@@ -1,6 +1,6 @@
 package br.com.fiap.grupo30.fastfood.infrastructure.gateways;
 
-import br.com.fiap.grupo30.fastfood.domain.services.CustomerService;
+import br.com.fiap.grupo30.fastfood.domain.repositories.CustomerRepository;
 import br.com.fiap.grupo30.fastfood.domain.valueobjects.CPF;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.CustomerEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaCustomerRepository;
@@ -16,7 +16,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomerGateway implements CustomerService {
+public class CustomerGateway implements CustomerRepository {
 
     public final JpaCustomerRepository jpaCustomerRepository;
     public final CustomerMapper customerMapper;
