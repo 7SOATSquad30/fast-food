@@ -1,7 +1,7 @@
-package br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.repositories;
+package br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories;
 
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderEntity;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderStatus;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderEntity;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderStatus;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

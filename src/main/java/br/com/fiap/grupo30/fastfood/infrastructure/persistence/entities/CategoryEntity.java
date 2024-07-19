@@ -1,10 +1,8 @@
-package br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities;
+package br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities;
 
-import br.com.fiap.grupo30.fastfood.application.dto.CustomerDTO;
+import br.com.fiap.grupo30.fastfood.application.dto.CategoryDTO;
 import jakarta.persistence.*;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,24 +13,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table(name = "tb_customer")
-public class CustomerEntity {
+@Table(name = "tb_category")
+public class CategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
-
     @Column(nullable = false, unique = true)
-    private String cpf;
-
-    @Column(nullable = false)
-    private String email;
-
-    @OneToMany(mappedBy = "customer")
-    private List<OrderEntity> orders = new ArrayList<>();
+    private String name;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
@@ -51,14 +40,6 @@ public class CustomerEntity {
         this.name = name;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     @PrePersist
     public void prePersist() {
         createdAt = Instant.now();
@@ -74,8 +55,8 @@ public class CustomerEntity {
         deletedAt = Instant.now();
     }
 
-    public CustomerDTO toDTO() {
-        CustomerDTO customerDto = new CustomerDTO(this.id, this.name, this.cpf, this.email);
-        return customerDto;
+    public CategoryDTO toDTO() {
+        CategoryDTO categoryDto = new CategoryDTO(this.id, this.name);
+        return categoryDto;
     }
 }

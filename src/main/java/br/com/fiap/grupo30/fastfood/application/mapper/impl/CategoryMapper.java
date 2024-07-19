@@ -2,7 +2,7 @@ package br.com.fiap.grupo30.fastfood.application.mapper.impl;
 
 import br.com.fiap.grupo30.fastfood.application.mapper.Mapper;
 import br.com.fiap.grupo30.fastfood.domain.Category;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.CategoryEntity;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.CategoryEntity;
 import org.springframework.stereotype.Component;
 
 @Component

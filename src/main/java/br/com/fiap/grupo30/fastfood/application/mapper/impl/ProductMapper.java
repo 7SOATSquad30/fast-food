@@ -2,7 +2,7 @@ package br.com.fiap.grupo30.fastfood.application.mapper.impl;
 
 import br.com.fiap.grupo30.fastfood.application.mapper.Mapper;
 import br.com.fiap.grupo30.fastfood.domain.Product;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.ProductEntity;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.ProductEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

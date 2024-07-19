@@ -3,9 +3,9 @@ package br.com.fiap.grupo30.fastfood.domain.usecases.order;
 import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
 import br.com.fiap.grupo30.fastfood.application.exceptions.CantChangeOrderStatusReadyOtherThanPreparingException;
 import br.com.fiap.grupo30.fastfood.application.exceptions.ResourceNotFoundException;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderEntity;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderStatus;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.repositories.OrderRepository;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderEntity;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderStatus;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

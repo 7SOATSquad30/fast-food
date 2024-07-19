@@ -1,6 +1,6 @@
 package br.com.fiap.grupo30.fastfood.application.dto;
 
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderStatus;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

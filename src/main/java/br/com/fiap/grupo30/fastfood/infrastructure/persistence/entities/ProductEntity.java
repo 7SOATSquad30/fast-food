@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities;
+package br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities;
 
 import br.com.fiap.grupo30.fastfood.application.dto.ProductDTO;
 import jakarta.persistence.*;
