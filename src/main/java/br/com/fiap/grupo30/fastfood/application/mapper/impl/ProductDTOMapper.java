@@ -2,7 +2,7 @@ package br.com.fiap.grupo30.fastfood.application.mapper.impl;
 
 import br.com.fiap.grupo30.fastfood.application.dto.CategoryDTO;
 import br.com.fiap.grupo30.fastfood.application.dto.ProductDTO;
-import br.com.fiap.grupo30.fastfood.application.mapper.Mapper;
+import br.com.fiap.grupo30.fastfood.application.mapper.BiDirectionalMapper;
 import br.com.fiap.grupo30.fastfood.domain.Category;
 import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.CategoryEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.ProductEntity;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class ProductDTOMapper implements Mapper<ProductDTO, ProductEntity> {
+public final class ProductDTOMapper implements BiDirectionalMapper<ProductDTO, ProductEntity> {
 
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;

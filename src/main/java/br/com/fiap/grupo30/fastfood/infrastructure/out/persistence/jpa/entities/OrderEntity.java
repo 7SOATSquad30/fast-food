@@ -31,6 +31,13 @@ public class OrderEntity {
     @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
 
+    @OneToOne(
+            mappedBy = "order",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private PaymentEntity payment;
+
     @OneToMany(
             mappedBy = "order",
             fetch = FetchType.EAGER,
@@ -102,6 +109,11 @@ public class OrderEntity {
             errors.add("Can not submit order without products");
         }
 
+        if (this.status == OrderStatus.PREPARING
+                && !PaymentStatus.COLLECTED.equals(this.getPayment().getStatus())) {
+            errors.add("Can not start peparing order without collecting payment");
+        }
+
         if (!errors.isEmpty()) {
             throw new CompositeDomainValidationException(errors);
         }
@@ -132,11 +144,17 @@ public class OrderEntity {
     public static OrderEntity create() {
         OrderEntity order = new OrderEntity();
         order.status = OrderStatus.DRAFT;
+        order.payment = PaymentEntity.create(order);
         return order;
     }
 
     public void setCustomer(CustomerEntity customer) {
         this.customer = customer;
+    }
+
+    public void updatePaymentStatus(PaymentStatus status) {
+        this.payment.setStatus(status);
+        this.payment.setAmount(this.totalPrice);
     }
 
     public OrderDTO toDTO() {
@@ -146,7 +164,8 @@ public class OrderEntity {
                         this.status,
                         this.items.stream().map(item -> item.toDTO()).toArray(OrderItemDTO[]::new),
                         this.getTotalPrice(),
-                        this.customer.toDTO());
+                        this.customer.toDTO(),
+                        this.payment.toDTO());
         return orderDto;
     }
 }

@@ -1,13 +1,13 @@
 package br.com.fiap.grupo30.fastfood.application.mapper.impl;
 
-import br.com.fiap.grupo30.fastfood.application.mapper.Mapper;
+import br.com.fiap.grupo30.fastfood.application.mapper.BiDirectionalMapper;
 import br.com.fiap.grupo30.fastfood.domain.Customer;
 import br.com.fiap.grupo30.fastfood.domain.vo.CPF;
 import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.CustomerEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class CustomerMapper implements Mapper<Customer, CustomerEntity> {
+public final class CustomerMapper implements BiDirectionalMapper<Customer, CustomerEntity> {
 
     @Override
     public CustomerEntity mapTo(Customer customer) {

@@ -1,13 +1,13 @@
 package br.com.fiap.grupo30.fastfood.application.mapper.impl;
 
-import br.com.fiap.grupo30.fastfood.application.mapper.Mapper;
+import br.com.fiap.grupo30.fastfood.application.mapper.BiDirectionalMapper;
 import br.com.fiap.grupo30.fastfood.domain.Product;
 import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.ProductEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class ProductMapper implements Mapper<Product, ProductEntity> {
+public final class ProductMapper implements BiDirectionalMapper<Product, ProductEntity> {
 
     private final CategoryMapper categoryMapper;
 
