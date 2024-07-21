@@ -1,5 +1,5 @@
 curl -X POST \
-    'https://api.mercadopago.com/users/356453274/stores'\
+    'https://api.mercadopago.com/users/1910105219/stores'\
     -H 'Content-Type: application/json' \
     -H "Authorization: Bearer $MERCADOPAGO_PRIVATE_ACCESS_TOKEN" \
     -d '{
