@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+  labels:
+    app: postgres-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-deployment
+  template:
+    metadata:
+      labels:
+        app: postgres-deployment
+    spec:
+      containers:
+        - name: database
+          image: postgres:latest
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          env:
+            - name: POSTGRES_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: POSTGRES_URL
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: POSTGRES_PASSWORD
+          volumeMounts:
+            - name: config-volume
+              mountPath: /docker-entrypoint-initdb.d/
+      volumes:
+        - name: config-volume
+          configMap:
+            name: meu-config
+            items:
+              - key: init.sql
+                path: init.sql
+      restartPolicy: Always

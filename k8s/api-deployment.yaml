@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+  labels:
+    app: api-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api-deployment
+  template:
+    metadata:
+      labels:
+        app: api-deployment
+    spec:
+      containers:
+        - name: app
+          image: otaviodocker/api-fastfood:1.0
+          imagePullPolicy: Always
+          ports:
+            - name: api-pod
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: DATABASE_URL
+              value: "jdbc:postgresql://postgres-svc:5432/fastfood"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "dev"
+      restartPolicy: Always

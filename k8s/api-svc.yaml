@@ -4,7 +4,7 @@ metadata:
   name: api-svc
 spec:
   selector:
-    app: api-pod
+    app: api-deployment
   ports:
     - protocol: TCP
       port: 80
