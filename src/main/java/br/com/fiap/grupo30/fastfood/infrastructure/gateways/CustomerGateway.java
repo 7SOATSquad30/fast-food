@@ -9,12 +9,11 @@ import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaC
 import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.ResourceConflictException;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.ResourceNotFoundException;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl.CustomerEntityMapper;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 public class CustomerGateway implements CustomerRepository {
@@ -24,8 +23,8 @@ public class CustomerGateway implements CustomerRepository {
 
     @Autowired
     public CustomerGateway(
-        JpaCustomerRepository jpaCustomerRepository,
-        CustomerEntityMapper customerEntityMapper) {
+            JpaCustomerRepository jpaCustomerRepository,
+            CustomerEntityMapper customerEntityMapper) {
         this.jpaCustomerRepository = jpaCustomerRepository;
         this.customerEntityMapper = customerEntityMapper;
     }
@@ -49,11 +48,11 @@ public class CustomerGateway implements CustomerRepository {
     public Customer insert(Customer customer) {
         try {
             CustomerEntity entity =
-                jpaCustomerRepository.save(customerEntityMapper.mapTo(customer));
+                    jpaCustomerRepository.save(customerEntityMapper.mapTo(customer));
             return this.customerEntityMapper.mapFrom(entity);
         } catch (DataIntegrityViolationException e) {
             throw new ResourceConflictException(
-                "CPF already exists: " + customer.getCpf().value(), e);
+                    "CPF already exists: " + customer.getCpf().value(), e);
         }
     }
 }
