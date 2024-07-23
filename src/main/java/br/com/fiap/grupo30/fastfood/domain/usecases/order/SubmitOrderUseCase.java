@@ -1,30 +1,20 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.order;
 
-import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderEntity;
-import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderStatus;
-import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaOrderRepository;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import br.com.fiap.grupo30.fastfood.domain.OrderStatus;
+import br.com.fiap.grupo30.fastfood.domain.entities.Order;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.OrderGateway;
 
-@Component
 public class SubmitOrderUseCase {
 
-    private final JpaOrderRepository jpaOrderRepository;
+    private final OrderGateway orderGateway;
 
-    @Autowired
-    public SubmitOrderUseCase(JpaOrderRepository jpaOrderRepository) {
-        this.jpaOrderRepository = jpaOrderRepository;
+    public SubmitOrderUseCase(OrderGateway orderGateway) {
+        this.orderGateway = orderGateway;
     }
 
-    public OrderDTO execute(Long orderId) {
-        OrderEntity order =
-                this.jpaOrderRepository
-                        .findById(orderId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
-
+    public Order execute(Long orderId) {
+        Order order = orderGateway.findById(orderId);
         order.setStatus(OrderStatus.SUBMITTED);
-        return this.jpaOrderRepository.save(order).toDTO();
+        return orderGateway.submitOrder(order);
     }
 }

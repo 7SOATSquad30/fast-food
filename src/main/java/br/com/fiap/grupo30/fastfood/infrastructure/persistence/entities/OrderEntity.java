@@ -1,20 +1,19 @@
 package br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities;
 
+import br.com.fiap.grupo30.fastfood.domain.OrderStatus;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderItemDTO;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.CantChangeOrderProductsAfterSubmitException;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.CompositeDomainValidationException;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.LinkedList;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @EqualsAndHashCode
 @Entity
 @Table(name = "tb_order")
@@ -56,11 +55,19 @@ public class OrderEntity {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant deletedAt;
 
-    public void addProduct(ProductEntity product, Long quantity) {
-        if (!this.isDraft()) {
-            throw new CantChangeOrderProductsAfterSubmitException();
-        }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
+    }
+
+    public void addProduct(ProductEntity product, Long quantity) {
         this.items.stream()
                 .filter(orderItem -> orderItem.getProduct().equals(product))
                 .findFirst()
@@ -73,33 +80,16 @@ public class OrderEntity {
     }
 
     public void removeProduct(ProductEntity product) {
-        if (!this.isDraft()) {
-            throw new CantChangeOrderProductsAfterSubmitException();
-        }
-
         this.items.removeIf(orderItem -> orderItem.getProduct().equals(product));
-
         this.recalculateTotalPrice();
     }
 
-    public Double getTotalPrice() {
-        return this.totalPrice;
-    }
-
-    private void recalculateTotalPrice() {
-        this.totalPrice = this.items.stream().mapToDouble(item -> item.getTotalPrice()).sum();
-    }
-
-    private Boolean isDraft() {
-        return OrderStatus.DRAFT.equals(this.status);
+    public void recalculateTotalPrice() {
+        this.totalPrice = this.items.stream().mapToDouble(OrderItemEntity::getTotalPrice).sum();
     }
 
     private Boolean hasProducts() {
         return !this.items.isEmpty();
-    }
-
-    public void setStatus(OrderStatus status) {
-        this.status = status;
     }
 
     public void validate() {
@@ -146,10 +136,6 @@ public class OrderEntity {
         order.status = OrderStatus.DRAFT;
         order.payment = PaymentEntity.create(order);
         return order;
-    }
-
-    public void setCustomer(CustomerEntity customer) {
-        this.customer = customer;
     }
 
     public void setPaymentProcessing() {

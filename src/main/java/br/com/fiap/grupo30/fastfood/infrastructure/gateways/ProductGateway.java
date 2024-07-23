@@ -43,7 +43,7 @@ public class ProductGateway implements ProductRepository {
     public Product findById(Long id) {
         Optional<ProductEntity> obj = jpaProductRepository.findById(id);
         ProductEntity entity =
-                obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+                obj.orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         return this.productEntityMapper.mapFrom(entity);
     }
 

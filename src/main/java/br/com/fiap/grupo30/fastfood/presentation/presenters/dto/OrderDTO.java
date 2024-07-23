@@ -1,6 +1,6 @@
 package br.com.fiap.grupo30.fastfood.presentation.presenters.dto;
 
-import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderStatus;
+import br.com.fiap.grupo30.fastfood.domain.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
