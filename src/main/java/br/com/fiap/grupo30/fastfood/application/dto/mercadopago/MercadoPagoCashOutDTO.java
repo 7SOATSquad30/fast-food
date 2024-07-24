@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.adapters.out.mercadopago.model;
+package br.com.fiap.grupo30.fastfood.application.dto.mercadopago;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class MercadoPagoSponsor {
-    private Long id;
+public class MercadoPagoCashOutDTO {
+    private Double amount;
 }

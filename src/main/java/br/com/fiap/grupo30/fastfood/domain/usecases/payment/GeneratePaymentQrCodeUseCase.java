@@ -1,13 +1,12 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.payment;
 
 import br.com.fiap.grupo30.fastfood.adapters.out.mercadopago.MercadoPagoAdapter;
-import br.com.fiap.grupo30.fastfood.adapters.out.mercadopago.model.MercadoPagoCreateQrCodeForPaymentCollectionResponse;
 import br.com.fiap.grupo30.fastfood.application.dto.PaymentQrCodeDTO;
+import br.com.fiap.grupo30.fastfood.application.dto.mercadopago.MercadoPagoQrCodeDTO;
 import br.com.fiap.grupo30.fastfood.application.exceptions.PaymentProcessingFailedException;
 import br.com.fiap.grupo30.fastfood.application.exceptions.ResourceNotFoundException;
 import br.com.fiap.grupo30.fastfood.application.mapper.impl.PaymentQrCodeDTOMapper;
 import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderEntity;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.PaymentStatus;
 import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,7 +33,7 @@ public class GeneratePaymentQrCodeUseCase {
                         .findById(orderId)
                         .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
 
-        MercadoPagoCreateQrCodeForPaymentCollectionResponse qrCodeResponse;
+        MercadoPagoQrCodeDTO qrCodeResponse;
         try {
             qrCodeResponse =
                     this.mercadoPagoAdapter.createQrCodeForPaymentCollection(order.toDTO());
@@ -42,7 +41,7 @@ public class GeneratePaymentQrCodeUseCase {
             throw new PaymentProcessingFailedException("Could not start payment processing", e);
         }
 
-        order.updatePaymentStatus(PaymentStatus.PROCESSING);
+        order.setPaymentProcessing();
         this.orderRepository.save(order);
 
         return qrCodeMapper.map(qrCodeResponse);

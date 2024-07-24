@@ -152,9 +152,19 @@ public class OrderEntity {
         this.customer = customer;
     }
 
-    public void updatePaymentStatus(PaymentStatus status) {
-        this.payment.setStatus(status);
-        this.payment.setAmount(this.totalPrice);
+    public void setPaymentProcessing() {
+        this.payment.setStatus(PaymentStatus.PROCESSING);
+        this.payment.setAmount(this.getTotalPrice());
+    }
+
+    public void setPaymentCollected(Double paymentCollectedAmount) {
+        this.payment.setStatus(PaymentStatus.COLLECTED);
+        this.payment.setAmount(paymentCollectedAmount);
+    }
+
+    public void setPaymentRejected() {
+        this.payment.setStatus(PaymentStatus.REJECTED);
+        this.payment.setAmount(this.getTotalPrice());
     }
 
     public OrderDTO toDTO() {

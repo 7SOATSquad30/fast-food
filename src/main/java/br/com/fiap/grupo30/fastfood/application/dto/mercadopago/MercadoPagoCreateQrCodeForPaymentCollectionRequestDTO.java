@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.adapters.out.mercadopago.model;
+package br.com.fiap.grupo30.fastfood.application.dto.mercadopago;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class MercadoPagoCreateQrCodeForPaymentCollectionRequest {
+public class MercadoPagoCreateQrCodeForPaymentCollectionRequestDTO {
     private String title;
     private String description;
 
@@ -26,11 +26,11 @@ public class MercadoPagoCreateQrCodeForPaymentCollectionRequest {
             timezone = "GMT")
     private Date expirationDate;
 
-    private MercadoPagoSponsor sponsor;
-    private MercadoPagoOrderItem[] items;
+    private MercadoPagoSponsorDTO sponsor;
+    private MercadoPagoOrderItemDTO[] items;
 
     @JsonProperty("cash_out")
-    private MercadoPagoCashOut cashOut;
+    private MercadoPagoCashOutDTO cashOut;
 
     @JsonProperty("total_amount")
     private Double totalAmount;

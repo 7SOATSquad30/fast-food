@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.adapters.out.mercadopago.model;
+package br.com.fiap.grupo30.fastfood.application.dto.mercadopago;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class MercadoPagoOrderItem {
+public class MercadoPagoOrderItemDTO {
     @JsonProperty("sku_number")
     private String skuNumber;
 

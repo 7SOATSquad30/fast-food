@@ -1,7 +1,8 @@
 package br.com.fiap.grupo30.fastfood.adapters.out.mercadopago;
 
-import br.com.fiap.grupo30.fastfood.adapters.out.mercadopago.model.MercadoPagoCreateQrCodeForPaymentCollectionResponse;
 import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
+import br.com.fiap.grupo30.fastfood.application.dto.mercadopago.MercadoPagoPaymentDTO;
+import br.com.fiap.grupo30.fastfood.application.dto.mercadopago.MercadoPagoQrCodeDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -40,8 +41,7 @@ public class MercadoPagoAdapter {
         this.requestBuilder = requestBuilder;
     }
 
-    public MercadoPagoCreateQrCodeForPaymentCollectionResponse createQrCodeForPaymentCollection(
-            OrderDTO order) throws Exception {
+    public MercadoPagoQrCodeDTO createQrCodeForPaymentCollection(OrderDTO order) throws Exception {
         String resourceUrlTemplate =
                 "https://api.mercadopago.com/instore/orders/qr/seller/collectors/%s/pos/%s/qrs";
         String resourceUrl = String.format(resourceUrlTemplate, appUserId, pointOfSaleId);
@@ -63,10 +63,30 @@ public class MercadoPagoAdapter {
 
             HttpResponse<String> response =
                     client.send(request, HttpResponse.BodyHandlers.ofString());
-            MercadoPagoCreateQrCodeForPaymentCollectionResponse result =
-                    mapper.readValue(
-                            response.body(),
-                            MercadoPagoCreateQrCodeForPaymentCollectionResponse.class);
+            MercadoPagoQrCodeDTO result =
+                    mapper.readValue(response.body(), MercadoPagoQrCodeDTO.class);
+
+            return result;
+        }
+    }
+
+    public MercadoPagoPaymentDTO getPayment(String paymentId) throws Exception {
+        String resourceUrlTemplate = "https://api.mercadopago.com/v1/payments/%s";
+        String resourceUrl = String.format(resourceUrlTemplate, paymentId);
+
+        try (HttpClient client = HttpClient.newHttpClient()) {
+            HttpRequest request =
+                    HttpRequest.newBuilder()
+                            .uri(URI.create(resourceUrl))
+                            .header("Authorization", String.format("Bearer %s", privateAccessToken))
+                            .header("Content-type", "application/json")
+                            .GET()
+                            .build();
+
+            HttpResponse<String> response =
+                    client.send(request, HttpResponse.BodyHandlers.ofString());
+            MercadoPagoPaymentDTO result =
+                    new ObjectMapper().readValue(response.body(), MercadoPagoPaymentDTO.class);
 
             return result;
         }
