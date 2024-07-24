@@ -9,11 +9,17 @@ down:
 test:
 	./gradlew test
 
+install:
+	./gradlew build --refresh-dependencies
+
 build:
 	./gradlew build
 
+run/docker:
+	docker-compose up --build api
+
 run:
-	docker-compose up api
+	./gradlew bootRun
 
 debug:
 	./gradlew bootRun --debug-jvm
