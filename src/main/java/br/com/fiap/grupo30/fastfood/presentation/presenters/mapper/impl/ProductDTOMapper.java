@@ -6,12 +6,12 @@ import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.ProductE
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaCategoryRepository;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CategoryDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.Mapper;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.BiDirectionalMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class ProductDTOMapper implements Mapper<ProductDTO, ProductEntity> {
+public final class ProductDTOMapper implements BiDirectionalMapper<ProductDTO, ProductEntity> {
 
     private final JpaCategoryRepository jpaCategoryRepository;
     private final CategoryMapper categoryMapper;

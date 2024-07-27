@@ -3,11 +3,11 @@ package br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl;
 import br.com.fiap.grupo30.fastfood.domain.entities.Customer;
 import br.com.fiap.grupo30.fastfood.domain.valueobjects.CPF;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.CustomerEntity;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.Mapper;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.BiDirectionalMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class CustomerMapper implements Mapper<Customer, CustomerEntity> {
+public final class CustomerMapper implements BiDirectionalMapper<Customer, CustomerEntity> {
 
     @Override
     public CustomerEntity mapTo(Customer customer) {
