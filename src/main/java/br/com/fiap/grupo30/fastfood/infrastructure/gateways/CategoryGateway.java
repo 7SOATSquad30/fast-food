@@ -2,7 +2,9 @@ package br.com.fiap.grupo30.fastfood.infrastructure.gateways;
 
 import br.com.fiap.grupo30.fastfood.domain.entities.Category;
 import br.com.fiap.grupo30.fastfood.domain.repositories.CategoryRepository;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.CategoryEntity;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaCategoryRepository;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.ResourceNotFoundException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,16 @@ public class CategoryGateway implements CategoryRepository {
     @Transactional(readOnly = true)
     public List<Category> findAll() {
         return jpaCategoryRepository.findAll().stream()
-                .map(entity -> new Category(entity.getId(), entity.getName()))
+                .map(CategoryEntity::toDomainEntity)
                 .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Category findOne(String category) {
+        return jpaCategoryRepository
+                .findCategory(category)
+                .map(CategoryEntity::toDomainEntity)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
     }
 }

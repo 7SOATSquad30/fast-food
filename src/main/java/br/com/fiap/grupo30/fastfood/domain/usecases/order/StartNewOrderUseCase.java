@@ -6,6 +6,8 @@ import br.com.fiap.grupo30.fastfood.domain.valueobjects.CPF;
 import br.com.fiap.grupo30.fastfood.infrastructure.configuration.Constants;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.CustomerGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.OrderGateway;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.InvalidCpfException;
 
 public class StartNewOrderUseCase {
 
@@ -17,27 +19,28 @@ public class StartNewOrderUseCase {
         this.customerGateway = customerGateway;
     }
 
-    public Order execute(Customer domainObj) {
-        Customer customer = findOrCreateAnonymousCustomer(domainObj);
-        Order newOrder = new Order();
-        newOrder.setCustomer(customer);
-        return orderGateway.startNewOrder(newOrder);
+    public OrderDTO execute(String customerCpf) {
+        if (!CPF.isValid(customerCpf)) {
+            throw new InvalidCpfException(customerCpf);
+        }
+
+        Customer customer = findCustomerOrCreateAnonymous(new CPF(customerCpf));
+        Order newOrder = Order.createFor(customer);
+        return orderGateway.save(newOrder).toDTO();
     }
 
-    private Customer findOrCreateAnonymousCustomer(Customer domainObj) {
-        if (domainObj != null) {
-            return customerGateway.findCustomerByCpf(domainObj.getCpf().value());
+    private Customer findCustomerOrCreateAnonymous(CPF customerCpf) {
+        if (customerCpf != null) {
+            return customerGateway.findCustomerByCpf(customerCpf.value());
         } else {
             Customer anonymousCustomer = customerGateway.findCustomerByCpf(Constants.ANONYMOUS_CPF);
             if (anonymousCustomer != null) {
                 return anonymousCustomer;
             } else {
-                Customer newAnonymousCustomer = new Customer();
-                String anonymousCpf = CPF.removeNonDigits(Constants.ANONYMOUS_CPF);
-                newAnonymousCustomer.setCpf(new CPF(anonymousCpf));
-                newAnonymousCustomer.setName("Anonymous");
-                newAnonymousCustomer.setEmail("anonymous@fastfood.com");
-                return customerGateway.insert(newAnonymousCustomer);
+                Customer newAnonymousCustomer =
+                        Customer.create(
+                                "Anonymous", Constants.ANONYMOUS_CPF, "anonymous@fastfood.com");
+                return customerGateway.save(newAnonymousCustomer);
             }
         }
     }

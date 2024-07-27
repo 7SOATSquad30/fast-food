@@ -1,13 +1,17 @@
 package br.com.fiap.grupo30.fastfood.presentation.presenters.dto;
 
 import br.com.fiap.grupo30.fastfood.domain.OrderStatus;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
 @AllArgsConstructor
 public class OrderDTO {
+    @Setter(AccessLevel.NONE)
     private Long orderId;
+
     private OrderStatus status;
     private OrderItemDTO[] items;
     private Double totalPrice;

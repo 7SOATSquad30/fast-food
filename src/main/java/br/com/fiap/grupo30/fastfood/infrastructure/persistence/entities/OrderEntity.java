@@ -1,19 +1,19 @@
 package br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities;
 
 import br.com.fiap.grupo30.fastfood.domain.OrderStatus;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderItemDTO;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.CompositeDomainValidationException;
+import br.com.fiap.grupo30.fastfood.domain.entities.Order;
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.stream.Collectors;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
 @Entity
 @Table(name = "tb_order")
@@ -42,9 +42,7 @@ public class OrderEntity {
             fetch = FetchType.EAGER,
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    private Collection<OrderItemEntity> items = new LinkedList<OrderItemEntity>();
-
-    @Transient private Double totalPrice = 0.0;
+    private Collection<OrderItemEntity> items;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
@@ -55,75 +53,32 @@ public class OrderEntity {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant deletedAt;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setStatus(OrderStatus status) {
+    public OrderEntity(
+            Long orderId,
+            OrderStatus status,
+            CustomerEntity customer,
+            PaymentEntity payment,
+            Collection<OrderItemEntity> orderItems) {
+        this.id = orderId;
         this.status = status;
-    }
-
-    public void setCustomer(CustomerEntity customer) {
         this.customer = customer;
-    }
+        this.payment = payment;
+        this.items = orderItems;
 
-    public void addProduct(ProductEntity product, Long quantity) {
-        this.items.stream()
-                .filter(orderItem -> orderItem.getProduct().equals(product))
-                .findFirst()
-                .ifPresentOrElse(
-                        existingItem ->
-                                existingItem.setQuantity(existingItem.getQuantity() + quantity),
-                        () -> this.items.add(OrderItemEntity.create(this, product, quantity)));
-
-        this.recalculateTotalPrice();
-    }
-
-    public void removeProduct(ProductEntity product) {
-        this.items.removeIf(orderItem -> orderItem.getProduct().equals(product));
-        this.recalculateTotalPrice();
-    }
-
-    public void recalculateTotalPrice() {
-        this.totalPrice = this.items.stream().mapToDouble(OrderItemEntity::getTotalPrice).sum();
-    }
-
-    private Boolean hasProducts() {
-        return !this.items.isEmpty();
-    }
-
-    public void validate() {
-        var errors = new LinkedList<String>();
-
-        if (this.status == OrderStatus.SUBMITTED && !this.hasProducts()) {
-            errors.add("Can not submit order without products");
+        this.payment.setParentRelation(this);
+        for (OrderItemEntity orderItem : this.items) {
+            orderItem.setParentRelation(this);
         }
-
-        if (this.status == OrderStatus.PREPARING
-                && !PaymentStatus.COLLECTED.equals(this.getPayment().getStatus())) {
-            errors.add("Can not start peparing order without collecting payment");
-        }
-
-        if (!errors.isEmpty()) {
-            throw new CompositeDomainValidationException(errors);
-        }
-    }
-
-    @PostLoad
-    protected void postLoad() {
-        recalculateTotalPrice();
     }
 
     @PrePersist
     protected void prePersist() {
         createdAt = Instant.now();
-        this.validate();
     }
 
     @PreUpdate
     protected void preUpdate() {
         updatedAt = Instant.now();
-        this.validate();
     }
 
     @PreRemove
@@ -131,37 +86,14 @@ public class OrderEntity {
         deletedAt = Instant.now();
     }
 
-    public static OrderEntity create() {
-        OrderEntity order = new OrderEntity();
-        order.status = OrderStatus.DRAFT;
-        order.payment = PaymentEntity.create(order);
-        return order;
-    }
-
-    public void setPaymentProcessing() {
-        this.payment.setStatus(PaymentStatus.PROCESSING);
-        this.payment.setAmount(this.getTotalPrice());
-    }
-
-    public void setPaymentCollected(Double paymentCollectedAmount) {
-        this.payment.setStatus(PaymentStatus.COLLECTED);
-        this.payment.setAmount(paymentCollectedAmount);
-    }
-
-    public void setPaymentRejected() {
-        this.payment.setStatus(PaymentStatus.REJECTED);
-        this.payment.setAmount(this.getTotalPrice());
-    }
-
-    public OrderDTO toDTO() {
-        OrderDTO orderDto =
-                new OrderDTO(
-                        this.id,
-                        this.status,
-                        this.items.stream().map(item -> item.toDTO()).toArray(OrderItemDTO[]::new),
-                        this.getTotalPrice(),
-                        this.customer.toDTO(),
-                        this.payment.toDTO());
-        return orderDto;
+    public Order toDomainEntity() {
+        return new Order(
+                id,
+                status,
+                customer.toDomainEntity(),
+                payment.toDomainEntity(),
+                items.stream()
+                        .map(OrderItemEntity::toDomainEntity)
+                        .collect(Collectors.toCollection(ArrayList::new)));
     }
 }

@@ -36,7 +36,7 @@ public class MercadoPagoRequestBuilder {
                                     theirOrderItem.setDescription(
                                             ourOrderItem.getProduct().getDescription());
                                     theirOrderItem.setCategory(
-                                            ourOrderItem.getProduct().getCategory().getName());
+                                            ourOrderItem.getProduct().getCategory());
                                     theirOrderItem.setQuantity(ourOrderItem.getQuantity());
                                     theirOrderItem.setUnitPrice(
                                             ourOrderItem.getProduct().getPrice());

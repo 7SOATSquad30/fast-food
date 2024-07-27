@@ -6,7 +6,6 @@ import br.com.fiap.grupo30.fastfood.infrastructure.gateways.CustomerGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.OrderGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.ProductGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaOrderRepository;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl.OrderEntityMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,9 +13,8 @@ import org.springframework.context.annotation.Configuration;
 public class OrderConfiguration {
 
     @Bean
-    public OrderRepository orderRepository(
-            JpaOrderRepository jpaOrderRepository, OrderEntityMapper orderEntityMapper) {
-        return new OrderGateway(jpaOrderRepository, orderEntityMapper);
+    public OrderRepository orderRepository(JpaOrderRepository jpaOrderRepository) {
+        return new OrderGateway(jpaOrderRepository);
     }
 
     @Bean

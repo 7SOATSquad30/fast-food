@@ -1,35 +1,23 @@
 package br.com.fiap.grupo30.fastfood.domain.entities;
 
-import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.PaymentStatus;
+import br.com.fiap.grupo30.fastfood.domain.PaymentStatus;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.PaymentEntity;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.PaymentDTO;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
 public class Payment {
     private Long id;
     private PaymentStatus status;
     private Double amount;
 
-    public Long getId() {
-        return id;
-    }
-
-    public PaymentStatus getStatus() {
-        return status;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setId(Long newId) {
-        this.id = newId;
-    }
-
-    public void setStatus(PaymentStatus newStatus) {
-        this.status = newStatus;
-    }
-
-    public void setAmount(Double newAmount) {
-        this.amount = newAmount;
+    public static Payment create() {
+        return new Payment(null, PaymentStatus.NOT_SUBMITTED, 0.0);
     }
 
     @Override
@@ -42,5 +30,13 @@ public class Payment {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public PaymentDTO toDTO() {
+        return new PaymentDTO(status, amount);
+    }
+
+    public PaymentEntity toPersistence() {
+        return new PaymentEntity(id, status, amount);
     }
 }

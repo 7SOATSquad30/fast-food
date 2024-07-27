@@ -1,19 +1,13 @@
 package br.com.fiap.grupo30.fastfood.presentation.presenters.dto;
 
-import br.com.fiap.grupo30.fastfood.domain.entities.Customer;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
-@Data
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
 public class CustomerDTO {
-
-    private Long id;
-
     @NotBlank(message = "Campo obrigatório")
     private String name;
 
@@ -22,11 +16,4 @@ public class CustomerDTO {
 
     @Email(message = "Favor entrar um email válido")
     private String email;
-
-    public CustomerDTO(Customer entity) {
-        this.id = entity.getId();
-        this.name = entity.getName();
-        this.cpf = String.valueOf(entity.getCpf().value());
-        this.email = entity.getEmail();
-    }
 }

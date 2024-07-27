@@ -1,23 +1,12 @@
 package br.com.fiap.grupo30.fastfood.presentation.presenters.dto;
 
-import br.com.fiap.grupo30.fastfood.domain.entities.Category;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
-@Data
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
 public class CategoryDTO {
-
-    private Long id;
-
     @NotBlank(message = "Campo requirido")
     private String name;
-
-    public CategoryDTO(Category entity) {
-        this.id = entity.getId();
-        this.name = entity.getName();
-    }
 }

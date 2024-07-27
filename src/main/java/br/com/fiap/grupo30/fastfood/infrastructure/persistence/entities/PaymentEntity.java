@@ -1,6 +1,7 @@
 package br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities;
 
-import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.PaymentDTO;
+import br.com.fiap.grupo30.fastfood.domain.PaymentStatus;
+import br.com.fiap.grupo30.fastfood.domain.entities.Payment;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import java.time.Instant;
@@ -39,6 +40,16 @@ public class PaymentEntity {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant deletedAt;
 
+    public PaymentEntity(Long paymentId, PaymentStatus status, Double amount) {
+        this.id = paymentId;
+        this.status = status;
+        this.amount = amount;
+    }
+
+    public void setParentRelation(OrderEntity order) {
+        this.order = order;
+    }
+
     @PrePersist
     protected void prePersist() {
         createdAt = Instant.now();
@@ -54,32 +65,7 @@ public class PaymentEntity {
         deletedAt = Instant.now();
     }
 
-    public PaymentStatus getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(PaymentStatus status) {
-        this.status = status;
-    }
-
-    public Double getAmount() {
-        return this.amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public static PaymentEntity create(OrderEntity order) {
-        PaymentEntity payment = new PaymentEntity();
-        payment.order = order;
-        payment.status = PaymentStatus.NOT_SUBMITTED;
-        payment.amount = 0.0;
-        return payment;
-    }
-
-    public PaymentDTO toDTO() {
-        PaymentDTO dto = new PaymentDTO(this.id, this.status, this.amount);
-        return dto;
+    public Payment toDomainEntity() {
+        return new Payment(id, status, amount);
     }
 }
