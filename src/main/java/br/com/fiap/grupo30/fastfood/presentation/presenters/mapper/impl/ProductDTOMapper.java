@@ -1,61 +1,41 @@
 package br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl;
 
-import br.com.fiap.grupo30.fastfood.domain.entities.Category;
-import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.CategoryEntity;
-import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.ProductEntity;
-import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaCategoryRepository;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CategoryDTO;
+import br.com.fiap.grupo30.fastfood.domain.entities.Product;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.BiDirectionalMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class ProductDTOMapper implements BiDirectionalMapper<ProductDTO, ProductEntity> {
-
-    private final JpaCategoryRepository jpaCategoryRepository;
-    private final CategoryEntityMapper categoryEntityMapper;
+public final class ProductDTOMapper implements BiDirectionalMapper<Product, ProductDTO> {
+    private final CategoryDTOMapper categoryDTOMapper;
 
     @Autowired
-    public ProductDTOMapper(
-            JpaCategoryRepository jpaCategoryRepository,
-            CategoryEntityMapper categoryEntityMapper) {
-        this.jpaCategoryRepository = jpaCategoryRepository;
-        this.categoryEntityMapper = categoryEntityMapper;
+    public ProductDTOMapper(CategoryDTOMapper categoryDTOMapper) {
+        this.categoryDTOMapper = categoryDTOMapper;
     }
 
     @Override
-    public ProductEntity mapTo(ProductDTO dto) {
-        ProductEntity entity = new ProductEntity();
-        entity.setId(dto.getId());
-        entity.setName(dto.getName());
-        entity.setDescription(dto.getDescription());
-        entity.setPrice(dto.getPrice());
-        entity.setImgUrl(dto.getImgUrl());
-        CategoryEntity category = jpaCategoryRepository.getReferenceById(dto.getCategory().getId());
-        entity.setCategory(category);
-        return entity;
-    }
-
-    @Override
-    public ProductDTO mapFrom(ProductEntity entity) {
+    public ProductDTO mapTo(Product product) {
         ProductDTO dto = new ProductDTO();
-        dto.setId(entity.getId());
-        dto.setName(entity.getName());
-        dto.setDescription(entity.getDescription());
-        dto.setImgUrl(entity.getImgUrl());
-        dto.setPrice(entity.getPrice());
-        Category category = categoryEntityMapper.mapFrom(entity.getCategory());
-        dto.setCategory(new CategoryDTO(category));
+        dto.setId(product.getId());
+        dto.setName(product.getName());
+        dto.setDescription(product.getDescription());
+        dto.setPrice(product.getPrice());
+        dto.setImgUrl(product.getImgUrl());
+        dto.setCategory(categoryDTOMapper.mapTo(product.getCategory()));
         return dto;
     }
 
-    public void updateEntityFromDTO(ProductEntity entity, ProductDTO dto) {
-        entity.setName(dto.getName());
-        entity.setDescription(dto.getDescription());
-        entity.setImgUrl(dto.getImgUrl());
-        entity.setPrice(dto.getPrice());
-        CategoryEntity category = jpaCategoryRepository.getReferenceById(dto.getCategory().getId());
-        entity.setCategory(category);
+    @Override
+    public Product mapFrom(ProductDTO dto) {
+        Product product = new Product();
+        product.setId(dto.getId());
+        product.setName(dto.getName());
+        product.setDescription(dto.getDescription());
+        product.setImgUrl(dto.getImgUrl());
+        product.setPrice(dto.getPrice());
+        product.setCategory(categoryDTOMapper.mapFrom(dto.getCategory()));
+        return product;
     }
 }

@@ -1,7 +1,9 @@
 package br.com.fiap.grupo30.fastfood.presentation.controllers;
 
+import br.com.fiap.grupo30.fastfood.domain.entities.Product;
 import br.com.fiap.grupo30.fastfood.domain.usecases.product.*;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl.ProductDTOMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -25,19 +27,23 @@ public class ProductController {
     private final UpdateProductUseCase updateProductUseCase;
     private final DeleteProductUseCase deleteProductUseCase;
 
+    private final ProductDTOMapper productDTOMapper;
+
     @Autowired
     public ProductController(
             ListProductsByCategoryUseCase listProductsByCategoryUseCase,
             GetProductUseCase getProductUseCase,
             CreateProductUseCase createProductUseCase,
             UpdateProductUseCase updateProductUseCase,
-            DeleteProductUseCase deleteProductUseCase) {
+            DeleteProductUseCase deleteProductUseCase,
+            ProductDTOMapper productDTOMapper) {
 
         this.listProductsByCategoryUseCase = listProductsByCategoryUseCase;
         this.getProductUseCase = getProductUseCase;
         this.createProductUseCase = createProductUseCase;
         this.updateProductUseCase = updateProductUseCase;
         this.deleteProductUseCase = deleteProductUseCase;
+        this.productDTOMapper = productDTOMapper;
     }
 
     @GetMapping
@@ -48,7 +54,10 @@ public class ProductController {
                             + "via RequestParam. i.e., ?categoryId=1")
     public ResponseEntity<List<ProductDTO>> findProductsByCategoryId(
             @RequestParam(value = "categoryId", defaultValue = "0") Long categoryId) {
-        List<ProductDTO> list = this.listProductsByCategoryUseCase.execute(categoryId);
+        List<ProductDTO> list =
+                this.listProductsByCategoryUseCase.execute(categoryId).stream()
+                        .map(this.productDTOMapper::mapTo)
+                        .toList();
         return ResponseEntity.ok().body(list);
     }
 
@@ -57,7 +66,7 @@ public class ProductController {
             summary = "Get a product by ID",
             description = "Retrieve a specific product based on its ID")
     public ResponseEntity<ProductDTO> findProductById(@PathVariable Long id) {
-        ProductDTO dto = this.getProductUseCase.execute(id);
+        ProductDTO dto = this.productDTOMapper.mapTo(this.getProductUseCase.execute(id));
         return ResponseEntity.ok().body(dto);
     }
 
@@ -66,7 +75,9 @@ public class ProductController {
             summary = "Create a new product",
             description = "Create a new product and return the created product's data")
     public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid ProductDTO dto) {
-        ProductDTO dtoCreated = this.createProductUseCase.execute(dto);
+        Product domainObj = this.productDTOMapper.mapFrom(dto);
+        ProductDTO dtoCreated =
+                this.productDTOMapper.mapTo(this.createProductUseCase.execute(domainObj));
         URI uri =
                 ServletUriComponentsBuilder.fromCurrentRequest()
                         .path(PATH_VARIABLE_ID)
@@ -81,7 +92,9 @@ public class ProductController {
             description = "Update the data of an existing product based on its ID")
     public ResponseEntity<ProductDTO> updateProduct(
             @PathVariable Long id, @RequestBody @Valid ProductDTO dto) {
-        ProductDTO dtoUpdated = this.updateProductUseCase.execute(id, dto);
+        Product domainObj = this.productDTOMapper.mapFrom(dto);
+        ProductDTO dtoUpdated =
+                this.productDTOMapper.mapTo(this.updateProductUseCase.execute(id, domainObj));
         return ResponseEntity.ok().body(dtoUpdated);
     }
 

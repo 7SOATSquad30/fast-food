@@ -2,11 +2,11 @@ package br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl;
 
 import br.com.fiap.grupo30.fastfood.domain.entities.Category;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CategoryDTO;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.Mapper;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.BiDirectionalMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CategoryDTOMapper implements Mapper<Category, CategoryDTO> {
+public class CategoryDTOMapper implements BiDirectionalMapper<Category, CategoryDTO> {
 
     @Override
     public CategoryDTO mapTo(Category category) {

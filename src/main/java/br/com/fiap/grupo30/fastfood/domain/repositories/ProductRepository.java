@@ -1,17 +1,17 @@
 package br.com.fiap.grupo30.fastfood.domain.repositories;
 
-import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
+import br.com.fiap.grupo30.fastfood.domain.entities.Product;
 import java.util.List;
 
 public interface ProductRepository {
 
-    List<ProductDTO> findProductsByCategoryId(Long categoryId);
+    List<Product> findProductsByCategoryId(Long categoryId);
 
-    ProductDTO findById(Long id);
+    Product findById(Long id);
 
-    ProductDTO insert(ProductDTO dto);
+    Product insert(Product product);
 
-    ProductDTO update(Long id, ProductDTO dto);
+    Product update(Long id, Product product);
 
     void delete(Long id);
 }
