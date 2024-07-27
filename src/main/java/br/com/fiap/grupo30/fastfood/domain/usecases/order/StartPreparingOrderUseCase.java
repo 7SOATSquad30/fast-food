@@ -3,6 +3,7 @@ package br.com.fiap.grupo30.fastfood.domain.usecases.order;
 import br.com.fiap.grupo30.fastfood.domain.OrderStatus;
 import br.com.fiap.grupo30.fastfood.domain.entities.Order;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.OrderGateway;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.CantChangeOrderStatusPreparingOtherThanSubmittedException;
 
 public class StartPreparingOrderUseCase {
@@ -13,7 +14,7 @@ public class StartPreparingOrderUseCase {
         this.orderGateway = orderGateway;
     }
 
-    public Order execute(Long orderId) {
+    public OrderDTO execute(Long orderId) {
         Order order = orderGateway.findById(orderId);
 
         if (order.getStatus() != OrderStatus.SUBMITTED) {
@@ -21,6 +22,6 @@ public class StartPreparingOrderUseCase {
         }
 
         order.setStatus(OrderStatus.PREPARING);
-        return orderGateway.startPreparingOrder(order);
+        return orderGateway.save(order).toDTO();
     }
 }

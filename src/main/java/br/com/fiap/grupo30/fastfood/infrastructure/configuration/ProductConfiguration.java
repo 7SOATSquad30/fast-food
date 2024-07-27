@@ -2,9 +2,9 @@ package br.com.fiap.grupo30.fastfood.infrastructure.configuration;
 
 import br.com.fiap.grupo30.fastfood.domain.repositories.ProductRepository;
 import br.com.fiap.grupo30.fastfood.domain.usecases.product.*;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.CategoryGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.ProductGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaProductRepository;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl.ProductEntityMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,9 +12,8 @@ import org.springframework.context.annotation.Configuration;
 public class ProductConfiguration {
 
     @Bean
-    public ProductRepository productRepository(
-            JpaProductRepository jpaProductRepository, ProductEntityMapper productEntityMapper) {
-        return new ProductGateway(jpaProductRepository, productEntityMapper);
+    public ProductRepository productRepository(JpaProductRepository jpaProductRepository) {
+        return new ProductGateway(jpaProductRepository);
     }
 
     @Bean
@@ -29,13 +28,15 @@ public class ProductConfiguration {
     }
 
     @Bean
-    public CreateProductUseCase createProductUseCase(ProductGateway productGateway) {
-        return new CreateProductUseCase(productGateway);
+    public CreateProductUseCase createProductUseCase(
+            ProductGateway productGateway, CategoryGateway categoryGateway) {
+        return new CreateProductUseCase(productGateway, categoryGateway);
     }
 
     @Bean
-    public UpdateProductUseCase updateProductUseCase(ProductGateway productGateway) {
-        return new UpdateProductUseCase(productGateway);
+    public UpdateProductUseCase updateProductUseCase(
+            ProductGateway productGateway, CategoryGateway categoryGateway) {
+        return new UpdateProductUseCase(productGateway, categoryGateway);
     }
 
     @Bean

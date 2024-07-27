@@ -1,16 +1,15 @@
 package br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities;
 
-import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
+import br.com.fiap.grupo30.fastfood.domain.entities.Product;
 import jakarta.persistence.*;
 import java.time.Instant;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
 @Entity
 @Table(name = "tb_product")
@@ -45,27 +44,18 @@ public class ProductEntity {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant deletedAt;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
+    public ProductEntity(
+            Long productId,
+            String name,
+            String description,
+            Double price,
+            String imgUrl,
+            CategoryEntity category) {
+        this.id = productId;
         this.name = name;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setPrice(Double price) {
         this.price = price;
-    }
-
-    public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
-    }
-
-    public void setCategory(CategoryEntity category) {
         this.category = category;
     }
 
@@ -84,15 +74,7 @@ public class ProductEntity {
         deletedAt = Instant.now();
     }
 
-    public ProductDTO toDTO() {
-        ProductDTO productDto =
-                new ProductDTO(
-                        this.id,
-                        this.name,
-                        this.description,
-                        this.price,
-                        this.imgUrl,
-                        this.category.toDTO());
-        return productDto;
+    public Product toDomainEntity() {
+        return new Product(id, name, description, price, imgUrl, category.toDomainEntity());
     }
 }

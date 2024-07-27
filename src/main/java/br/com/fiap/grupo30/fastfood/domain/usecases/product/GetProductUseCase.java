@@ -1,7 +1,7 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.product;
 
-import br.com.fiap.grupo30.fastfood.domain.entities.Product;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.ProductGateway;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
 
 public class GetProductUseCase {
 
@@ -11,7 +11,7 @@ public class GetProductUseCase {
         this.productGateway = productGateway;
     }
 
-    public Product execute(Long id) {
-        return productGateway.findById(id);
+    public ProductDTO execute(Long id) {
+        return productGateway.findById(id).toDTO();
     }
 }

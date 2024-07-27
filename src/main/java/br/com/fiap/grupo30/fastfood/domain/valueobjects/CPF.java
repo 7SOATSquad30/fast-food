@@ -15,7 +15,7 @@ public record CPF(String value) {
 
     @Override
     public String value() {
-        return value;
+        return removeNonDigits(value);
     }
 
     public static boolean isValidLength(String cpf) {

@@ -1,44 +1,41 @@
 package br.com.fiap.grupo30.fastfood.domain.entities;
 
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.CategoryEntity;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CategoryDTO;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
 public class Category {
 
     private Long id;
     private String name;
 
-    public Category() {}
-
-    public Category(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public static Category create(String name) {
+        return new Category(null, name);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Category category)) return false;
-        return Objects.equals(id, category.id);
+        return Objects.equals(name, category.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(name);
+    }
+
+    public CategoryDTO toDTO() {
+        return new CategoryDTO(name);
+    }
+
+    public CategoryEntity toPersistence() {
+        return new CategoryEntity(id, name);
     }
 }

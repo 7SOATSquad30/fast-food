@@ -1,16 +1,15 @@
 package br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities;
 
-import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CategoryDTO;
+import br.com.fiap.grupo30.fastfood.domain.entities.Category;
 import jakarta.persistence.*;
 import java.time.Instant;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
 @Entity
 @Table(name = "tb_category")
@@ -32,11 +31,8 @@ public class CategoryEntity {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant deletedAt;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
+    public CategoryEntity(Long categoryId, String name) {
+        this.id = categoryId;
         this.name = name;
     }
 
@@ -55,8 +51,7 @@ public class CategoryEntity {
         deletedAt = Instant.now();
     }
 
-    public CategoryDTO toDTO() {
-        CategoryDTO categoryDto = new CategoryDTO(this.id, this.name);
-        return categoryDto;
+    public Category toDomainEntity() {
+        return new Category(id, name);
     }
 }

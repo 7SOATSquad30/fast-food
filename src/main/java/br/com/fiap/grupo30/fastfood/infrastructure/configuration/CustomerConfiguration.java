@@ -5,7 +5,6 @@ import br.com.fiap.grupo30.fastfood.domain.usecases.customer.FindCustomerByCpfUs
 import br.com.fiap.grupo30.fastfood.domain.usecases.customer.RegisterNewCustomerUseCase;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.CustomerGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaCustomerRepository;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl.CustomerEntityMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,10 +12,8 @@ import org.springframework.context.annotation.Configuration;
 public class CustomerConfiguration {
 
     @Bean
-    public CustomerRepository customerRepository(
-            JpaCustomerRepository jpaCustomerRepository,
-            CustomerEntityMapper customerEntityMapper) {
-        return new CustomerGateway(jpaCustomerRepository, customerEntityMapper);
+    public CustomerRepository customerRepository(JpaCustomerRepository jpaCustomerRepository) {
+        return new CustomerGateway(jpaCustomerRepository);
     }
 
     @Bean

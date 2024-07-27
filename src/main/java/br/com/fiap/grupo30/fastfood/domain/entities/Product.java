@@ -1,7 +1,15 @@
 package br.com.fiap.grupo30.fastfood.domain.entities;
 
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.ProductEntity;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
 public class Product {
 
     private Long id;
@@ -11,69 +19,9 @@ public class Product {
     private String imgUrl;
     private Category category;
 
-    public Product() {}
-
-    public Product(
-            Long id,
-            String name,
-            String description,
-            Double price,
-            String imgUrl,
-            Category category) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.imgUrl = imgUrl;
-        this.category = category;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
+    public static Product create(
+            String name, String description, Double price, String imgUrl, Category category) {
+        return new Product(null, name, description, price, imgUrl, category);
     }
 
     @Override
@@ -86,5 +34,13 @@ public class Product {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public ProductDTO toDTO() {
+        return new ProductDTO(id, name, description, price, imgUrl, category.getName());
+    }
+
+    public ProductEntity toPersistence() {
+        return new ProductEntity(id, name, description, price, imgUrl, category.toPersistence());
     }
 }
