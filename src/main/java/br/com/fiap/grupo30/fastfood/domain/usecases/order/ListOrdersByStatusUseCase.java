@@ -8,11 +8,11 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.InvalidOr
 import java.util.List;
 import java.util.Locale;
 
-public class ListOrdersUseCase {
+public class ListOrdersByStatusUseCase {
 
     private final OrderGateway orderGateway;
 
-    public ListOrdersUseCase(OrderGateway orderGateway) {
+    public ListOrdersByStatusUseCase(OrderGateway orderGateway) {
         this.orderGateway = orderGateway;
     }
 

@@ -23,6 +23,14 @@ public class OrderGateway implements OrderRepository {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<Order> findOrdersWithSpecificStatuses() {
+        return jpaOrderRepository.findOrdersWithSpecificStatuses().stream()
+                .map(OrderEntity::toDomainEntity)
+                .toList();
+    }
+
+    @Override
     public List<Order> findOrdersByStatus(OrderStatus orderStatus) {
         return jpaOrderRepository.findOrdersByStatus(orderStatus).stream()
                 .sorted(Comparator.comparing(OrderEntity::getCreatedAt))

@@ -18,8 +18,14 @@ public class OrderConfiguration {
     }
 
     @Bean
-    public ListOrdersUseCase listOrdersUseCase(OrderGateway orderGateway) {
-        return new ListOrdersUseCase(orderGateway);
+    public ListOrdersWithSpecificStatusesUseCase listOrdersBySpecificStatusesUseCase(
+            OrderGateway orderGateway) {
+        return new ListOrdersWithSpecificStatusesUseCase(orderGateway);
+    }
+
+    @Bean
+    public ListOrdersByStatusUseCase listOrdersByStatusUseCase(OrderGateway orderGateway) {
+        return new ListOrdersByStatusUseCase(orderGateway);
     }
 
     @Bean
