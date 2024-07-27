@@ -9,6 +9,17 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JpaOrderRepository extends JpaRepository<OrderEntity, Long> {
+
+    @Query(
+            "SELECT obj FROM OrderEntity obj "
+                    + "WHERE obj.status IN ('READY', 'PREPARING', 'SUBMITTED') "
+                    + "ORDER BY CASE obj.status "
+                    + "WHEN 'READY' THEN 1 "
+                    + "WHEN 'PREPARING' THEN 2 "
+                    + "WHEN 'SUBMITTED' THEN 3 "
+                    + "END ASC, obj.createdAt ASC")
+    List<OrderEntity> findOrdersWithSpecificStatuses();
+
     @Query(
             "SELECT obj FROM OrderEntity obj "
                     + "WHERE (:status IS NULL OR obj.status = :status) "

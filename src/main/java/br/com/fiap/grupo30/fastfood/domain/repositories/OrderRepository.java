@@ -5,6 +5,9 @@ import br.com.fiap.grupo30.fastfood.domain.entities.Order;
 import java.util.List;
 
 public interface OrderRepository {
+
+    List<Order> findOrdersWithSpecificStatuses();
+
     List<Order> findOrdersByStatus(OrderStatus status);
 
     Order findById(Long orderId);

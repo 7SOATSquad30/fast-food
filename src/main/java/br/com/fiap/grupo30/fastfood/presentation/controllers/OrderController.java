@@ -23,7 +23,8 @@ public class OrderController {
     private final RemoveProductFromOrderUseCase removeProductFromOrderUseCase;
     private final GetOrderUseCase getOrderUseCase;
     private final SubmitOrderUseCase submitOrderUseCase;
-    private final ListOrdersUseCase listAllOrdersUseCase;
+    private final ListOrdersWithSpecificStatusesUseCase listOrdersWithSpecificStatusesUseCase;
+    private final ListOrdersByStatusUseCase listAllOrdersByStatus;
     private final StartPreparingOrderUseCase startPreparingOrderUseCase;
     private final FinishPreparingOrderUseCase finishPreparingOrderUseCase;
     private final DeliverOrderUseCase deliverOrderUseCase;
@@ -35,7 +36,8 @@ public class OrderController {
             RemoveProductFromOrderUseCase removeProductFromOrderUseCase,
             GetOrderUseCase getOrderUseCase,
             SubmitOrderUseCase submitOrderUseCase,
-            ListOrdersUseCase listAllOrdersUseCase,
+            ListOrdersWithSpecificStatusesUseCase listOrdersWithSpecificStatusesUseCase,
+            ListOrdersByStatusUseCase listAllOrdersByStatus,
             StartPreparingOrderUseCase startPreparingOrderUseCase,
             FinishPreparingOrderUseCase finishPreparingOrderUseCase,
             DeliverOrderUseCase deliverOrderUseCase) {
@@ -44,21 +46,33 @@ public class OrderController {
         this.removeProductFromOrderUseCase = removeProductFromOrderUseCase;
         this.getOrderUseCase = getOrderUseCase;
         this.submitOrderUseCase = submitOrderUseCase;
-        this.listAllOrdersUseCase = listAllOrdersUseCase;
+        this.listOrdersWithSpecificStatusesUseCase = listOrdersWithSpecificStatusesUseCase;
+        this.listAllOrdersByStatus = listAllOrdersByStatus;
         this.startPreparingOrderUseCase = startPreparingOrderUseCase;
         this.finishPreparingOrderUseCase = finishPreparingOrderUseCase;
         this.deliverOrderUseCase = deliverOrderUseCase;
     }
 
-    @GetMapping
+    @GetMapping()
     @Operation(
-            summary = "Get all orders",
+            summary = "Get orders with specific status",
             description =
-                    "Get a list of all registered orders sorted by date and status or by status"
+                    "Get a list of orders with statuses READY, PREPARING, and SUBMITTED, sorted by"
+                            + " status and date")
+    public ResponseEntity<List<OrderDTO>> findOrdersWithSpecificStatuses() {
+        List<OrderDTO> orders = listOrdersWithSpecificStatusesUseCase.execute();
+        return ResponseEntity.ok().body(orders);
+    }
+
+    @GetMapping(value = "/by-status")
+    @Operation(
+            summary = "Get orders of any status or by status",
+            description =
+                    "Get a list of all registered orders of any status or by status"
                             + " sorted by date via RequestParam. i.e., ?status=")
     public ResponseEntity<List<OrderDTO>> findOrdersByStatus(
             @RequestParam(value = "status", required = false) String status) {
-        List<OrderDTO> orders = listAllOrdersUseCase.execute(status);
+        List<OrderDTO> orders = listAllOrdersByStatus.execute(status);
         return ResponseEntity.ok().body(orders);
     }
 
