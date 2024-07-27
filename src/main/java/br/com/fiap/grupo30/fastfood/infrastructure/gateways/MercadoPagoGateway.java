@@ -48,12 +48,10 @@ public class MercadoPagoGateway {
     }
 
     private Map<String, String> getHeaders() {
-        return new HashMap<String, String>() {
-            {
-                put("Authorization", String.format("Bearer %s", privateAccessToken));
-                put("Content-type", "application/json");
-            }
-        };
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("Authorization", String.format("Bearer %s", privateAccessToken));
+        headers.put("Content-type", "application/json");
+        return headers;
     }
 
     private HttpResponse<String> makeRequest(String httpMethod, URI resourceUri) throws Exception {
