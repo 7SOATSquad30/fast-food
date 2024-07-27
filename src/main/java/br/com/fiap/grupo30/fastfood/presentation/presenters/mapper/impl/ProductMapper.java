@@ -2,12 +2,12 @@ package br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl;
 
 import br.com.fiap.grupo30.fastfood.domain.entities.Product;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.ProductEntity;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.Mapper;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.BiDirectionalMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class ProductMapper implements Mapper<Product, ProductEntity> {
+public final class ProductMapper implements BiDirectionalMapper<Product, ProductEntity> {
 
     private final CategoryEntityMapper categoryEntityMapper;
 

@@ -21,7 +21,7 @@ services:
       - database
     build: .
     environment:
-      SPRING_PROFILES_ACTIVE: "dev"
+      SPRING_PROFILES_ACTIVE: "dev-docker"
     ports:
       - "8080:8080"
     networks:
