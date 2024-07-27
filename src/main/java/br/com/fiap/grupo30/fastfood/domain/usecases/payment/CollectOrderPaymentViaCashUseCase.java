@@ -16,10 +16,10 @@ public class CollectOrderPaymentViaCashUseCase {
         this.orderGateway = orderGateway;
     }
 
-    public OrderDTO execute(Long orderId, CollectPaymentViaCashRequest payment) {
+    public OrderDTO execute(Long orderId, Double paidAmount) {
         Order order = this.orderGateway.findById(orderId);
 
-        order.setPaymentCollected(payment.getAmount());
+        order.setPaymentCollected(paidAmount);
 
         return orderGateway.save(order).toDTO();
     }
