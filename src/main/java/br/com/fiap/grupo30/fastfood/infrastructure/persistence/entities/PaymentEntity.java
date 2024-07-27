@@ -79,7 +79,7 @@ public class PaymentEntity {
     }
 
     public PaymentDTO toDTO() {
-        PaymentDTO dto = new PaymentDTO(this.status, this.amount);
+        PaymentDTO dto = new PaymentDTO(this.id, this.status, this.amount);
         return dto;
     }
 }

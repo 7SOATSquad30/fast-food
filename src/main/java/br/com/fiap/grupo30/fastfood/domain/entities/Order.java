@@ -11,6 +11,7 @@ public class Order {
     private Long id;
     private OrderStatus status;
     private Customer customer;
+    private Payment payment;
     private Collection<OrderItem> items = new LinkedList<>();
     private Double totalPrice = 0.0;
 
@@ -40,6 +41,14 @@ public class Order {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     public Collection<OrderItem> getItems() {
