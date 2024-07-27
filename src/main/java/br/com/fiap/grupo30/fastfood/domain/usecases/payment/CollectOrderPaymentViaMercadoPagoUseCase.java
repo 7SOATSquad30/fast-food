@@ -1,24 +1,24 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.payment;
 
 import br.com.fiap.grupo30.fastfood.adapters.out.mercadopago.MercadoPagoAdapter;
-import br.com.fiap.grupo30.fastfood.application.dto.mercadopago.MercadoPagoPaymentDTO;
-import br.com.fiap.grupo30.fastfood.application.dto.mercadopago.MercadoPagoPaymentStatus;
-import br.com.fiap.grupo30.fastfood.application.dto.mercadopago.events.MercadoPagoActionEventDTO;
-import br.com.fiap.grupo30.fastfood.application.exceptions.PaymentProcessingFailedException;
-import br.com.fiap.grupo30.fastfood.application.exceptions.ResourceNotFoundException;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderEntity;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.repositories.OrderRepository;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderEntity;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaOrderRepository;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.MercadoPagoPaymentDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.MercadoPagoPaymentStatus;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.events.MercadoPagoActionEventDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.PaymentProcessingFailedException;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CollectOrderPaymentViaMercadoPagoUseCase {
-    private final OrderRepository orderRepository;
+    private final JpaOrderRepository orderRepository;
     private final MercadoPagoAdapter mercadoPagoAdapter;
 
     @Autowired
     public CollectOrderPaymentViaMercadoPagoUseCase(
-            OrderRepository orderRepository, MercadoPagoAdapter mercadoPagoAdapter) {
+            JpaOrderRepository orderRepository, MercadoPagoAdapter mercadoPagoAdapter) {
         this.orderRepository = orderRepository;
         this.mercadoPagoAdapter = mercadoPagoAdapter;
     }

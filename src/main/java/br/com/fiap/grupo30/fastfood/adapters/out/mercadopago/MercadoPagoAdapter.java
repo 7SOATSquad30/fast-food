@@ -1,8 +1,8 @@
 package br.com.fiap.grupo30.fastfood.adapters.out.mercadopago;
 
-import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
-import br.com.fiap.grupo30.fastfood.application.dto.mercadopago.MercadoPagoPaymentDTO;
-import br.com.fiap.grupo30.fastfood.application.dto.mercadopago.MercadoPagoQrCodeDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.MercadoPagoPaymentDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.MercadoPagoQrCodeDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
 import java.net.http.HttpClient;

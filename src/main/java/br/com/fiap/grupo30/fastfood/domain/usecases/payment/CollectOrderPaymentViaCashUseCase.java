@@ -1,19 +1,19 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.payment;
 
-import br.com.fiap.grupo30.fastfood.application.dto.CollectPaymentViaCashRequest;
-import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
-import br.com.fiap.grupo30.fastfood.application.exceptions.ResourceNotFoundException;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderEntity;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.repositories.OrderRepository;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderEntity;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaOrderRepository;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CollectPaymentViaCashRequest;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CollectOrderPaymentViaCashUseCase {
-    private final OrderRepository orderRepository;
+    private final JpaOrderRepository orderRepository;
 
     @Autowired
-    public CollectOrderPaymentViaCashUseCase(OrderRepository orderRepository) {
+    public CollectOrderPaymentViaCashUseCase(JpaOrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
 

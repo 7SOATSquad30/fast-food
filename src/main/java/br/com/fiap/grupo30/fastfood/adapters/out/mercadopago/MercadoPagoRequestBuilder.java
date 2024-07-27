@@ -1,9 +1,9 @@
 package br.com.fiap.grupo30.fastfood.adapters.out.mercadopago;
 
-import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
-import br.com.fiap.grupo30.fastfood.application.dto.mercadopago.MercadoPagoCashOutDTO;
-import br.com.fiap.grupo30.fastfood.application.dto.mercadopago.MercadoPagoCreateQrCodeForPaymentCollectionRequestDTO;
-import br.com.fiap.grupo30.fastfood.application.dto.mercadopago.MercadoPagoOrderItemDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.MercadoPagoCashOutDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.MercadoPagoCreateQrCodeForPaymentCollectionRequestDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.MercadoPagoOrderItemDTO;
 import java.time.Instant;
 import java.util.Date;
 import java.util.stream.Stream;

@@ -1,25 +1,25 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.payment;
 
 import br.com.fiap.grupo30.fastfood.adapters.out.mercadopago.MercadoPagoAdapter;
-import br.com.fiap.grupo30.fastfood.application.dto.PaymentQrCodeDTO;
-import br.com.fiap.grupo30.fastfood.application.dto.mercadopago.MercadoPagoQrCodeDTO;
-import br.com.fiap.grupo30.fastfood.application.exceptions.PaymentProcessingFailedException;
-import br.com.fiap.grupo30.fastfood.application.exceptions.ResourceNotFoundException;
-import br.com.fiap.grupo30.fastfood.application.mapper.impl.PaymentQrCodeDTOMapper;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderEntity;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.repositories.OrderRepository;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderEntity;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaOrderRepository;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.PaymentQrCodeDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.MercadoPagoQrCodeDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.PaymentProcessingFailedException;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.ResourceNotFoundException;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl.PaymentQrCodeDTOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GeneratePaymentQrCodeUseCase {
-    private final OrderRepository orderRepository;
+    private final JpaOrderRepository orderRepository;
     private final MercadoPagoAdapter mercadoPagoAdapter;
     private final PaymentQrCodeDTOMapper qrCodeMapper;
 
     @Autowired
     public GeneratePaymentQrCodeUseCase(
-            OrderRepository orderRepository,
+            JpaOrderRepository orderRepository,
             MercadoPagoAdapter mercadoPagoAdapter,
             PaymentQrCodeDTOMapper qrCodeMapper) {
         this.orderRepository = orderRepository;
