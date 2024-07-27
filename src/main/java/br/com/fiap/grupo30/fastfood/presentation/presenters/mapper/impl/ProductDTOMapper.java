@@ -14,13 +14,14 @@ import org.springframework.stereotype.Component;
 public final class ProductDTOMapper implements BiDirectionalMapper<ProductDTO, ProductEntity> {
 
     private final JpaCategoryRepository jpaCategoryRepository;
-    private final CategoryMapper categoryMapper;
+    private final CategoryEntityMapper categoryEntityMapper;
 
     @Autowired
     public ProductDTOMapper(
-            JpaCategoryRepository jpaCategoryRepository, CategoryMapper categoryMapper) {
+            JpaCategoryRepository jpaCategoryRepository,
+            CategoryEntityMapper categoryEntityMapper) {
         this.jpaCategoryRepository = jpaCategoryRepository;
-        this.categoryMapper = categoryMapper;
+        this.categoryEntityMapper = categoryEntityMapper;
     }
 
     @Override
@@ -44,7 +45,7 @@ public final class ProductDTOMapper implements BiDirectionalMapper<ProductDTO, P
         dto.setDescription(entity.getDescription());
         dto.setImgUrl(entity.getImgUrl());
         dto.setPrice(entity.getPrice());
-        Category category = categoryMapper.mapFrom(entity.getCategory());
+        Category category = categoryEntityMapper.mapFrom(entity.getCategory());
         dto.setCategory(new CategoryDTO(category));
         return dto;
     }

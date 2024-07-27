@@ -6,7 +6,7 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.BiDirectional
 import org.springframework.stereotype.Component;
 
 @Component
-public class CategoryMapper implements BiDirectionalMapper<Category, CategoryEntity> {
+public class CategoryEntityMapper implements BiDirectionalMapper<Category, CategoryEntity> {
 
     @Override
     public CategoryEntity mapTo(Category category) {

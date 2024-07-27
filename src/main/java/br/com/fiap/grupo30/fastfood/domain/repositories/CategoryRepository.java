@@ -1,8 +1,8 @@
 package br.com.fiap.grupo30.fastfood.domain.repositories;
 
-import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CategoryDTO;
+import br.com.fiap.grupo30.fastfood.domain.entities.Category;
 import java.util.List;
 
 public interface CategoryRepository {
-    List<CategoryDTO> findAll();
+    List<Category> findAll();
 }
