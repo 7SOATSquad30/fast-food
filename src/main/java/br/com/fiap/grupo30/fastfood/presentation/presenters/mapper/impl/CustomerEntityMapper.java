@@ -7,7 +7,7 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.BiDirectional
 import org.springframework.stereotype.Component;
 
 @Component
-public final class CustomerMapper implements BiDirectionalMapper<Customer, CustomerEntity> {
+public final class CustomerEntityMapper implements BiDirectionalMapper<Customer, CustomerEntity> {
 
     @Override
     public CustomerEntity mapTo(Customer customer) {
@@ -27,5 +27,11 @@ public final class CustomerMapper implements BiDirectionalMapper<Customer, Custo
         customer.setCpf(new CPF(entity.getCpf()));
         customer.setEmail(entity.getEmail());
         return customer;
+    }
+
+    public void updateEntityFromCustomer(CustomerEntity entity, Customer customer) {
+        entity.setName(customer.getName());
+        entity.setCpf(customer.getCpf().value());
+        entity.setEmail(customer.getEmail());
     }
 }

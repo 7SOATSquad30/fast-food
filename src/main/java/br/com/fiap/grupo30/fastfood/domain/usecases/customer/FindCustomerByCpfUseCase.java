@@ -1,19 +1,17 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.customer;
 
-import br.com.fiap.grupo30.fastfood.domain.repositories.CustomerRepository;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CustomerDTO;
-import org.springframework.stereotype.Component;
+import br.com.fiap.grupo30.fastfood.domain.entities.Customer;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.CustomerGateway;
 
-@Component
 public class FindCustomerByCpfUseCase {
 
-    private final CustomerRepository customerRepository;
+    private final CustomerGateway customerGateway;
 
-    public FindCustomerByCpfUseCase(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
+    public FindCustomerByCpfUseCase(CustomerGateway customerGateway) {
+        this.customerGateway = customerGateway;
     }
 
-    public CustomerDTO execute(String cpf) {
-        return customerRepository.findCustomerByCpf(cpf);
+    public Customer execute(String cpf) {
+        return customerGateway.findCustomerByCpf(cpf);
     }
 }

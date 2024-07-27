@@ -7,7 +7,7 @@ import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaO
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CustomerDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.ResourceNotFoundException;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl.CustomerMapper;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl.CustomerEntityMapper;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +18,16 @@ public class StartNewOrderUseCase {
 
     private final JpaOrderRepository jpaOrderRepository;
     private final JpaCustomerRepository jpaCustomerRepository;
-    public final CustomerMapper customerMapper;
+    public final CustomerEntityMapper customerEntityMapper;
 
     @Autowired
     public StartNewOrderUseCase(
             JpaOrderRepository jpaOrderRepository,
             JpaCustomerRepository jpaCustomerRepository,
-            CustomerMapper customerMapper) {
+            CustomerEntityMapper customerEntityMapper) {
         this.jpaOrderRepository = jpaOrderRepository;
         this.jpaCustomerRepository = jpaCustomerRepository;
-        this.customerMapper = customerMapper;
+        this.customerEntityMapper = customerEntityMapper;
     }
 
     @Transactional
@@ -55,7 +55,7 @@ public class StartNewOrderUseCase {
                 jpaCustomerRepository.findCustomerByCpf(anonymousCpf);
 
         if (anonymousCustomer.isPresent()) {
-            return new CustomerDTO(customerMapper.mapFrom(anonymousCustomer.get()));
+            return new CustomerDTO(customerEntityMapper.mapFrom(anonymousCustomer.get()));
         } else {
             CustomerEntity newAnonymousCustomer = new CustomerEntity();
             newAnonymousCustomer.setCpf(anonymousCpf);
@@ -63,7 +63,7 @@ public class StartNewOrderUseCase {
             newAnonymousCustomer.setEmail("anonymous@fastfood.com");
             CustomerEntity savedAnonymousCustomer =
                     jpaCustomerRepository.save(newAnonymousCustomer);
-            return new CustomerDTO(customerMapper.mapFrom(savedAnonymousCustomer));
+            return new CustomerDTO(customerEntityMapper.mapFrom(savedAnonymousCustomer));
         }
     }
 }
