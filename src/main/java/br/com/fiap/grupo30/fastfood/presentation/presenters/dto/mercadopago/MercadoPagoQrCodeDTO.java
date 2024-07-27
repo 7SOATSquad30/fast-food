@@ -2,12 +2,10 @@ package br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
-@Data
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
 @EqualsAndHashCode
 public class MercadoPagoQrCodeDTO {

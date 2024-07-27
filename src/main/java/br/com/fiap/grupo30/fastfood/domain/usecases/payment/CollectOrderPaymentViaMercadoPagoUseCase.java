@@ -1,7 +1,7 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.payment;
 
-import br.com.fiap.grupo30.fastfood.adapters.out.mercadopago.MercadoPagoAdapter;
 import br.com.fiap.grupo30.fastfood.domain.entities.Order;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.MercadoPagoGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.OrderGateway;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.MercadoPagoPaymentDTO;
@@ -14,19 +14,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class CollectOrderPaymentViaMercadoPagoUseCase {
     private final OrderGateway orderGateway;
-    private final MercadoPagoAdapter mercadoPagoAdapter;
+    private final MercadoPagoGateway mercadoPagoGateway;
 
     @Autowired
     public CollectOrderPaymentViaMercadoPagoUseCase(
-            OrderGateway orderGateway, MercadoPagoAdapter mercadoPagoAdapter) {
+            OrderGateway orderGateway, MercadoPagoGateway mercadoPagoGateway) {
         this.orderGateway = orderGateway;
-        this.mercadoPagoAdapter = mercadoPagoAdapter;
+        this.mercadoPagoGateway = mercadoPagoGateway;
     }
 
     public OrderDTO execute(MercadoPagoActionEventDTO mercadoPagoPaymentEvent) {
         try {
             MercadoPagoPaymentDTO payment =
-                    this.mercadoPagoAdapter.getPayment(mercadoPagoPaymentEvent.getData().getId());
+                    this.mercadoPagoGateway.getPaymentState(
+                            mercadoPagoPaymentEvent.getData().getId());
 
             Order order =
                     this.orderGateway.findById(Long.parseLong(payment.getExternalReference()));

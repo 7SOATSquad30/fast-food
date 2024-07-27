@@ -43,7 +43,8 @@ public class PaymentResource {
     @Operation(summary = "Collect payment by cash")
     public ResponseEntity<OrderDTO> collectPaymentByBash(
             @PathVariable Long orderId, @RequestBody CollectPaymentViaCashRequest request) {
-        OrderDTO order = this.collectOrderPaymentViaCashUseCase.execute(orderId, request);
+        OrderDTO order =
+                this.collectOrderPaymentViaCashUseCase.execute(orderId, request.getAmount());
         return ResponseEntity.ok().body(order);
     }
 }
