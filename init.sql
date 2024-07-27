@@ -66,3 +66,13 @@ INSERT INTO tb_order_item (order_id, product_id, quantity, total_price) VALUES (
 INSERT INTO tb_order_item (order_id, product_id, quantity, total_price) VALUES (9, 22, 2, 17.8);
 INSERT INTO tb_order_item (order_id, product_id, quantity, total_price) VALUES (10, 12, 1, 8.9);
 INSERT INTO tb_order_item (order_id, product_id, quantity, total_price) VALUES (10, 15, 1, 13.9);
+INSERT INTO tb_payment (order_id, amount, status, created_at) VALUES (1, 0.0, 'NOT_SUBMITTED', NOW());
+INSERT INTO tb_payment (order_id, amount, status, created_at) VALUES (2, 14.9, 'COLLECTED', NOW());
+INSERT INTO tb_payment (order_id, amount, status, created_at) VALUES (3, 0.0, 'NOT_SUBMITTED', NOW());
+INSERT INTO tb_payment (order_id, amount, status, created_at) VALUES (4, 29.8, 'COLLECTED', NOW());
+INSERT INTO tb_payment (order_id, amount, status, created_at) VALUES (5, 21.7, 'COLLECTED', NOW());
+INSERT INTO tb_payment (order_id, amount, status, created_at) VALUES (6, 17.7, 'COLLECTED', NOW());
+INSERT INTO tb_payment (order_id, amount, status, created_at) VALUES (7, 49.6, 'COLLECTED', NOW());
+INSERT INTO tb_payment (order_id, amount, status, created_at) VALUES (8, 7.9, 'COLLECTED', NOW());
+INSERT INTO tb_payment (order_id, amount, status, created_at) VALUES (9, 17.8, 'COLLECTED', NOW());
+INSERT INTO tb_payment (order_id, amount, status, created_at) VALUES (10, 22.8, 'COLLECTED', NOW());
