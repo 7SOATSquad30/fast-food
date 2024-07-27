@@ -3,11 +3,12 @@ package br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderItemDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@NoArgsConstructor
 @EqualsAndHashCode
 @Entity
 @Table(name = "tb_order_item")
@@ -33,8 +34,8 @@ public class OrderItemEntity {
     @Min(0)
     private Double totalPrice = 0.0;
 
-    public Long getQuantity() {
-        return this.quantity;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setQuantity(Long quantity) {
@@ -42,12 +43,8 @@ public class OrderItemEntity {
         this.recalculateTotalPrice();
     }
 
-    public Double getTotalPrice() {
-        return this.totalPrice;
-    }
-
-    public ProductEntity getProduct() {
-        return this.product;
+    public void setProduct(ProductEntity product) {
+        this.product = product;
     }
 
     private void recalculateTotalPrice() {

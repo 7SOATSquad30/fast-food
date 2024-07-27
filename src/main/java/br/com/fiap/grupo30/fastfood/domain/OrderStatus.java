@@ -1,4 +1,4 @@
-package br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities;
+package br.com.fiap.grupo30.fastfood.domain;
 
 public enum OrderStatus {
     DRAFT,

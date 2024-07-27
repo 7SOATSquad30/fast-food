@@ -1,42 +1,30 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.order;
 
-import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.OrderEntity;
-import br.com.fiap.grupo30.fastfood.infrastructure.persistence.entities.ProductEntity;
-import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaOrderRepository;
-import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaProductRepository;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
-import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.ResourceNotFoundException;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import br.com.fiap.grupo30.fastfood.domain.OrderStatus;
+import br.com.fiap.grupo30.fastfood.domain.entities.Order;
+import br.com.fiap.grupo30.fastfood.domain.entities.Product;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.OrderGateway;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.ProductGateway;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.CantChangeOrderProductsAfterSubmitException;
 
-@Component
 public class AddProductToOrderUseCase {
 
-    private final JpaOrderRepository jpaOrderRepository;
-    private final JpaProductRepository jpaProductRepository;
+    private final OrderGateway orderGateway;
+    private final ProductGateway productGateway;
 
-    @Autowired
-    public AddProductToOrderUseCase(
-            JpaOrderRepository jpaOrderRepository, JpaProductRepository jpaProductRepository) {
-        this.jpaOrderRepository = jpaOrderRepository;
-        this.jpaProductRepository = jpaProductRepository;
+    public AddProductToOrderUseCase(OrderGateway orderGateway, ProductGateway productGateway) {
+        this.orderGateway = orderGateway;
+        this.productGateway = productGateway;
     }
 
-    @Transactional
-    public OrderDTO execute(Long orderId, Long productId, Long productQuantity) {
-        OrderEntity order =
-                this.jpaOrderRepository
-                        .findById(orderId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+    public Order execute(Long orderId, Long productId, Long productQuantity) {
+        Order order = orderGateway.findById(orderId);
 
-        ProductEntity product =
-                this.jpaProductRepository
-                        .findById(productId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        if (order.getStatus() != OrderStatus.DRAFT) {
+            throw new CantChangeOrderProductsAfterSubmitException();
+        }
 
-        order.addProduct(product, productQuantity);
-
-        return this.jpaOrderRepository.save(order).toDTO();
+        Product product = productGateway.findById(productId);
+        return orderGateway.addProductToOrder(order, product, productQuantity);
     }
 }
