@@ -1,19 +1,25 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.product;
 
-import br.com.fiap.grupo30.fastfood.application.dto.ProductDTO;
-import br.com.fiap.grupo30.fastfood.domain.services.ProductService;
-import org.springframework.stereotype.Component;
+import br.com.fiap.grupo30.fastfood.domain.entities.Category;
+import br.com.fiap.grupo30.fastfood.domain.entities.Product;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.CategoryGateway;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.ProductGateway;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
 
-@Component
 public class CreateProductUseCase {
 
-    private final ProductService productService;
+    private final ProductGateway productGateway;
+    private final CategoryGateway categoryGateway;
 
-    public CreateProductUseCase(ProductService productService) {
-        this.productService = productService;
+    public CreateProductUseCase(ProductGateway productGateway, CategoryGateway categoryGateway) {
+        this.productGateway = productGateway;
+        this.categoryGateway = categoryGateway;
     }
 
-    public ProductDTO execute(ProductDTO product) {
-        return productService.insert(product);
+    public ProductDTO execute(
+            String name, String description, Double price, String imgUrl, String category) {
+        Category categoryEntity = this.categoryGateway.findOne(category);
+        Product product = Product.create(name, description, price, imgUrl, categoryEntity);
+        return productGateway.save(product).toDTO();
     }
 }

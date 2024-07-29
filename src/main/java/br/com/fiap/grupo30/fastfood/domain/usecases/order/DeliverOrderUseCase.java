@@ -1,35 +1,27 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.order;
 
-import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
-import br.com.fiap.grupo30.fastfood.application.exceptions.CantChangeOrderStatusDeliveredOtherThanReadyException;
-import br.com.fiap.grupo30.fastfood.application.exceptions.ResourceNotFoundException;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderEntity;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderStatus;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.repositories.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import br.com.fiap.grupo30.fastfood.domain.OrderStatus;
+import br.com.fiap.grupo30.fastfood.domain.entities.Order;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.OrderGateway;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.CantChangeOrderStatusDeliveredOtherThanReadyException;
 
-@Component
 public class DeliverOrderUseCase {
 
-    private final OrderRepository orderRepository;
+    private final OrderGateway orderGateway;
 
-    @Autowired
-    public DeliverOrderUseCase(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
+    public DeliverOrderUseCase(OrderGateway orderGateway) {
+        this.orderGateway = orderGateway;
     }
 
     public OrderDTO execute(Long orderId) {
-        OrderEntity order =
-                this.orderRepository
-                        .findById(orderId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+        Order order = orderGateway.findById(orderId);
 
         if (order.getStatus() != OrderStatus.READY) {
             throw new CantChangeOrderStatusDeliveredOtherThanReadyException();
         }
 
         order.setStatus(OrderStatus.DELIVERED);
-        return this.orderRepository.save(order).toDTO();
+        return orderGateway.save(order).toDTO();
     }
 }

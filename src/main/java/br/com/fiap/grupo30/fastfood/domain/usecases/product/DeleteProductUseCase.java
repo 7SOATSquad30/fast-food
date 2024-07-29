@@ -1,18 +1,16 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.product;
 
-import br.com.fiap.grupo30.fastfood.domain.services.ProductService;
-import org.springframework.stereotype.Component;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.ProductGateway;
 
-@Component
 public class DeleteProductUseCase {
 
-    private final ProductService productService;
+    private final ProductGateway productGateway;
 
-    public DeleteProductUseCase(ProductService productService) {
-        this.productService = productService;
+    public DeleteProductUseCase(ProductGateway productGateway) {
+        this.productGateway = productGateway;
     }
 
     public void execute(Long id) {
-        productService.delete(id);
+        productGateway.delete(id);
     }
 }

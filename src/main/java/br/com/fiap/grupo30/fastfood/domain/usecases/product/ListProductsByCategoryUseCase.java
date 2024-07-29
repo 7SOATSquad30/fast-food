@@ -1,20 +1,21 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.product;
 
-import br.com.fiap.grupo30.fastfood.application.dto.ProductDTO;
-import br.com.fiap.grupo30.fastfood.domain.services.ProductService;
+import br.com.fiap.grupo30.fastfood.domain.entities.Product;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.ProductGateway;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
 import java.util.List;
-import org.springframework.stereotype.Component;
 
-@Component
 public class ListProductsByCategoryUseCase {
 
-    private final ProductService productService;
+    private final ProductGateway productGateway;
 
-    public ListProductsByCategoryUseCase(ProductService productService) {
-        this.productService = productService;
+    public ListProductsByCategoryUseCase(ProductGateway productGateway) {
+        this.productGateway = productGateway;
     }
 
     public List<ProductDTO> execute(Long categoryId) {
-        return productService.findProductsByCategoryId(categoryId);
+        return productGateway.findProductsByCategoryId(categoryId).stream()
+                .map(Product::toDTO)
+                .toList();
     }
 }

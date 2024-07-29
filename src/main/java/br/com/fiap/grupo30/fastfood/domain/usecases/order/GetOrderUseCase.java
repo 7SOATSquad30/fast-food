@@ -1,28 +1,17 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.order;
 
-import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
-import br.com.fiap.grupo30.fastfood.application.exceptions.ResourceNotFoundException;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderEntity;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.repositories.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.OrderGateway;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
 
-@Component
 public class GetOrderUseCase {
 
-    private final OrderRepository orderRepository;
+    private final OrderGateway orderGateway;
 
-    @Autowired
-    public GetOrderUseCase(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
+    public GetOrderUseCase(OrderGateway orderGateway) {
+        this.orderGateway = orderGateway;
     }
 
     public OrderDTO execute(Long orderId) {
-        OrderEntity order =
-                this.orderRepository
-                        .findById(orderId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
-
-        return order.toDTO();
+        return orderGateway.findById(orderId).toDTO();
     }
 }

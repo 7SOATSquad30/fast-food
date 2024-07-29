@@ -1,68 +1,47 @@
 package br.com.fiap.grupo30.fastfood.domain.usecases.order;
 
-import br.com.fiap.grupo30.fastfood.application.dto.CustomerDTO;
-import br.com.fiap.grupo30.fastfood.application.dto.OrderDTO;
-import br.com.fiap.grupo30.fastfood.application.exceptions.ResourceNotFoundException;
-import br.com.fiap.grupo30.fastfood.application.mapper.impl.CustomerMapper;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.CustomerEntity;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.entities.OrderEntity;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.repositories.CustomerRepository;
-import br.com.fiap.grupo30.fastfood.infrastructure.out.persistence.jpa.repositories.OrderRepository;
-import jakarta.transaction.Transactional;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import br.com.fiap.grupo30.fastfood.domain.entities.Customer;
+import br.com.fiap.grupo30.fastfood.domain.entities.Order;
+import br.com.fiap.grupo30.fastfood.domain.valueobjects.CPF;
+import br.com.fiap.grupo30.fastfood.infrastructure.configuration.Constants;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.CustomerGateway;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.OrderGateway;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.InvalidCpfException;
 
-@Component
 public class StartNewOrderUseCase {
 
-    private final OrderRepository orderRepository;
-    private final CustomerRepository customerRepository;
-    public final CustomerMapper customerMapper;
+    private final OrderGateway orderGateway;
+    private final CustomerGateway customerGateway;
 
-    @Autowired
-    public StartNewOrderUseCase(
-            OrderRepository orderRepository,
-            CustomerRepository customerRepository,
-            CustomerMapper customerMapper) {
-        this.orderRepository = orderRepository;
-        this.customerRepository = customerRepository;
-        this.customerMapper = customerMapper;
+    public StartNewOrderUseCase(OrderGateway orderGateway, CustomerGateway customerGateway) {
+        this.orderGateway = orderGateway;
+        this.customerGateway = customerGateway;
     }
 
-    @Transactional
-    public OrderDTO execute(CustomerDTO dto) {
-        CustomerDTO customerDTO = dto;
-        if (customerDTO == null) {
-            customerDTO = findOrCreateAnonymousCustomer();
+    public OrderDTO execute(String customerCpf) {
+        if (!CPF.isValid(customerCpf)) {
+            throw new InvalidCpfException(customerCpf);
         }
 
-        CustomerEntity customerEntity =
-                customerRepository
-                        .findById(customerDTO.getId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-
-        OrderEntity newOrder = OrderEntity.create();
-        newOrder.setCustomer(customerEntity);
-
-        newOrder = this.orderRepository.save(newOrder);
-        return newOrder.toDTO();
+        Customer customer = findCustomerOrCreateAnonymous(new CPF(customerCpf));
+        Order newOrder = Order.createFor(customer);
+        return orderGateway.save(newOrder).toDTO();
     }
 
-    private CustomerDTO findOrCreateAnonymousCustomer() {
-        String anonymousCpf = "970.410.008-69";
-        Optional<CustomerEntity> anonymousCustomer =
-                customerRepository.findCustomerByCpf(anonymousCpf);
-
-        if (anonymousCustomer.isPresent()) {
-            return new CustomerDTO(customerMapper.mapFrom(anonymousCustomer.get()));
+    private Customer findCustomerOrCreateAnonymous(CPF customerCpf) {
+        if (customerCpf != null) {
+            return customerGateway.findCustomerByCpf(customerCpf.value());
         } else {
-            CustomerEntity newAnonymousCustomer = new CustomerEntity();
-            newAnonymousCustomer.setCpf(anonymousCpf);
-            newAnonymousCustomer.setName("Anonymous");
-            newAnonymousCustomer.setEmail("anonymous@fastfood.com");
-            CustomerEntity savedAnonymousCustomer = customerRepository.save(newAnonymousCustomer);
-            return new CustomerDTO(customerMapper.mapFrom(savedAnonymousCustomer));
+            Customer anonymousCustomer = customerGateway.findCustomerByCpf(Constants.ANONYMOUS_CPF);
+            if (anonymousCustomer != null) {
+                return anonymousCustomer;
+            } else {
+                Customer newAnonymousCustomer =
+                        Customer.create(
+                                "Anonymous", Constants.ANONYMOUS_CPF, "anonymous@fastfood.com");
+                return customerGateway.save(newAnonymousCustomer);
+            }
         }
     }
 }

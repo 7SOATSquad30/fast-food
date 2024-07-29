@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  database:
+    image: postgres
+    environment:
+      POSTGRES_URL: "jdbc:postgresql://localhost:5432/fastfood"
+      POSTGRES_DB: "fastfood"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "123456"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - postgres-network
+
+  api:
+    depends_on:
+      - database
+    build: .
+    environment:
+      SPRING_PROFILES_ACTIVE: "dev-docker"
+    ports:
+      - "8080:8080"
+    networks:
+      - postgres-network
+
+networks:
+  postgres-network:
+    driver: bridge
