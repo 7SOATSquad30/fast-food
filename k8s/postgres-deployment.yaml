@@ -21,6 +21,13 @@ spec:
           ports:
           - containerPort: 5432
             protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 20
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 2
           env:
             - name: POSTGRES_URL
               valueFrom:
@@ -45,11 +52,16 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /docker-entrypoint-initdb.d/
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
       volumes:
         - name: config-volume
           configMap:
-            name: meu-config
+            name: cm-init
             items:
               - key: init.sql
                 path: init.sql
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
       restartPolicy: Always

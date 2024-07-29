@@ -5,7 +5,7 @@ metadata:
   labels:
     app: api-deployment
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: api-deployment
@@ -16,15 +16,35 @@ spec:
     spec:
       containers:
         - name: app
-          image: otaviodocker/api-fastfood:1.0
-          imagePullPolicy: Always
-          ports:
-            - name: api-pod
-              containerPort: 8080
-              protocol: TCP
           env:
             - name: DATABASE_URL
               value: "jdbc:postgresql://postgres-svc:5432/fastfood"
             - name: SPRING_PROFILES_ACTIVE
               value: "dev"
+          image: otaviodocker/api-fastfood:1.0
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8080
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 80
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 2
+          readinessProbe:
+            httpGet:
+              path: /swagger-ui/index.html
+              port: 8080
+            initialDelaySeconds: 90
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 2
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "200Mi"
+            limits:
+              cpu: "500m"
+              memory: "2000Mi"
       restartPolicy: Always
