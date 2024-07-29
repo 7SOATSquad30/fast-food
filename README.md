@@ -16,31 +16,40 @@ https://miro.com/app/board/uXjVKWnjhHY=/?share_link_id=867288089876
 - Docker & Docker Compose
 - Make
 
-## Como executar a aplicação
+## Como executar a aplicação local (com docker)
 
-### Subindo a infraestrutura
+### Subindo a infraestrutura com docker
 ```sh
-make infrastucture/up
+docker-compose up -d database
 ```
 
 ### Build
 ```sh
-make build
+./gradew build
 ```
 
-### Executando a aplicação
+### Executando a aplicação local
 ```sh
-make run
+./gradlew bootRun
 ```
 Para parar a aplicação, basta apertar CTRL+C no terminal (SIGINT)
+
+### Como alternativa, pode também executar a aplicação num container docker:
+```sh
+docker-compose up -d api
+```
+
+Para depois derrubar a infraestrutura + aplicação:
+```sh
+docker-compose down
+```
 
 A aplicação subirá na porta 8080, e a documentação das rotas pode ser acessada via swagger:
 http://localhost:8080/swagger-ui/index.html
 
-### Derrubar a infraestrutura
-```sh
-make down
-```
+## Como executar a aplicação local (com minikube)
+
+TODO
 
 ## Estrutura do banco de dados
 
