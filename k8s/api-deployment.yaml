@@ -17,11 +17,11 @@ spec:
       containers:
         - name: app
           env:
-            - name: DATABASE_URL
+            - name: DB_URL
               value: "jdbc:postgresql://postgres-svc:5432/fastfood"
             - name: SPRING_PROFILES_ACTIVE
               value: "dev"
-          image: otaviodocker/api-fastfood:latest
+          image: fiap7soat30/fast-food:latest
           imagePullPolicy: Always
           ports:
           - containerPort: 8080
