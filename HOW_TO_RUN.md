@@ -141,7 +141,7 @@ Na rota `/orders/by-status`, execute o método `GET` com o parâmetro `status=RE
 Na rota `/orders/{orderId}/deliver`, execte o método `POST`
 
 ### Note que o pedido não está mais no painel
-Na rota `/orders/by-status`, execute o método `GET` com o parâmetro `status=READY`
+Na rota `/orders`, execute o método `GET`
 
 # Tudo certo! ;)
 
