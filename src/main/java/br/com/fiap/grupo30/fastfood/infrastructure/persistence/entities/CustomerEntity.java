@@ -34,7 +34,7 @@ public class CustomerEntity {
     @OneToMany(mappedBy = "customer")
     private List<OrderEntity> orders = new ArrayList<>();
 
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE", updatable = false)
     private Instant createdAt;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
