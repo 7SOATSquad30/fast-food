@@ -107,7 +107,7 @@ Logue no usuário de teste no app do Mercado Pago (credenciais com membros do ti
 Na rota `/payments/{orderId}/collect`, execute o método `POST`, passando o valor pago:
 ```
 {
-  "amount": 0
+  "amount": 123.50
 }
 ```
 
