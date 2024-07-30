@@ -16,31 +16,9 @@ https://miro.com/app/board/uXjVKWnjhHY=/?share_link_id=867288089876
 - Docker & Docker Compose
 - Make
 
-## Como executar a aplicação
+## Como executar, testar, etc?
 
-### Subindo a infraestrutura
-```sh
-make infrastucture/up
-```
-
-### Build
-```sh
-make build
-```
-
-### Executando a aplicação
-```sh
-make run
-```
-Para parar a aplicação, basta apertar CTRL+C no terminal (SIGINT)
-
-A aplicação subirá na porta 8080, e a documentação das rotas pode ser acessada via swagger:
-http://localhost:8080/swagger-ui/index.html
-
-### Derrubar a infraestrutura
-```sh
-make down
-```
+Leia o passo a passo no arquivo [HOW_TO_RUN.md](HOW_TO_RUN.md)
 
 ## Estrutura do banco de dados
 
