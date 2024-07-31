@@ -16,6 +16,12 @@ https://miro.com/app/board/uXjVKWnjhHY=/?share_link_id=867288089876
 - Docker & Docker Compose
 - Make
 
+## Arquitetura
+
+<p align="center">
+    <img src="/docs/arquitetura_fastfood.drawio.png"/>
+</p>
+
 ## Como executar, testar, etc?
 
 Leia o passo a passo no arquivo [HOW_TO_RUN.md](HOW_TO_RUN.md)
