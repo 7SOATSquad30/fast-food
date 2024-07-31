@@ -10,6 +10,11 @@
 - minikube
 - kubectl
 
+## Usando
+<details>
+
+<summary>Docker Compose</summary>
+
 ## Subindo a infra
 
 ```sh
@@ -51,10 +56,84 @@ Para parar a aplicação, basta apertar CTRL+C no terminal (SIGINT)
 A aplicação subirá na porta 8080, e a documentação das rotas pode ser acessada via swagger:
 http://localhost:8080/swagger-ui/index.html
 
+Agora é so <a href="#testando-as-features">Testar as features</a>!
+<hr>
+</details>
+
+<details>
+
+<summary>Kubernetes</summary>
+
+## Como subir tudo no k8s
+OBS: Se você subiu tudo local, derrube a infra e a aplicação antes!
+
+### Opcional: configurar integração com mercadopago
+
+#### Criar tunnel para integração com ngrok
+```
+ngrok http 30007
+```
+
+#### Configure a url do ngrok
+Na variavel de ambiente `MERCADOPAGO_NOTIFICATIONS_URL` em `api-deployment.yaml` ou no arquivo `src/main/resources/application-dev.properties`
+Configure a url do ngrok com a rota `/webhooks/mercadopago`
+
+Exemplo:
+```
+https://e916-189-29-149-200.ngrok-free.app/webhooks/mercadopago
+```
+
+### Prepare o cluster
+suba o cluster local com minikube:
+```
+minikube start
+```
+
+### Suba os recursos no cluster
+
+```
+# metric server
+kubectl apply -f ./k8s/metrics.yaml
+
+# database
+kubectl create configmap cm-init --from-file=init.sql
+kubectl apply -f ./k8s/configmap.yaml
+kubectl apply -f ./k8s/postgres-pv.yaml
+kubectl apply -f ./k8s/postgres-pvc.yaml
+kubectl apply -f ./k8s/postgres-svc.yaml
+kubectl apply -f ./k8s/postgres-deployment.yaml
+
+# application
+kubectl apply -f ./k8s/api-svc.yaml
+kubectl apply -f ./k8s/api-hpa.yaml
+kubectl apply -f ./k8s/api-deployment.yaml
+```
+
+### Espere os pods da API subirem no cluster
+Rode o comando `kubectl get pods` e espere os pods da API ficarem com estado `READY`
+Isso pode levar alguns minutos pois a imagem docker do deployment tem cerca de 1GiB
+
+### Com os pods rodando, crie um encaminhamento de porta para testar local:
+```
+kubectl port-forward -n default service/api-svc 30007:80
+```
+
+### Prepare o usuário de testes no app do mercado pago
+Para essa etapa, consulte um dos membros da equipe para pegar o username e senha do usuário de testes.
+
+A aplicação subirá na porta 30007, e a documentação das rotas pode ser acessada via swagger:
+http://localhost:30007/swagger-ui/index.html ou caso tenha configurado a url do ngrok: 
+
+Exemplo:
+```
+https://e916-189-29-149-200.ngrok-free.app/swagger-ui/index.html
+```
+Agora é so <a href="#testando-as-features">Testar as features</a>!
+</details>
+
 ## Testando as features
 
 Abra o swagger e siga o passo a passo:
-http://localhost:8080/swagger-ui/index.html
 
 ### Faça o cadastro do cliente
 Na rota `/customers`, execute o método `POST` com um payload de exemplo:
@@ -144,42 +223,3 @@ Na rota `/orders/{orderId}/deliver`, execte o método `POST`
 Na rota `/orders`, execute o método `GET`
 
 # Tudo certo! ;)
-
-## Como subir tudo no k8s
-OBS: Se você subiu tudo local, derrube a infra e a aplicação antes!
-
-### Prepare o cluster
-suba o cluster local com minikube:
-```
-minikube start
-```
-
-### Suba os recursos no cluster
-```
-# metric server
-kubectl apply -f ./k8s/metrics.yaml
-
-# database
-kubectl create configmap cm-init --from-file=init.sql
-kubectl apply -f ./k8s/configmap.yaml
-kubectl apply -f ./k8s/postgres-pv.yaml
-kubectl apply -f ./k8s/postgres-pvc.yaml
-kubectl apply -f ./k8s/postgres-svc.yaml
-kubectl apply -f ./k8s/postgres-deployment.yaml
-
-# application
-kubectl apply -f ./k8s/api-svc.yaml
-kubectl apply -f ./k8s/api-hpa.yaml
-kubectl apply -f ./k8s/api-deployment.yaml
-```
-
-### Espere os pods da API subirem no cluster
-Rode o comando `kubectl get pods` e espere os pods da API ficarem com estado `READY`
-Isso pode levar alguns minutos pois a imagem docker do deployment tem cerca de 1GiB
-
-### Com os pods rodando, crie um encaminhamento de porta para testar local:
-```
-kubectl port-forward -n default service/api-svc 30007:80
-```
-
-Pronto! Agora só executar o mesmo passo a passo descrito acima
