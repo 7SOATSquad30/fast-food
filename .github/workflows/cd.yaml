@@ -36,6 +36,7 @@ jobs:
         tags: ${{ secrets.DOCKER_USERNAME }}/fast-food:${{ env.VERSION }}
 
   k8s-deploy:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
