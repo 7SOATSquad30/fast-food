@@ -18,10 +18,14 @@ spec:
         - name: app
           env:
             - name: DB_URL
-              value: "jdbc:postgresql://postgres-svc:5432/fastfood"
+              value: "jdbc:postgresql://$DB_HOSTNAME:5432/$DB_DATABASE"
+            - name: DB_USERNAME
+              value: "$DB_USERNAME"
+            - name: DB_PASSWORD
+              value: "$DB_PASSWORD"
             - name: SPRING_PROFILES_ACTIVE
-              value: "dev"
-          image: fiap7soat30/fast-food:latest
+              value: "$ENVIRONMENT"
+          image: fiap7soat30/fast-food:$VERSION
           imagePullPolicy: Always
           ports:
           - containerPort: 8080
