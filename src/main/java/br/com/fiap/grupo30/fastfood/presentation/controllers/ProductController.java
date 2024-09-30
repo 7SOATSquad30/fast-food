@@ -1,6 +1,7 @@
 package br.com.fiap.grupo30.fastfood.presentation.controllers;
 
 import br.com.fiap.grupo30.fastfood.domain.usecases.product.*;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.CategoryGateway;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -48,7 +49,8 @@ public class ProductController {
                             + "via RequestParam. i.e., ?categoryId=1")
     public ResponseEntity<List<ProductDTO>> findProductsByCategoryId(
             @RequestParam(value = "categoryId", defaultValue = "0") Long categoryId) {
-        List<ProductDTO> products = this.listProductsByCategoryUseCase.execute(categoryId);
+        ProductGateway productGateway = new ProductGateway();
+        List<ProductDTO> products = this.listProductsByCategoryUseCase.execute(productGateway, categoryId);
         return ResponseEntity.ok().body(products);
     }
 
@@ -57,7 +59,8 @@ public class ProductController {
             summary = "Get a product by ID",
             description = "Retrieve a specific product based on its ID")
     public ResponseEntity<ProductDTO> findProductById(@PathVariable Long id) {
-        ProductDTO dto = this.getProductUseCase.execute(id);
+        ProductGateway productGateway = new ProductGateway();
+        ProductDTO dto = this.getProductUseCase.execute(productGateway, id);
         return ResponseEntity.ok().body(dto);
     }
 
@@ -66,8 +69,13 @@ public class ProductController {
             summary = "Create a new product",
             description = "Create a new product and return the created product's data")
     public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid ProductDTO dto) {
+        ProductGateway productGateway = new ProductGateway();
+        CategoryGateway categoryGateway= new CategoryGateway();
+
         ProductDTO dtoCreated =
                 this.createProductUseCase.execute(
+                        productGateway, 
+                        categoryGateway,
                         dto.getName(),
                         dto.getDescription(),
                         dto.getPrice(),
@@ -87,8 +95,12 @@ public class ProductController {
             description = "Update the data of an existing product based on its ID")
     public ResponseEntity<ProductDTO> updateProduct(
             @PathVariable Long id, @RequestBody @Valid ProductDTO dto) {
+        ProductGateway productGateway = new ProductGateway();
+        CategoryGateway categoryGateway= new CategoryGateway();
         ProductDTO dtoUpdated =
                 this.updateProductUseCase.execute(
+                        productGateway,
+                        categoryGateway,
                         id,
                         dto.getName(),
                         dto.getDescription(),
@@ -103,7 +115,8 @@ public class ProductController {
             summary = "Delete a product",
             description = "Delete an existing product based on its ID")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        this.deleteProductUseCase.execute(id);
+        ProductGateway productGateway = new ProductGateway();
+        this.deleteProductUseCase.execute(productGateway, id);
         return ResponseEntity.noContent().build();
     }
 }

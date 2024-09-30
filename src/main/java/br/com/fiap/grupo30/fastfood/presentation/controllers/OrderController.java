@@ -1,6 +1,7 @@
 package br.com.fiap.grupo30.fastfood.presentation.controllers;
 
 import br.com.fiap.grupo30.fastfood.domain.usecases.order.*;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.CustomerGateway;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.AddCustomerCpfRequest;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.AddOrderProductRequest;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
@@ -60,7 +61,8 @@ public class OrderController {
                     "Get a list of orders with statuses READY, PREPARING, and SUBMITTED, sorted by"
                             + " status and date")
     public ResponseEntity<List<OrderDTO>> findOrdersWithSpecificStatuses() {
-        List<OrderDTO> orders = listOrdersWithSpecificStatusesUseCase.execute();
+        OrderGateway orderGateway = new OrderGateway();
+        List<OrderDTO> orders = listOrdersWithSpecificStatusesUseCase.execute(orderGateway);
         return ResponseEntity.ok().body(orders);
     }
 
@@ -72,7 +74,8 @@ public class OrderController {
                             + " sorted by date via RequestParam. i.e., ?status=")
     public ResponseEntity<List<OrderDTO>> findOrdersByStatus(
             @RequestParam(value = "status", required = false) String status) {
-        List<OrderDTO> orders = listAllOrdersByStatus.execute(status);
+        OrderGateway orderGateway = new OrderGateway();
+        List<OrderDTO> orders = listAllOrdersByStatus.execute(orderGateway, status);
         return ResponseEntity.ok().body(orders);
     }
 
@@ -81,7 +84,8 @@ public class OrderController {
             summary = "Get an order by ID",
             description = "Retrieve a specific order based on its ID")
     public ResponseEntity<OrderDTO> findById(@PathVariable Long orderId) {
-        OrderDTO order = getOrderUseCase.execute(orderId);
+        OrderGateway orderGateway = new OrderGateway();
+        OrderDTO order = getOrderUseCase.execute(orderGateway, orderId);
         return ResponseEntity.ok().body(order);
     }
 
@@ -91,7 +95,9 @@ public class OrderController {
             description = "Create a new order and return the new order's data")
     public ResponseEntity<OrderDTO> startNewOrder(
             @RequestBody(required = false) AddCustomerCpfRequest request) {
-        OrderDTO order = startNewOrderUseCase.execute(request.getCpf());
+        OrderGateway orderGateway = new OrderGateway();
+        CustomerGateway customerGateway= new CustomerGateway();
+        OrderDTO order = startNewOrderUseCase.execute(orderGateway, customerGateway, request.getCpf());
         URI uri =
                 ServletUriComponentsBuilder.fromCurrentRequest()
                         .path("/{orderId}")
@@ -104,8 +110,10 @@ public class OrderController {
     @Operation(summary = "Add a product to an order", description = "Adds a product to an order")
     public ResponseEntity<OrderDTO> addProduct(
             @PathVariable Long orderId, @RequestBody AddOrderProductRequest request) {
+        OrderGateway orderGateway = new OrderGateway();
+        ProductGateway productGateway = new ProductGateway();
         OrderDTO order =
-                addProductToOrderUseCase.execute(
+                addProductToOrderUseCase.execute(orderGateway, productGateway,
                         orderId, request.getProductId(), request.getQuantity());
         return ResponseEntity.ok().body(order);
     }
@@ -116,6 +124,8 @@ public class OrderController {
             description = "Removes a product from an order")
     public ResponseEntity<OrderDTO> removeProduct(
             @PathVariable Long orderId, @PathVariable Long productId) {
+        OrderGateway orderGateway = new OrderGateway();
+        ProductGateway productGateway = new ProductGateway();
         OrderDTO order = removeProductFromOrderUseCase.execute(orderId, productId);
         return ResponseEntity.ok().body(order);
     }
@@ -125,6 +135,7 @@ public class OrderController {
             summary = "Submit an order for preparation",
             description = "Submits an order for preparation and return the order's data")
     public ResponseEntity<OrderDTO> submitOrder(@PathVariable Long orderId) {
+        OrderGateway orderGateway = new OrderGateway();
         OrderDTO order = submitOrderUseCase.execute(orderId);
         return ResponseEntity.ok().body(order);
     }
@@ -134,6 +145,7 @@ public class OrderController {
             summary = "Start preparing an order",
             description = "Start preparing an order and return the order's data")
     public ResponseEntity<OrderDTO> startPreparingOrder(@PathVariable Long orderId) {
+        OrderGateway orderGateway = new OrderGateway();
         OrderDTO order = startPreparingOrderUseCase.execute(orderId);
         return ResponseEntity.ok().body(order);
     }
@@ -143,6 +155,7 @@ public class OrderController {
             summary = "Finish preparing an order",
             description = "Finish preparing an order and return the order's data")
     public ResponseEntity<OrderDTO> finishPreparingOrder(@PathVariable Long orderId) {
+        OrderGateway orderGateway = new OrderGateway();
         OrderDTO order = finishPreparingOrderUseCase.execute(orderId);
         return ResponseEntity.ok().body(order);
     }
@@ -152,7 +165,8 @@ public class OrderController {
             summary = "Deliver an order",
             description = "Deliver an order and return the order's data")
     public ResponseEntity<OrderDTO> deliverOrder(@PathVariable Long orderId) {
-        OrderDTO order = deliverOrderUseCase.execute(orderId);
+        OrderGateway orderGateway = new OrderGateway();
+        OrderDTO order = deliverOrderUseCase.execute(orderGateway, orderId);
         return ResponseEntity.ok().body(order);
     }
 }

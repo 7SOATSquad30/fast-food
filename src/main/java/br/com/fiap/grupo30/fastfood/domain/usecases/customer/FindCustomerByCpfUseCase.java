@@ -7,13 +7,10 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.InvalidCp
 
 public class FindCustomerByCpfUseCase {
 
-    private final CustomerGateway customerGateway;
-
-    public FindCustomerByCpfUseCase(CustomerGateway customerGateway) {
-        this.customerGateway = customerGateway;
+    public FindCustomerByCpfUseCase() {
     }
 
-    public CustomerDTO execute(String cpf) {
+    public CustomerDTO execute(CustomerGateway customerGateway, String cpf) {
         if (!CPF.isValid(cpf)) {
             throw new InvalidCpfException(cpf);
         }

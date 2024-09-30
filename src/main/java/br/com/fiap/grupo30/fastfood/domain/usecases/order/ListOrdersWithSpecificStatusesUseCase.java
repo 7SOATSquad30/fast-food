@@ -7,13 +7,10 @@ import java.util.List;
 
 public class ListOrdersWithSpecificStatusesUseCase {
 
-    private final OrderGateway orderGateway;
-
-    public ListOrdersWithSpecificStatusesUseCase(OrderGateway orderGateway) {
-        this.orderGateway = orderGateway;
+    public ListOrdersWithSpecificStatusesUseCase() {
     }
 
-    public List<OrderDTO> execute() {
+    public List<OrderDTO> execute(OrderGateway orderGateway) {
         return orderGateway.findOrdersWithSpecificStatuses().stream().map(Order::toDTO).toList();
     }
 }

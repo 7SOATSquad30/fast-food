@@ -2,6 +2,7 @@ package br.com.fiap.grupo30.fastfood.presentation.controllers;
 
 import br.com.fiap.grupo30.fastfood.domain.usecases.customer.FindCustomerByCpfUseCase;
 import br.com.fiap.grupo30.fastfood.domain.usecases.customer.RegisterNewCustomerUseCase;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.CustomerGateway;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.CustomerDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,7 +33,8 @@ public class CustomerController {
     @Operation(summary = "Get a customer", description = "Retrieve a registered customer by cpf")
     public ResponseEntity<CustomerDTO> findCustomerByCpf(
             @RequestParam(value = "cpf", defaultValue = "0") String cpf) {
-        CustomerDTO customer = this.findCustomerByCpfUseCase.execute(cpf);
+        CustomerGateway customerGateway = new CustomerGateway();
+        CustomerDTO customer = this.findCustomerByCpfUseCase.execute(customerGateway, cpf);
         return ResponseEntity.ok().body(customer);
     }
 
@@ -41,8 +43,9 @@ public class CustomerController {
             summary = "Create a new customer",
             description = "Create a new customer and return the created customer's data")
     public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid CustomerDTO dto) {
+        CustomerGateway customerGateway = CustomerGateway();
         CustomerDTO createdCustomer =
-                this.registerNewCustomerUseCase.execute(
+                this.registerNewCustomerUseCase.execute(customerGateway,
                         dto.getName(), dto.getCpf(), dto.getEmail());
         URI uri =
                 ServletUriComponentsBuilder.fromCurrentRequest()

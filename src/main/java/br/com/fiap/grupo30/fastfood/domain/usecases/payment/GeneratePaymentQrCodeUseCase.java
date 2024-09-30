@@ -11,17 +11,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GeneratePaymentQrCodeUseCase {
-    private final OrderGateway orderGateway;
-    private final MercadoPagoGateway mercadoPagoGateway;
 
     @Autowired
-    public GeneratePaymentQrCodeUseCase(
-            OrderGateway orderGateway, MercadoPagoGateway mercadoPagoGateway) {
-        this.orderGateway = orderGateway;
-        this.mercadoPagoGateway = mercadoPagoGateway;
+    public GeneratePaymentQrCodeUseCase() {
     }
 
-    public PaymentQrCodeDTO execute(Long orderId) {
+    public PaymentQrCodeDTO execute(OrderGateway orderGateway, MercadoPagoGateway mercadoPagoGateway, Long orderId) {
         Order order = this.orderGateway.findById(orderId);
 
         MercadoPagoQrCodeDTO qrCodeResponse;

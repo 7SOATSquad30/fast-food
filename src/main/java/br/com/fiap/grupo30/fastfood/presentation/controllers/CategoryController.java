@@ -28,7 +28,8 @@ public class CategoryController {
             summary = "Get all categories",
             description = "Retrieve a list of all registered categories")
     public ResponseEntity<List<CategoryDTO>> findAll() {
-        List<CategoryDTO> categories = this.listAllCategoriesInMenuUseCase.execute();
+        CategoryGateway categoryGateway = new CategoryGateway();
+        List<CategoryDTO> categories = this.listAllCategoriesInMenuUseCase.execute(categoryGateway);
         return ResponseEntity.ok().body(categories);
     }
 }

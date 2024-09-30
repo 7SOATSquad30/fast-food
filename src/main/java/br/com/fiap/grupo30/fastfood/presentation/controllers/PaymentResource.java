@@ -35,7 +35,9 @@ public class PaymentResource {
     @Operation(summary = "Generate qrcode for order payment collection")
     public ResponseEntity<PaymentQrCodeDTO> generateQrCodeForPaymentCollection(
             @PathVariable Long orderId) {
-        PaymentQrCodeDTO qrCode = this.generatePaymentQrCodeUseCase.execute(orderId);
+        OrderGateway orderGateway = new OrderGateway();
+        MercadoPagoGateway mercadoPagoGateway = new MercadoPagoGateway();
+        PaymentQrCodeDTO qrCode = this.generatePaymentQrCodeUseCase.execute(orderGateway, mercadoPagoGateway, orderId);
         return ResponseEntity.ok().body(qrCode);
     }
 
@@ -43,8 +45,8 @@ public class PaymentResource {
     @Operation(summary = "Collect payment by cash")
     public ResponseEntity<OrderDTO> collectPaymentByBash(
             @PathVariable Long orderId, @RequestBody CollectPaymentViaCashRequest request) {
-        OrderDTO order =
-                this.collectOrderPaymentViaCashUseCase.execute(orderId, request.getAmount());
+        OrderGateway orderGateway = new OrderGateway();
+        OrderDTO order = this.collectOrderPaymentViaCashUseCase.execute(orderGateway, orderId, request.getAmount());
         return ResponseEntity.ok().body(order);
     }
 }

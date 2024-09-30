@@ -72,8 +72,10 @@ public class WebhookResource {
     }
 
     private void handlePaymentEvent(MercadoPagoActionEventDTO event) {
+        OrderGateway orderGateway = new OrderGateway();
+        MercadoPagoGateway mercadoPagoGateway = new MercadoPagoGateway();
         if (MercadoPagoAction.PAYMENT_CREATED.getValue().equals(event.getAction())) {
-            collectOrderPaymentMercadoPago.execute(event);
+            collectOrderPaymentMercadoPago.execute(orderGateway, mercadoPagoGateway, event);
         } else {
             LOG.warn("Ignoring unimplemented payment event", event);
         }
