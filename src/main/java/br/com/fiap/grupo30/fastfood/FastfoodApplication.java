@@ -11,7 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         info = @Info(title = "My API", version = "v1"),
         servers = {
             @Server(url = "http://localhost:8080", description = "Local Development"),
-            @Server(url = "https://29glms05ff.execute-api.us-east-1.amazonaws.com", description = "Production Server")
+            @Server(
+                    url = "https://29glms05ff.execute-api.us-east-1.amazonaws.com",
+                    description = "Production Server")
         })
 public class FastfoodApplication {
 
