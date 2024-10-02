@@ -62,7 +62,7 @@ public class ProductController {
         return ResponseEntity.ok().body(dto);
     }
 
-    @AdminRequired
+    @AdminRequired()
     @PostMapping
     @Operation(
             summary = "Create a new product",
@@ -101,7 +101,7 @@ public class ProductController {
         return ResponseEntity.ok().body(dtoUpdated);
     }
 
-    @AdminRequired
+    @AdminRequired()
     @DeleteMapping(value = PATH_VARIABLE_ID)
     @Operation(
             summary = "Delete a product",
