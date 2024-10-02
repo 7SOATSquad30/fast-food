@@ -130,6 +130,7 @@ public class OrderController {
         return ResponseEntity.ok().body(order);
     }
 
+    @AdminRequired()
     @PostMapping(value = "/{orderId}/prepare")
     @Operation(
             summary = "Start preparing an order",
@@ -139,6 +140,7 @@ public class OrderController {
         return ResponseEntity.ok().body(order);
     }
 
+    @AdminRequired()
     @PostMapping(value = "/{orderId}/ready")
     @Operation(
             summary = "Finish preparing an order",
