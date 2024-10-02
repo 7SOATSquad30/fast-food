@@ -5,7 +5,6 @@ metadata:
   labels:
     app: api-deployment
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: api-deployment
@@ -18,10 +17,24 @@ spec:
         - name: app
           env:
             - name: DB_URL
-              value: "jdbc:postgresql://postgres-svc:5432/fastfood"
+              value: "jdbc:postgresql://$DB_HOSTNAME:5432/$DB_DATABASE"
+            - name: DB_USERNAME
+              value: "$DB_USERNAME"
+            - name: DB_PASSWORD
+              value: "$DB_PASSWORD"
+            - name: MERCADOPAGO_PUBLIC_KEY
+              value: "$MERCADOPAGO_PUBLIC_KEY"
+            - name: MERCADOPAGO_PRIVATE_ACCESS_TOKEN
+              value: "$MERCADOPAGO_PRIVATE_ACCESS_TOKEN"
+            - name: MERCADOPAGO_APP_USER_ID
+              value: "$MERCADOPAGO_APP_USER_ID"
+            - name: MERCADOPAGO_POINT_OF_SALE_ID
+              value: "$MERCADOPAGO_POINT_OF_SALE_ID"
+            - name: MERCADOPAGO_NOTIFICATIONS_URL
+              value: "$MERCADOPAGO_NOTIFICATIONS_URL"
             - name: SPRING_PROFILES_ACTIVE
-              value: "dev"
-          image: fiap7soat30/fast-food:latest
+              value: "$ENVIRONMENT"
+          image: fiap7soat30/fast-food:$VERSION
           imagePullPolicy: Always
           ports:
           - containerPort: 8080
