@@ -7,9 +7,6 @@ import java.util.List;
 
 public class ListAllCategoriesInMenuUseCase {
 
-    public ListAllCategoriesInMenuUseCase() {
-    }
-
     public List<CategoryDTO> execute(CategoryGateway categoryGateway) {
         return categoryGateway.findAll().stream().map(Category::toDTO).toList();
     }
