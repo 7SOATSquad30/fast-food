@@ -7,9 +7,6 @@ import java.util.List;
 
 public class ListOrdersWithSpecificStatusesUseCase {
 
-    public ListOrdersWithSpecificStatusesUseCase() {
-    }
-
     public List<OrderDTO> execute(OrderGateway orderGateway) {
         return orderGateway.findOrdersWithSpecificStatuses().stream().map(Order::toDTO).toList();
     }

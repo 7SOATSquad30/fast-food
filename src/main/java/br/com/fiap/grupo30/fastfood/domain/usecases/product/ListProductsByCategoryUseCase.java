@@ -7,9 +7,6 @@ import java.util.List;
 
 public class ListProductsByCategoryUseCase {
 
-    public ListProductsByCategoryUseCase() {
-    }
-
     public List<ProductDTO> execute(ProductGateway productGateway, Long categoryId) {
         return productGateway.findProductsByCategoryId(categoryId).stream()
                 .map(Product::toDTO)

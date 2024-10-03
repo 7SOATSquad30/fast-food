@@ -8,15 +8,10 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.Merc
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.MercadoPagoPaymentStatus;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.events.MercadoPagoActionEventDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.PaymentProcessingFailedException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CollectOrderPaymentViaMercadoPagoUseCase {
-
-    @Autowired
-    public CollectOrderPaymentViaMercadoPagoUseCase() {
-    }
 
     public OrderDTO execute(OrderGateway orderGateway, MercadoPagoGateway mercadoPagoGateway, MercadoPagoActionEventDTO mercadoPagoPaymentEvent) {
         try {

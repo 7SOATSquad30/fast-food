@@ -11,9 +11,6 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.InvalidCp
 
 public class StartNewOrderUseCase {
 
-    public StartNewOrderUseCase() {
-    }
-
     public OrderDTO execute(OrderGateway orderGateway, CustomerGateway customerGateway, String customerCpf) {
         if (!CPF.isValid(customerCpf)) {
             throw new InvalidCpfException(customerCpf);

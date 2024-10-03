@@ -4,9 +4,6 @@ import br.com.fiap.grupo30.fastfood.infrastructure.gateways.ProductGateway;
 
 public class DeleteProductUseCase {
 
-    public DeleteProductUseCase() {
-    }
-
     public void execute(ProductGateway productGateway, Long id) {
         productGateway.delete(id);
     }

@@ -8,9 +8,6 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.InvalidCp
 
 public class RegisterNewCustomerUseCase {
 
-    public RegisterNewCustomerUseCase() {
-    }
-
     public CustomerDTO execute(CustomerGateway customerGateway, String name, String cpf, String email) {
         if (!CPF.isValid(cpf)) {
             throw new InvalidCpfException(cpf);

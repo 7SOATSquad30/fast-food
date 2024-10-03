@@ -6,15 +6,10 @@ import br.com.fiap.grupo30.fastfood.infrastructure.gateways.OrderGateway;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.PaymentQrCodeDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.MercadoPagoQrCodeDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.PaymentProcessingFailedException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GeneratePaymentQrCodeUseCase {
-
-    @Autowired
-    public GeneratePaymentQrCodeUseCase() {
-    }
 
     public PaymentQrCodeDTO execute(OrderGateway orderGateway, MercadoPagoGateway mercadoPagoGateway, Long orderId) {
         Order order = orderGateway.findById(orderId);

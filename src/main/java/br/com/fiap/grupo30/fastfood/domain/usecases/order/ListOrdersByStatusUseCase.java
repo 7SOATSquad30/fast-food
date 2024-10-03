@@ -10,9 +10,6 @@ import java.util.Locale;
 
 public class ListOrdersByStatusUseCase {
 
-    public ListOrdersByStatusUseCase() {
-    }
-
     public List<OrderDTO> execute(OrderGateway orderGateway, String status) {
         OrderStatus statusFilter = null;
         if (status != null && !status.isEmpty()) {
