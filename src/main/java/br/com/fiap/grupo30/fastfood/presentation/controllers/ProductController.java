@@ -1,6 +1,7 @@
 package br.com.fiap.grupo30.fastfood.presentation.controllers;
 
 import br.com.fiap.grupo30.fastfood.domain.usecases.product.*;
+import br.com.fiap.grupo30.fastfood.infrastructure.auth.AdminRequired;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.CategoryGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.ProductGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaCategoryRepository;
@@ -73,6 +74,7 @@ public class ProductController {
         return ResponseEntity.ok().body(dto);
     }
 
+    @AdminRequired()
     @PostMapping
     @Operation(
             summary = "Create a new product",
@@ -97,6 +99,7 @@ public class ProductController {
         return ResponseEntity.created(uri).body(dtoCreated);
     }
 
+    @AdminRequired()
     @PutMapping(value = PATH_VARIABLE_ID)
     @Operation(
             summary = "Update a product",
@@ -118,6 +121,7 @@ public class ProductController {
         return ResponseEntity.ok().body(dtoUpdated);
     }
 
+    @AdminRequired()
     @DeleteMapping(value = PATH_VARIABLE_ID)
     @Operation(
             summary = "Delete a product",

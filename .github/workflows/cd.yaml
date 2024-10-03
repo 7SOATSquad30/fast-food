@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -12,6 +13,9 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+
+    - name: Setup env
+      run: echo "VERSION=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
@@ -30,6 +34,61 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/fast-food:latest
-  
-  # TODO: deploy to k8s
+        tags: ${{ secrets.DOCKER_USERNAME }}/fast-food:${{ env.VERSION }}
+
+  k8s-deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Install kubectl
+      run: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/kubectl
+    
+    - name: Verify kubectl version
+      run: kubectl version --client
+
+    - name: Setup kubectl
+      run: aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.K8S_CLUSTER_NAME }}
+
+    - name: Setup env
+      run: echo "VERSION=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
+
+    - name: Create dir for parsed k8s templates
+      run: |
+        mkdir -p ./k8s-deploy
+
+    - name: Prepare k8s resource templates
+      env:
+        DB_HOSTNAME: ${{ secrets.DB_HOSTNAME }}
+        DB_DATABASE: ${{ secrets.DB_DATABASE }}
+        DB_USERNAME: ${{ secrets.DB_USERNAME }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        MERCADOPAGO_PUBLIC_KEY: ${{ secrets.MERCADOPAGO_PUBLIC_KEY }}
+        MERCADOPAGO_PRIVATE_ACCESS_TOKEN: ${{ secrets.MERCADOPAGO_PRIVATE_ACCESS_TOKEN }}
+        MERCADOPAGO_APP_USER_ID: ${{ secrets.MERCADOPAGO_APP_USER_ID }}
+        MERCADOPAGO_POINT_OF_SALE_ID: ${{ secrets.MERCADOPAGO_POINT_OF_SALE_ID }}
+        MERCADOPAGO_NOTIFICATIONS_URL: ${{ secrets.MERCADOPAGO_NOTIFICATIONS_URL }}
+        VERSION: ${{ env.VERSION }}
+        ENVIRONMENT: prod
+      run: |
+        for file in ./k8s/*.yaml; do
+          envsubst < "$file" > "./k8s-deploy/$(basename "$file")"
+        done
+
+    - name: Deploy to k8s cluster
+      run: |
+        kubectl apply -f ./k8s-deploy/
+

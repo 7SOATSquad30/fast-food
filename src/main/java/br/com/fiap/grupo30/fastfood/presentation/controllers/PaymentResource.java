@@ -2,6 +2,7 @@ package br.com.fiap.grupo30.fastfood.presentation.controllers;
 
 import br.com.fiap.grupo30.fastfood.domain.usecases.payment.CollectOrderPaymentViaCashUseCase;
 import br.com.fiap.grupo30.fastfood.domain.usecases.payment.GeneratePaymentQrCodeUseCase;
+import br.com.fiap.grupo30.fastfood.infrastructure.auth.AdminRequired;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.MercadoPagoGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.OrderGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaOrderRepository;
@@ -51,6 +52,7 @@ public class PaymentResource {
         return ResponseEntity.ok().body(qrCode);
     }
 
+    @AdminRequired()
     @PostMapping(value = "/{orderId}/collect")
     @Operation(summary = "Collect payment by cash")
     public ResponseEntity<OrderDTO> collectPaymentByBash(

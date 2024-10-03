@@ -1,6 +1,7 @@
 package br.com.fiap.grupo30.fastfood.presentation.controllers;
 
 import br.com.fiap.grupo30.fastfood.domain.usecases.order.*;
+import br.com.fiap.grupo30.fastfood.infrastructure.auth.AdminRequired;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.CustomerGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.OrderGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.ProductGateway;
@@ -154,6 +155,7 @@ public class OrderController {
         return ResponseEntity.ok().body(order);
     }
 
+    @AdminRequired()
     @PostMapping(value = "/{orderId}/prepare")
     @Operation(
             summary = "Start preparing an order",
@@ -164,6 +166,7 @@ public class OrderController {
         return ResponseEntity.ok().body(order);
     }
 
+    @AdminRequired()
     @PostMapping(value = "/{orderId}/ready")
     @Operation(
             summary = "Finish preparing an order",
@@ -174,6 +177,7 @@ public class OrderController {
         return ResponseEntity.ok().body(order);
     }
 
+    @AdminRequired()
     @PostMapping(value = "/{orderId}/deliver")
     @Operation(
             summary = "Deliver an order",
