@@ -8,13 +8,10 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.CantChang
 
 public class DeliverOrderUseCase {
 
-    private final OrderGateway orderGateway;
-
-    public DeliverOrderUseCase(OrderGateway orderGateway) {
-        this.orderGateway = orderGateway;
+    public DeliverOrderUseCase() {
     }
 
-    public OrderDTO execute(Long orderId) {
+    public OrderDTO execute(OrderGateway orderGateway, Long orderId) {
         Order order = orderGateway.findById(orderId);
 
         if (order.getStatus() != OrderStatus.READY) {

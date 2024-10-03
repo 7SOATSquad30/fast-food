@@ -18,56 +18,52 @@ public class OrderConfiguration {
     }
 
     @Bean
-    public ListOrdersWithSpecificStatusesUseCase listOrdersBySpecificStatusesUseCase(
-            OrderGateway orderGateway) {
-        return new ListOrdersWithSpecificStatusesUseCase(orderGateway);
+    public ListOrdersWithSpecificStatusesUseCase listOrdersBySpecificStatusesUseCase() {
+        return new ListOrdersWithSpecificStatusesUseCase();
     }
 
     @Bean
-    public ListOrdersByStatusUseCase listOrdersByStatusUseCase(OrderGateway orderGateway) {
-        return new ListOrdersByStatusUseCase(orderGateway);
+    public ListOrdersByStatusUseCase listOrdersByStatusUseCase() {
+        return new ListOrdersByStatusUseCase();
     }
 
     @Bean
-    public GetOrderUseCase getOrderUseCase(OrderGateway orderGateway) {
-        return new GetOrderUseCase(orderGateway);
+    public GetOrderUseCase getOrderUseCase() {
+        return new GetOrderUseCase();
     }
 
     @Bean
-    public StartNewOrderUseCase startNewOrderUseCase(
-            OrderGateway orderGateway, CustomerGateway customerGateway) {
-        return new StartNewOrderUseCase(orderGateway, customerGateway);
+    public StartNewOrderUseCase startNewOrderUseCase() {
+        return new StartNewOrderUseCase();
     }
 
     @Bean
-    public AddProductToOrderUseCase addProductToOrderUseCase(
-            OrderGateway orderGateway, ProductGateway productGateway) {
-        return new AddProductToOrderUseCase(orderGateway, productGateway);
+    public AddProductToOrderUseCase addProductToOrderUseCase() {
+        return new AddProductToOrderUseCase();
     }
 
     @Bean
-    public RemoveProductFromOrderUseCase removeProductFromOrderUseCase(
-            OrderGateway orderGateway, ProductGateway productGateway) {
-        return new RemoveProductFromOrderUseCase(orderGateway, productGateway);
+    public RemoveProductFromOrderUseCase removeProductFromOrderUseCase() {
+        return new RemoveProductFromOrderUseCase();
     }
 
     @Bean
-    public SubmitOrderUseCase submitOrderUseCase(OrderGateway orderGateway) {
-        return new SubmitOrderUseCase(orderGateway);
+    public SubmitOrderUseCase submitOrderUseCase() {
+        return new SubmitOrderUseCase();
     }
 
     @Bean
-    public StartPreparingOrderUseCase startPreparingOrderUseCase(OrderGateway orderGateway) {
-        return new StartPreparingOrderUseCase(orderGateway);
+    public StartPreparingOrderUseCase startPreparingOrderUseCase() {
+        return new StartPreparingOrderUseCase();
     }
 
     @Bean
-    public FinishPreparingOrderUseCase finishPreparingOrderUseCase(OrderGateway orderGateway) {
-        return new FinishPreparingOrderUseCase(orderGateway);
+    public FinishPreparingOrderUseCase finishPreparingOrderUseCase() {
+        return new FinishPreparingOrderUseCase();
     }
 
     @Bean
-    public DeliverOrderUseCase deliverOrderUseCase(OrderGateway orderGateway) {
-        return new DeliverOrderUseCase(orderGateway);
+    public DeliverOrderUseCase deliverOrderUseCase() {
+        return new DeliverOrderUseCase();
     }
 }

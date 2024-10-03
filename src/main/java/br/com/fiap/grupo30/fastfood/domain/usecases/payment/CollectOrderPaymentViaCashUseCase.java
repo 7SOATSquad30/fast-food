@@ -8,15 +8,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CollectOrderPaymentViaCashUseCase {
-    private final OrderGateway orderGateway;
 
     @Autowired
-    public CollectOrderPaymentViaCashUseCase(OrderGateway orderGateway) {
-        this.orderGateway = orderGateway;
+    public CollectOrderPaymentViaCashUseCase() {
     }
 
-    public OrderDTO execute(Long orderId, Double paidAmount) {
-        Order order = this.orderGateway.findById(orderId);
+    public OrderDTO execute(OrderGateway orderGateway, Long orderId, Double paidAmount) {
+        Order order = orderGateway.findById(orderId);
 
         order.setPaymentCollected(paidAmount);
 

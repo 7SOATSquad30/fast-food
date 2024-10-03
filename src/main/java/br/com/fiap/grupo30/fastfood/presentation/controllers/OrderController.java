@@ -1,6 +1,12 @@
 package br.com.fiap.grupo30.fastfood.presentation.controllers;
 
 import br.com.fiap.grupo30.fastfood.domain.usecases.order.*;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.CustomerGateway;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.OrderGateway;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.ProductGateway;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaCustomerRepository;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaOrderRepository;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaProductRepository;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.AddCustomerCpfRequest;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.AddOrderProductRequest;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
@@ -28,6 +34,9 @@ public class OrderController {
     private final StartPreparingOrderUseCase startPreparingOrderUseCase;
     private final FinishPreparingOrderUseCase finishPreparingOrderUseCase;
     private final DeliverOrderUseCase deliverOrderUseCase;
+    private final JpaOrderRepository jpaOrderRepository;
+    private final JpaProductRepository jpaProductRepository;
+    private final JpaCustomerRepository jpaCustomerRepository;
 
     @Autowired
     public OrderController(
@@ -40,7 +49,10 @@ public class OrderController {
             ListOrdersByStatusUseCase listAllOrdersByStatus,
             StartPreparingOrderUseCase startPreparingOrderUseCase,
             FinishPreparingOrderUseCase finishPreparingOrderUseCase,
-            DeliverOrderUseCase deliverOrderUseCase) {
+            DeliverOrderUseCase deliverOrderUseCase,
+            JpaOrderRepository jpaOrderRepository,
+            JpaProductRepository jpaProductRepository,
+            JpaCustomerRepository jpaCustomerRepository) {
         this.startNewOrderUseCase = startNewOrderUseCase;
         this.addProductToOrderUseCase = addProductToOrderUseCase;
         this.removeProductFromOrderUseCase = removeProductFromOrderUseCase;
@@ -51,6 +63,9 @@ public class OrderController {
         this.startPreparingOrderUseCase = startPreparingOrderUseCase;
         this.finishPreparingOrderUseCase = finishPreparingOrderUseCase;
         this.deliverOrderUseCase = deliverOrderUseCase;
+        this.jpaOrderRepository = jpaOrderRepository;
+        this.jpaProductRepository = jpaProductRepository;
+        this.jpaCustomerRepository = jpaCustomerRepository;
     }
 
     @GetMapping()
@@ -60,7 +75,8 @@ public class OrderController {
                     "Get a list of orders with statuses READY, PREPARING, and SUBMITTED, sorted by"
                             + " status and date")
     public ResponseEntity<List<OrderDTO>> findOrdersWithSpecificStatuses() {
-        List<OrderDTO> orders = listOrdersWithSpecificStatusesUseCase.execute();
+        OrderGateway orderGateway = new OrderGateway(jpaOrderRepository);
+        List<OrderDTO> orders = listOrdersWithSpecificStatusesUseCase.execute(orderGateway);
         return ResponseEntity.ok().body(orders);
     }
 
@@ -72,7 +88,8 @@ public class OrderController {
                             + " sorted by date via RequestParam. i.e., ?status=")
     public ResponseEntity<List<OrderDTO>> findOrdersByStatus(
             @RequestParam(value = "status", required = false) String status) {
-        List<OrderDTO> orders = listAllOrdersByStatus.execute(status);
+        OrderGateway orderGateway = new OrderGateway(jpaOrderRepository);
+        List<OrderDTO> orders = listAllOrdersByStatus.execute(orderGateway, status);
         return ResponseEntity.ok().body(orders);
     }
 
@@ -81,7 +98,8 @@ public class OrderController {
             summary = "Get an order by ID",
             description = "Retrieve a specific order based on its ID")
     public ResponseEntity<OrderDTO> findById(@PathVariable Long orderId) {
-        OrderDTO order = getOrderUseCase.execute(orderId);
+        OrderGateway orderGateway = new OrderGateway(jpaOrderRepository);
+        OrderDTO order = getOrderUseCase.execute(orderGateway, orderId);
         return ResponseEntity.ok().body(order);
     }
 
@@ -91,7 +109,9 @@ public class OrderController {
             description = "Create a new order and return the new order's data")
     public ResponseEntity<OrderDTO> startNewOrder(
             @RequestBody(required = false) AddCustomerCpfRequest request) {
-        OrderDTO order = startNewOrderUseCase.execute(request.getCpf());
+        OrderGateway orderGateway = new OrderGateway(jpaOrderRepository);
+        CustomerGateway customerGateway = new CustomerGateway(jpaCustomerRepository);
+        OrderDTO order = startNewOrderUseCase.execute(orderGateway, customerGateway, request.getCpf());
         URI uri =
                 ServletUriComponentsBuilder.fromCurrentRequest()
                         .path("/{orderId}")
@@ -104,9 +124,11 @@ public class OrderController {
     @Operation(summary = "Add a product to an order", description = "Adds a product to an order")
     public ResponseEntity<OrderDTO> addProduct(
             @PathVariable Long orderId, @RequestBody AddOrderProductRequest request) {
+        OrderGateway orderGateway = new OrderGateway(jpaOrderRepository);
+        ProductGateway productGateway = new ProductGateway(jpaProductRepository);
         OrderDTO order =
                 addProductToOrderUseCase.execute(
-                        orderId, request.getProductId(), request.getQuantity());
+                        orderGateway, productGateway, orderId, request.getProductId(), request.getQuantity());
         return ResponseEntity.ok().body(order);
     }
 
@@ -116,7 +138,9 @@ public class OrderController {
             description = "Removes a product from an order")
     public ResponseEntity<OrderDTO> removeProduct(
             @PathVariable Long orderId, @PathVariable Long productId) {
-        OrderDTO order = removeProductFromOrderUseCase.execute(orderId, productId);
+        OrderGateway orderGateway = new OrderGateway(jpaOrderRepository);
+        ProductGateway productGateway = new ProductGateway(jpaProductRepository);
+        OrderDTO order = removeProductFromOrderUseCase.execute(orderGateway, productGateway, orderId, productId);
         return ResponseEntity.ok().body(order);
     }
 
@@ -125,7 +149,8 @@ public class OrderController {
             summary = "Submit an order for preparation",
             description = "Submits an order for preparation and return the order's data")
     public ResponseEntity<OrderDTO> submitOrder(@PathVariable Long orderId) {
-        OrderDTO order = submitOrderUseCase.execute(orderId);
+        OrderGateway orderGateway = new OrderGateway(jpaOrderRepository);
+        OrderDTO order = submitOrderUseCase.execute(orderGateway, orderId);
         return ResponseEntity.ok().body(order);
     }
 
@@ -134,7 +159,8 @@ public class OrderController {
             summary = "Start preparing an order",
             description = "Start preparing an order and return the order's data")
     public ResponseEntity<OrderDTO> startPreparingOrder(@PathVariable Long orderId) {
-        OrderDTO order = startPreparingOrderUseCase.execute(orderId);
+        OrderGateway orderGateway = new OrderGateway(jpaOrderRepository);
+        OrderDTO order = startPreparingOrderUseCase.execute(orderGateway, orderId);
         return ResponseEntity.ok().body(order);
     }
 
@@ -143,7 +169,8 @@ public class OrderController {
             summary = "Finish preparing an order",
             description = "Finish preparing an order and return the order's data")
     public ResponseEntity<OrderDTO> finishPreparingOrder(@PathVariable Long orderId) {
-        OrderDTO order = finishPreparingOrderUseCase.execute(orderId);
+        OrderGateway orderGateway = new OrderGateway(jpaOrderRepository);
+        OrderDTO order = finishPreparingOrderUseCase.execute(orderGateway, orderId);
         return ResponseEntity.ok().body(order);
     }
 
@@ -152,7 +179,8 @@ public class OrderController {
             summary = "Deliver an order",
             description = "Deliver an order and return the order's data")
     public ResponseEntity<OrderDTO> deliverOrder(@PathVariable Long orderId) {
-        OrderDTO order = deliverOrderUseCase.execute(orderId);
+        OrderGateway orderGateway = new OrderGateway(jpaOrderRepository);
+        OrderDTO order = deliverOrderUseCase.execute(orderGateway, orderId);
         return ResponseEntity.ok().body(order);
     }
 }

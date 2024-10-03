@@ -17,12 +17,12 @@ public class CustomerConfiguration {
     }
 
     @Bean
-    public FindCustomerByCpfUseCase findCustomerByCpfUseCase(CustomerGateway customerGateway) {
-        return new FindCustomerByCpfUseCase(customerGateway);
+    public FindCustomerByCpfUseCase findCustomerByCpfUseCase() {
+        return new FindCustomerByCpfUseCase();
     }
 
     @Bean
-    public RegisterNewCustomerUseCase registerNewCustomerUseCase(CustomerGateway customerGateway) {
-        return new RegisterNewCustomerUseCase(customerGateway);
+    public RegisterNewCustomerUseCase registerNewCustomerUseCase() {
+        return new RegisterNewCustomerUseCase();
     }
 }

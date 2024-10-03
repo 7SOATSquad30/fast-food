@@ -13,24 +13,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CollectOrderPaymentViaMercadoPagoUseCase {
-    private final OrderGateway orderGateway;
-    private final MercadoPagoGateway mercadoPagoGateway;
 
     @Autowired
-    public CollectOrderPaymentViaMercadoPagoUseCase(
-            OrderGateway orderGateway, MercadoPagoGateway mercadoPagoGateway) {
-        this.orderGateway = orderGateway;
-        this.mercadoPagoGateway = mercadoPagoGateway;
+    public CollectOrderPaymentViaMercadoPagoUseCase() {
     }
 
-    public OrderDTO execute(MercadoPagoActionEventDTO mercadoPagoPaymentEvent) {
+    public OrderDTO execute(OrderGateway orderGateway, MercadoPagoGateway mercadoPagoGateway, MercadoPagoActionEventDTO mercadoPagoPaymentEvent) {
         try {
-            MercadoPagoPaymentDTO payment =
-                    this.mercadoPagoGateway.getPaymentState(
+            MercadoPagoPaymentDTO payment = mercadoPagoGateway.getPaymentState(
                             mercadoPagoPaymentEvent.getData().getId());
 
-            Order order =
-                    this.orderGateway.findById(Long.parseLong(payment.getExternalReference()));
+            Order order = orderGateway.findById(Long.parseLong(payment.getExternalReference()));
 
             if (MercadoPagoPaymentStatus.APPROVED.getValue().equals(payment.getStatus())) {
                 order.setPaymentCollected(payment.getTransactionAmount());
