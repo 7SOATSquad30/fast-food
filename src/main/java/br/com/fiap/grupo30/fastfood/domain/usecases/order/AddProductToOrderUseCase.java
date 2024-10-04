@@ -10,7 +10,12 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.CantChang
 
 public class AddProductToOrderUseCase {
 
-    public OrderDTO execute(OrderGateway orderGateway, ProductGateway productGateway, Long orderId, Long productId, Long productQuantity) {
+    public OrderDTO execute(
+            OrderGateway orderGateway,
+            ProductGateway productGateway,
+            Long orderId,
+            Long productId,
+            Long productQuantity) {
         Order order = orderGateway.findByIdForUpdate(orderId);
         Product product = productGateway.findById(productId);
 

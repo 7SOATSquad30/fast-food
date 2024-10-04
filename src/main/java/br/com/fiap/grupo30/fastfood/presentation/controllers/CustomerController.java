@@ -50,7 +50,7 @@ public class CustomerController {
         CustomerGateway customerGateway = new CustomerGateway(jpaCustomerRepository);
         CustomerDTO createdCustomer =
                 this.registerNewCustomerUseCase.execute(
-                    customerGateway, dto.getName(), dto.getCpf(), dto.getEmail());
+                        customerGateway, dto.getName(), dto.getCpf(), dto.getEmail());
         URI uri =
                 ServletUriComponentsBuilder.fromCurrentRequest()
                         .path("/{cpf}")

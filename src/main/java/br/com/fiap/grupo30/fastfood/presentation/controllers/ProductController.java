@@ -60,7 +60,8 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> findProductsByCategoryId(
             @RequestParam(value = "categoryId", defaultValue = "0") Long categoryId) {
         ProductGateway productGateway = new ProductGateway(jpaProductRepository);
-        List<ProductDTO> products = this.listProductsByCategoryUseCase.execute(productGateway, categoryId);
+        List<ProductDTO> products =
+                this.listProductsByCategoryUseCase.execute(productGateway, categoryId);
         return ResponseEntity.ok().body(products);
     }
 

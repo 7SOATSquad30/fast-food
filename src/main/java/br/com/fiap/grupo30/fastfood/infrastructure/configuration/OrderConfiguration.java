@@ -2,9 +2,7 @@ package br.com.fiap.grupo30.fastfood.infrastructure.configuration;
 
 import br.com.fiap.grupo30.fastfood.domain.repositories.OrderRepository;
 import br.com.fiap.grupo30.fastfood.domain.usecases.order.*;
-import br.com.fiap.grupo30.fastfood.infrastructure.gateways.CustomerGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.OrderGateway;
-import br.com.fiap.grupo30.fastfood.infrastructure.gateways.ProductGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaOrderRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

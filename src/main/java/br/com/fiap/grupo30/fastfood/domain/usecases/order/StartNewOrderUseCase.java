@@ -11,7 +11,8 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.InvalidCp
 
 public class StartNewOrderUseCase {
 
-    public OrderDTO execute(OrderGateway orderGateway, CustomerGateway customerGateway, String customerCpf) {
+    public OrderDTO execute(
+            OrderGateway orderGateway, CustomerGateway customerGateway, String customerCpf) {
         if (!CPF.isValid(customerCpf)) {
             throw new InvalidCpfException(customerCpf);
         }
@@ -21,7 +22,8 @@ public class StartNewOrderUseCase {
         return orderGateway.save(newOrder).toDTO();
     }
 
-    private Customer findCustomerOrCreateAnonymous(CustomerGateway customerGateway, CPF customerCpf) {
+    private Customer findCustomerOrCreateAnonymous(
+            CustomerGateway customerGateway, CPF customerCpf) {
         if (customerCpf != null) {
             return customerGateway.findCustomerByCpf(customerCpf.value());
         } else {

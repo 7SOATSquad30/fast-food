@@ -22,8 +22,9 @@ public class CategoryController {
     public final JpaCategoryRepository jpaCategoryRepository;
 
     @Autowired
-    public CategoryController(ListAllCategoriesInMenuUseCase listAllCategoriesInMenuUseCase,
-                                JpaCategoryRepository jpaCategoryRepository) {
+    public CategoryController(
+            ListAllCategoriesInMenuUseCase listAllCategoriesInMenuUseCase,
+            JpaCategoryRepository jpaCategoryRepository) {
         this.listAllCategoriesInMenuUseCase = listAllCategoriesInMenuUseCase;
         this.jpaCategoryRepository = jpaCategoryRepository;
     }

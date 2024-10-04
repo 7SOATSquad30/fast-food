@@ -9,7 +9,7 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
 public class UpdateProductUseCase {
 
     public ProductDTO execute(
-            ProductGateway productGateway, 
+            ProductGateway productGateway,
             CategoryGateway categoryGateway,
             Long productId,
             String name,

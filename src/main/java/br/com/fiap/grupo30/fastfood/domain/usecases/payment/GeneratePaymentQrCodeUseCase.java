@@ -11,12 +11,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class GeneratePaymentQrCodeUseCase {
 
-    public PaymentQrCodeDTO execute(OrderGateway orderGateway, MercadoPagoGateway mercadoPagoGateway, Long orderId) {
+    public PaymentQrCodeDTO execute(
+            OrderGateway orderGateway, MercadoPagoGateway mercadoPagoGateway, Long orderId) {
         Order order = orderGateway.findById(orderId);
 
         MercadoPagoQrCodeDTO qrCodeResponse;
         try {
-            qrCodeResponse = mercadoPagoGateway.createQrCodeForOrderPaymentCollection(order.toDTO());
+            qrCodeResponse =
+                    mercadoPagoGateway.createQrCodeForOrderPaymentCollection(order.toDTO());
         } catch (Exception e) {
             throw new PaymentProcessingFailedException("Could not start payment processing", e);
         }

@@ -13,10 +13,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class CollectOrderPaymentViaMercadoPagoUseCase {
 
-    public OrderDTO execute(OrderGateway orderGateway, MercadoPagoGateway mercadoPagoGateway, MercadoPagoActionEventDTO mercadoPagoPaymentEvent) {
+    public OrderDTO execute(
+            OrderGateway orderGateway,
+            MercadoPagoGateway mercadoPagoGateway,
+            MercadoPagoActionEventDTO mercadoPagoPaymentEvent) {
         try {
-            MercadoPagoPaymentDTO payment = mercadoPagoGateway.getPaymentState(
-                            mercadoPagoPaymentEvent.getData().getId());
+            MercadoPagoPaymentDTO payment =
+                    mercadoPagoGateway.getPaymentState(mercadoPagoPaymentEvent.getData().getId());
 
             Order order = orderGateway.findById(Long.parseLong(payment.getExternalReference()));
 

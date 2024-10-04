@@ -112,7 +112,8 @@ public class OrderController {
             @RequestBody(required = false) AddCustomerCpfRequest request) {
         OrderGateway orderGateway = new OrderGateway(jpaOrderRepository);
         CustomerGateway customerGateway = new CustomerGateway(jpaCustomerRepository);
-        OrderDTO order = startNewOrderUseCase.execute(orderGateway, customerGateway, request.getCpf());
+        OrderDTO order =
+                startNewOrderUseCase.execute(orderGateway, customerGateway, request.getCpf());
         URI uri =
                 ServletUriComponentsBuilder.fromCurrentRequest()
                         .path("/{orderId}")
@@ -129,7 +130,11 @@ public class OrderController {
         ProductGateway productGateway = new ProductGateway(jpaProductRepository);
         OrderDTO order =
                 addProductToOrderUseCase.execute(
-                        orderGateway, productGateway, orderId, request.getProductId(), request.getQuantity());
+                        orderGateway,
+                        productGateway,
+                        orderId,
+                        request.getProductId(),
+                        request.getQuantity());
         return ResponseEntity.ok().body(order);
     }
 
@@ -141,7 +146,9 @@ public class OrderController {
             @PathVariable Long orderId, @PathVariable Long productId) {
         OrderGateway orderGateway = new OrderGateway(jpaOrderRepository);
         ProductGateway productGateway = new ProductGateway(jpaProductRepository);
-        OrderDTO order = removeProductFromOrderUseCase.execute(orderGateway, productGateway, orderId, productId);
+        OrderDTO order =
+                removeProductFromOrderUseCase.execute(
+                        orderGateway, productGateway, orderId, productId);
         return ResponseEntity.ok().body(order);
     }
 

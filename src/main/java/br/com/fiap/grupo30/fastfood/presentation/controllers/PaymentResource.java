@@ -48,7 +48,9 @@ public class PaymentResource {
             @PathVariable Long orderId) {
         OrderGateway orderGateway = new OrderGateway(jpaOrderRepository);
         MercadoPagoGateway mercadoPagoGateway = new MercadoPagoGateway(orderMapper);
-        PaymentQrCodeDTO qrCode = this.generatePaymentQrCodeUseCase.execute(orderGateway, mercadoPagoGateway, orderId);
+        PaymentQrCodeDTO qrCode =
+                this.generatePaymentQrCodeUseCase.execute(
+                        orderGateway, mercadoPagoGateway, orderId);
         return ResponseEntity.ok().body(qrCode);
     }
 
@@ -59,7 +61,8 @@ public class PaymentResource {
             @PathVariable Long orderId, @RequestBody CollectPaymentViaCashRequest request) {
         OrderGateway orderGateway = new OrderGateway(jpaOrderRepository);
         OrderDTO order =
-                this.collectOrderPaymentViaCashUseCase.execute(orderGateway, orderId, request.getAmount());
+                this.collectOrderPaymentViaCashUseCase.execute(
+                        orderGateway, orderId, request.getAmount());
         return ResponseEntity.ok().body(order);
     }
 }

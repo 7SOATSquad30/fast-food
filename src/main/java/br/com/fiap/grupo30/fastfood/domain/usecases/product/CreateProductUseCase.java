@@ -9,8 +9,13 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
 public class CreateProductUseCase {
 
     public ProductDTO execute(
-        ProductGateway productGateway, CategoryGateway categoryGateway, String name, String description, 
-        Double price, String imgUrl, String category) {
+            ProductGateway productGateway,
+            CategoryGateway categoryGateway,
+            String name,
+            String description,
+            Double price,
+            String imgUrl,
+            String category) {
         Category categoryEntity = categoryGateway.findOne(category);
         Product product = Product.create(name, description, price, imgUrl, categoryEntity);
         return productGateway.save(product).toDTO();

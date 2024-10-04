@@ -2,7 +2,6 @@ package br.com.fiap.grupo30.fastfood.infrastructure.configuration;
 
 import br.com.fiap.grupo30.fastfood.domain.repositories.ProductRepository;
 import br.com.fiap.grupo30.fastfood.domain.usecases.product.*;
-import br.com.fiap.grupo30.fastfood.infrastructure.gateways.CategoryGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.gateways.ProductGateway;
 import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaProductRepository;
 import org.springframework.context.annotation.Bean;
