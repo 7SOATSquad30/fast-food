@@ -1,8 +1,12 @@
 package br.com.fiap.grupo30.fastfood.presentation.controllers;
 
 import br.com.fiap.grupo30.fastfood.domain.usecases.payment.CollectOrderPaymentViaMercadoPagoUseCase;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.MercadoPagoGateway;
+import br.com.fiap.grupo30.fastfood.infrastructure.gateways.OrderGateway;
+import br.com.fiap.grupo30.fastfood.infrastructure.persistence.repositories.JpaOrderRepository;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.events.MercadoPagoAction;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.events.MercadoPagoActionEventDTO;
+import br.com.fiap.grupo30.fastfood.presentation.presenters.mapper.impl.MercadoPagoOrderMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,11 +30,17 @@ public class WebhookResource {
     private static final Logger LOG = LoggerFactory.getLogger(WebhookResource.class);
 
     private final CollectOrderPaymentViaMercadoPagoUseCase collectOrderPaymentMercadoPago;
+    private final JpaOrderRepository jpaOrderRepository;
+    private final MercadoPagoOrderMapper orderMapper;
 
     @Autowired
     public WebhookResource(
-            CollectOrderPaymentViaMercadoPagoUseCase collectOrderPaymentMercadoPago) {
+            CollectOrderPaymentViaMercadoPagoUseCase collectOrderPaymentMercadoPago,
+            JpaOrderRepository jpaOrderRepository,
+            MercadoPagoOrderMapper orderMapper) {
         this.collectOrderPaymentMercadoPago = collectOrderPaymentMercadoPago;
+        this.jpaOrderRepository = jpaOrderRepository;
+        this.orderMapper = orderMapper;
     }
 
     @PostMapping(value = "/mercadopago")
@@ -72,8 +82,10 @@ public class WebhookResource {
     }
 
     private void handlePaymentEvent(MercadoPagoActionEventDTO event) {
+        OrderGateway orderGateway = new OrderGateway(jpaOrderRepository);
+        MercadoPagoGateway mercadoPagoGateway = new MercadoPagoGateway(orderMapper);
         if (MercadoPagoAction.PAYMENT_CREATED.getValue().equals(event.getAction())) {
-            collectOrderPaymentMercadoPago.execute(event);
+            collectOrderPaymentMercadoPago.execute(orderGateway, mercadoPagoGateway, event);
         } else {
             LOG.warn("Ignoring unimplemented payment event", event);
         }

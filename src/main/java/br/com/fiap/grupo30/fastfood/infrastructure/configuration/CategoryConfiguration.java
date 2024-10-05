@@ -16,8 +16,7 @@ public class CategoryConfiguration {
     }
 
     @Bean
-    public ListAllCategoriesInMenuUseCase listAllCategoriesInMenuUseCase(
-            CategoryGateway categoryGateway) {
-        return new ListAllCategoriesInMenuUseCase(categoryGateway);
+    public ListAllCategoriesInMenuUseCase listAllCategoriesInMenuUseCase() {
+        return new ListAllCategoriesInMenuUseCase();
     }
 }

@@ -7,13 +7,7 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.OrderDTO;
 
 public class SubmitOrderUseCase {
 
-    private final OrderGateway orderGateway;
-
-    public SubmitOrderUseCase(OrderGateway orderGateway) {
-        this.orderGateway = orderGateway;
-    }
-
-    public OrderDTO execute(Long orderId) {
+    public OrderDTO execute(OrderGateway orderGateway, Long orderId) {
         Order order = orderGateway.findById(orderId);
         order.setStatus(OrderStatus.SUBMITTED);
         return orderGateway.save(order).toDTO();

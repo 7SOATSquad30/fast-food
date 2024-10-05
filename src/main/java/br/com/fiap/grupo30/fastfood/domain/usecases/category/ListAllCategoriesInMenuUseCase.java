@@ -7,13 +7,7 @@ import java.util.List;
 
 public class ListAllCategoriesInMenuUseCase {
 
-    private final CategoryGateway categoryGateway;
-
-    public ListAllCategoriesInMenuUseCase(CategoryGateway categoryGateway) {
-        this.categoryGateway = categoryGateway;
-    }
-
-    public List<CategoryDTO> execute() {
+    public List<CategoryDTO> execute(CategoryGateway categoryGateway) {
         return categoryGateway.findAll().stream().map(Category::toDTO).toList();
     }
 }

@@ -5,13 +5,7 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.ProductDTO;
 
 public class GetProductUseCase {
 
-    private final ProductGateway productGateway;
-
-    public GetProductUseCase(ProductGateway productGateway) {
-        this.productGateway = productGateway;
-    }
-
-    public ProductDTO execute(Long id) {
+    public ProductDTO execute(ProductGateway productGateway, Long id) {
         return productGateway.findById(id).toDTO();
     }
 }

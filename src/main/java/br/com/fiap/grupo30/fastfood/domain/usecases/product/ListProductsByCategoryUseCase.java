@@ -7,13 +7,7 @@ import java.util.List;
 
 public class ListProductsByCategoryUseCase {
 
-    private final ProductGateway productGateway;
-
-    public ListProductsByCategoryUseCase(ProductGateway productGateway) {
-        this.productGateway = productGateway;
-    }
-
-    public List<ProductDTO> execute(Long categoryId) {
+    public List<ProductDTO> execute(ProductGateway productGateway, Long categoryId) {
         return productGateway.findProductsByCategoryId(categoryId).stream()
                 .map(Product::toDTO)
                 .toList();

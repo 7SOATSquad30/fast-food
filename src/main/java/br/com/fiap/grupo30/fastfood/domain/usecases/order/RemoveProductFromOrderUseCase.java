@@ -10,15 +10,11 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.CantChang
 
 public class RemoveProductFromOrderUseCase {
 
-    private final OrderGateway orderGateway;
-    private final ProductGateway productGateway;
-
-    public RemoveProductFromOrderUseCase(OrderGateway orderGateway, ProductGateway productGateway) {
-        this.orderGateway = orderGateway;
-        this.productGateway = productGateway;
-    }
-
-    public OrderDTO execute(Long orderId, Long productId) {
+    public OrderDTO execute(
+            OrderGateway orderGateway,
+            ProductGateway productGateway,
+            Long orderId,
+            Long productId) {
         Order order = orderGateway.findById(orderId);
         Product product = productGateway.findById(productId);
 

@@ -8,29 +8,20 @@ import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.Merc
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.MercadoPagoPaymentStatus;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.dto.mercadopago.events.MercadoPagoActionEventDTO;
 import br.com.fiap.grupo30.fastfood.presentation.presenters.exceptions.PaymentProcessingFailedException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CollectOrderPaymentViaMercadoPagoUseCase {
-    private final OrderGateway orderGateway;
-    private final MercadoPagoGateway mercadoPagoGateway;
 
-    @Autowired
-    public CollectOrderPaymentViaMercadoPagoUseCase(
-            OrderGateway orderGateway, MercadoPagoGateway mercadoPagoGateway) {
-        this.orderGateway = orderGateway;
-        this.mercadoPagoGateway = mercadoPagoGateway;
-    }
-
-    public OrderDTO execute(MercadoPagoActionEventDTO mercadoPagoPaymentEvent) {
+    public OrderDTO execute(
+            OrderGateway orderGateway,
+            MercadoPagoGateway mercadoPagoGateway,
+            MercadoPagoActionEventDTO mercadoPagoPaymentEvent) {
         try {
             MercadoPagoPaymentDTO payment =
-                    this.mercadoPagoGateway.getPaymentState(
-                            mercadoPagoPaymentEvent.getData().getId());
+                    mercadoPagoGateway.getPaymentState(mercadoPagoPaymentEvent.getData().getId());
 
-            Order order =
-                    this.orderGateway.findById(Long.parseLong(payment.getExternalReference()));
+            Order order = orderGateway.findById(Long.parseLong(payment.getExternalReference()));
 
             if (MercadoPagoPaymentStatus.APPROVED.getValue().equals(payment.getStatus())) {
                 order.setPaymentCollected(payment.getTransactionAmount());
